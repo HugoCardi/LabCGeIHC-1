@@ -19,6 +19,10 @@ GLFWwindow * window;
 bool exitApp = false;
 int lastMousePosX;
 int lastMousePosY;
+//Cambiando el color de la pantalla
+bool isBlue = true;
+int colorCount = 0;
+
 
 double deltaTime;
 
@@ -64,6 +68,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(0);
 
+	//EEsta parte define que funciones se van a ejecutar cuando suceda un evento
 	glfwSetWindowSizeCallback(window, reshapeCallback);
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetCursorPosCallback(window, mouseCallback);
@@ -98,6 +103,12 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 		switch (key) {
 		case GLFW_KEY_ESCAPE:
 			exitApp = true;
+			break;
+		case GLFW_KEY_RIGHT :
+			if (colorCount == 4)
+				colorCount = 0;
+			else
+				colorCount += 1;
 			break;
 		}
 	}
@@ -140,6 +151,23 @@ void applicationLoop() {
 		psi = processInput(true);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(window);
+		switch (colorCount) {
+		case 1:
+			glClearColor(1.0, 0.0, 0.0, 1);
+			break;
+		case 2:
+			glClearColor(0.0, 1.0, 0.0, 1);
+			break;
+		case 3:
+			glClearColor(0.0, 0.0, 1.0, 1);
+			break;
+		case 4:
+			glClearColor(0.5, 0.5, 0.0, 1);
+			break;
+		case 0:
+			glClearColor(0.0, 0.0, 0.0, 1);
+			break;
+		}
 	}
 }
 
