@@ -61,6 +61,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen);
 void destroyWindow();
 void destroy();
 bool processInput(bool continueApplication = true);
+void creaRectang();
+
 
 // Implementacion de todas las funciones.
 void init(int width, int height, std::string strTitle, bool bFullScreen) {
@@ -149,7 +151,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog
 			<< std::endl;
 	}
-
+	/*
 	// This is for the render with index element
 	Vertex vertices[] =
 	{
@@ -158,7 +160,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		{ { 0.5f , 0.5f , 0.0f } , { 0.0f, 0.0f, 1.0f } },
 		{ {-0.5f , 0.5f , 0.0f } , { 1.0f, 0.0f, 1.0f } },
 	};
-
+	
 	GLuint indices[] = {  // Note that we start from 0!
 		0, 1, 2,  // First Triangle
 		0, 2, 3   // Second Triangle
@@ -196,8 +198,43 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+	*/
+	creaRectang();
 }
 
+// 
+void creaRectang() {
+	Vertex vertices[] = {
+		{ { -0.5f, -0.5f, 0.0f } , { 1.0f, 0.0f, 0.0f } },
+		{ { 0.5f , -0.5f, 0.0f } , { 0.0f, 1.0f, 0.0f } },
+		{ { 0.5f , 0.5f , 0.0f } , { 0.0f, 0.0f, 1.0f } },
+		{ {-0.5f , 0.5f , 0.0f } , { 1.0f, 0.0f, 1.0f } },
+
+	};
+	const size_t  VertexSize = sizeof(vertices);
+	const size_t StrideSize = sizeof(vertices[0]);
+	const size_t OffsetPos = sizeof(vertices[0].XYZ);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &VBO);
+	//Enlaca buffer de los datos al vertex Array Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, VertexSize, vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, StrideSize, 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, StrideSize, (GLvoid*)OffsetPos);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+
+	//Para volver a la configuracion inicial , descartando la anteriro
+	glBindVertexArray(0);
+
+
+}
 void destroyWindow() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -286,7 +323,8 @@ void applicationLoop() {
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
 		// This is for the render with index element
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 4);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
