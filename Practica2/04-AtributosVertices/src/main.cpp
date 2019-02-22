@@ -151,181 +151,269 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog
 			<< std::endl;
 	}
-
-	Vertex vertices[] =
-	{
-		{ {-0.5f, -0.5f, 0.0f } ,{ 1.0f, 0.0f, 0.0f } },
-		{ { 0.5f, -0.5f, 0.0f } ,{ 0.0f, 1.0f, 0.0f } },
-		{ { 0.0f,  0.5f, 0.0f } ,{ 0.0f, 0.0f, 1.0f } }
-	};
-	Vertex verticesDos[] =
-	{
-		{ { 0.0f, 0.0f, 0.0f } ,{ 1.0f, 0.0f, 0.0f } },
-		{ { 1.0f, 0.0f, 0.0f } ,{ 1.0f, 0.0f, 0.0f } },
-		{ { 1.0f,  1.0f, 0.0f } ,{ 1.0f, 0.0f, 0.0f } }
-	};
-	const size_t bufferSize = sizeof(vertices);
-	const size_t vertexSize = sizeof(vertices[0]);
-	const size_t rgbOffset = sizeof(vertices[0].XYZ);
-
-	std::cout << "Buffer Size:" << bufferSize << std::endl;
-	std::cout << "Vertex Size:" << vertexSize << std::endl;
-	std::cout << "Buffer size:" << rgbOffset << std::endl;
-
-	//Para el primer triangulo
-	glGenBuffers(1, &VBO);
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices, GL_STATIC_DRAW);
-	//indice del primer atributo, numero de datos (3, float, false siempre, y tamanio de vertexSize
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize,(GLvoid*)rgbOffset);
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-
-//Esto es para el segundo triangulo
-	const size_t bufferSize2 = sizeof(verticesDos);
-	const size_t vertexSize2 = sizeof(verticesDos[0]);
-	const size_t rgbOffset2 = sizeof(verticesDos[0].XYZ);
-
-	std::cout << "Buffer Size:" << bufferSize2 << std::endl;
-	std::cout << "Vertex Size:" << vertexSize2 << std::endl;
-	std::cout << "Buffer size:" << rgbOffset2 << std::endl;
-
-
-
-glGenBuffers(1, &VBO2);
-
-glGenVertexArrays(1, &VAO2);
-glBindVertexArray(VAO2);
-
-glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-glBufferData(GL_ARRAY_BUFFER, bufferSize2, verticesDos, GL_STATIC_DRAW);
-//indice del primer atributo, numero de datos (3, float, false siempre, y tamanio de vertexSize
-glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
-glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, (GLvoid*)rgbOffset);
-
-glEnableVertexAttribArray(0);
-glEnableVertexAttribArray(1);
-
-glBindBuffer(GL_ARRAY_BUFFER, 0);
-glBindVertexArray(0);
+	//Se crearon dos nuevas estructuras, una para la estrella y otra para la casa
+	Vertex verticesEst[] =
+	{
+		//Pico superior
+		{ {0.15f, 0.6f, 0.0f } ,{ 0.0f, 0.0f, 0.0f } }, //2
+		{ { 0.0f, 0.89f, 0.0f } ,{ 0.5f, 1.0f, 1.0f } }, //4
+		{ {0.0f, 0.6f, 0.0f } ,{ 0.1f, 0.1f, 0.0f } }, //3
+		{ {0.0f, 0.6f, 0.0f } ,{ 0.1f, 0.1f, 0.0f } }, //3
+		{ { 0.0f, 0.89f, 0.0f } ,{ 0.5f, 1.0f, 1.0f } }, //4
+		{ {-0.15f, 0.6f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } }, //1
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {0.15f, 0.6f, 0.0f } ,{ 0.0f, 0.0f, 0.0f } }, //2
+		{ {0.0f, 0.6f, 0.0f } ,{ 0.1f, 0.1f, 0.0f } }, //3
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {0.0f, 0.6f, 0.0f } ,{ 0.1f, 0.1f, 0.0f } }, //3
+		{ {-0.15f, 0.6f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } }, //1
+		//Pico izquierdo
+		{ {-0.6f, 0.15f, 0.0f } ,{ 1.0f, 0.0f, 0.f } }, //10
+		{ {-0.89f, 0.0f, 0.0f } ,{ 0.0f, 1.0f, 0.0f } }, //12
+		{ {-0.6f, 0.0f, 0.0f } ,{ 0.0f, 0.0f, 1.0f } }, //11
+		{ {-0.6f, 0.0f, 0.0f } ,{ 0.0f, 0.0f, 1.0f } }, //11
+		{ {-0.89f, 0.0f, 0.0f } ,{ 0.0f, 1.0f, 0.0f } }, //12
+		{ {-0.6f, -0.15f, 0.0f } ,{ 1.0f, 1.0f, 0.0f } }, //9
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {-0.6f, 0.15f, 0.0f } ,{ 1.0f, 0.0f, 0.f } }, //10
+		{ {-0.6f, 0.0f, 0.0f } ,{ 0.0f, 0.0f, 1.0f } }, //11
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {-0.6f, 0.0f, 0.0f } ,{ 0.0f, 0.0f, 1.0f } }, //11
+		{ {-0.6f, -0.15f, 0.0f } ,{ 1.0f, 1.0f, 0.0f } }, //9
+		//Pico inferior
+		{ {-0.15f, -0.6f, 0.0f } ,{ 1.0f, 0.0f, 1.0f } }, //5
+		{ {0.0f, -0.89f, 0.0f } ,{ 0.5f, 0.0f, 0.0f } }, //8
+		{ {0.0f, -0.6f, 0.0f } ,{ 0.0f, 0.5f, 0.0f } }, //7
+		{ {0.0f, -0.6f, 0.0f } ,{ 0.0f, 0.5f, 0.0f } }, //7
+		{ {0.0f, -0.89f, 0.0f } ,{ 0.5f, 0.0f, 0.0f } }, //8
+		{ {0.15f, -0.6f, 0.0f } ,{ 0.0f, 0.0f, 0.5f } }, //6
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0 
+		{ {-0.15f, -0.6f, 0.0f } ,{ 1.0f, 0.0f, 1.0f } }, //5
+		{ {0.0f, -0.6f, 0.0f } ,{ 0.0f, 0.5f, 0.0f } }, //7
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {0.0f, -0.6f, 0.0f } ,{ 0.0f, 0.5f, 0.0f } }, //7
+		{ {0.15f, -0.6f, 0.0f } ,{ 0.0f, 0.0f, 0.5f } }, //6
+		//Pico derecho
+		{ {0.6f, -0.15f, 0.0f } ,{ 0.5f, 0.5f, 0.0f } }, //13
+		{ {0.89f, 0.0f, 0.0f } ,{ 0.0f, 0.5f, 0.5f } }, //16
+		{ {0.6f, 0.0f, 0.0f } ,{ 0.5f, 0.0f, 0.5f } }, //15
+		{ {0.6f, 0.0f, 0.0f } ,{ 0.5f, 0.0f, 0.5f } }, //15
+		{ {0.89f, 0.0f, 0.0f } ,{ 0.0f, 0.5f, 0.5f } }, //16
+		{ {0.6f, 0.15f, 0.0f } ,{ 1.0f, 1.0f, 1.0f } }, //14
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {0.6f, -0.15f, 0.0f } ,{ 0.5f, 0.5f, 0.0f } }, //13
+		{ {0.6f, 0.0f, 0.0f } ,{ 0.5f, 0.0f, 0.5f } }, //15
+		{ { 0.0f,  0.0f, 0.0f } ,{ 0.0f, 1.0f, 1.0f } }, //0
+		{ {0.6f, 0.0f, 0.0f } ,{ 0.5f, 0.0f, 0.5f } }, //15
+		{ {0.6f, 0.15f, 0.0f } ,{ 1.0f, 1.0f, 1.0f } } //14
+	};
+
+	Vertex verticesCasa[] =
+	{
+		//Suelo
+		{ { 1.0f, -0.6f, 0.0f } ,{ 0.5f, 1.0f, 0.1f } },
+		{ { -1.0f, -0.6f, 0.0f } ,{ 0.5f, 1.0f, 0.1f } },
+		{ { -1.0f,  -1.0f, 0.0f } ,{ 0.5f, 1.0f, 0.1f } },
+		{ { 1.0f,  -0.6f, 0.0f } ,{ 0.5f, 1.0f, 0.1f } },
+		{ { -1.0f, -1.0f, 0.0f } ,{ 0.5f, 1.0f, 0.1f } },
+		{ { 1.0f,  -1.0f, 0.0f } ,{ 0.5f, 1.0f, 0.1f } },
+		//Rectángulo
+		{ { 0.6f, 0.0f, 0.0f } ,{ 1.0f, 1.0f, 0.8f } },
+		{ { -0.6f, 0.0f, 0.0f } ,{ 1.0f, 1.0f, 0.8f } },
+		{ { -0.6f,  -0.7f, 0.0f } ,{ 1.0f, 1.0f, 0.8f } },
+		{ { 0.6f,  0.0f, 0.0f } ,{ 1.0f, 1.0f, 0.8f } },
+		{ { -0.6f, -0.7f, 0.0f } ,{ 1.0f, 1.0f, 0.8f } },
+		{ { 0.6f,  -0.7f, 0.0f } ,{ 1.0f, 1.0f, 0.8f } },
+		//Techo
+		{ { 0.5f, 0.5f, 0.0f } ,{ 0.8f, 0.0f, 0.0f } },
+		{ { -0.5f, 0.5f, 0.0f } ,{ 0.8f, 0.0f, 0.0f } },
+		{ { -0.6f, 0.0f, 0.0f } ,{ 0.8f, 0.0f, 0.0f } },
+		{ { 0.5f,  0.5f, 0.0f } ,{ 0.8f, 0.0f, 0.0f } },
+		{ { -0.6f, 0.0f, 0.0f } ,{ 0.8f, 0.0f, 0.0f } },
+		{ { 0.6f,  0.0f, 0.0f } ,{ 0.8f, 0.0f, 0.0f } },
+		//Entrada
+		{ { 0.2f, -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },//
+		{ { -0.2f, -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { -0.2f,  -0.7f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { 0.2f,  -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },//
+		{ { -0.2f, -0.7f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { 0.2f,  -0.7f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { 0.0f, 0.15f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },//
+		{ { -0.2f, -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { 0.0f, -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { 0.0f, 0.15f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },//
+		{ { 0.0f, -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		{ { 0.2f, -0.05f, 0.0f } ,{ 1.0f, 1.0f, 0.5f } },
+		//Techo entrada
+		{ { 0.0f, 0.175f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },//
+		{ { -0.225f, -0.05f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { 0.0f, 0.15f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { 0.0f,  0.15f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },//
+		{ { -0.225f, -0.05f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { -0.2f,  -0.05f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { 0.0f, 0.175f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },//
+		{ { 0.225f, -0.05f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { 0.0f, 0.15f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { 0.0f,  0.15f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },//
+		{ { 0.225f, -0.05f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		{ { 0.2f,  -0.05f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } },
+		//Puerta
+		{ { 0.1f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },//
+		{ { -0.1f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { -0.1f,  -0.7f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.1f,  -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },//
+		{ { -0.1f, -0.7f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.1f,  -0.7f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.085f, -0.215f, 0.0f } ,{ 0.7f, 0.1f, 0.1f } },//
+		{ { -0.085f, -0.215f, 0.0f } ,{ 0.7f, 0.1f, 0.1f } },
+		{ { -0.085f,  -0.685f, 0.0f } ,{ 0.7f, 0.1f, 0.1f } },
+		{ { 0.085f,  -0.215f, 0.0f } ,{ 0.7f, 0.1f, 0.1f } },//
+		{ { -0.085f, -0.685f, 0.0f } ,{ 0.7f, 0.1f, 0.1f } },
+		{ { 0.085f,  -0.685f, 0.0f } ,{ 0.7f, 0.1f, 0.1f } },
+		//Ventana derecha
+		{ { 0.3f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },//
+		{ { 0.5f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.5f, -0.4f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.3f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },//
+		{ { 0.5f, -0.4f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.3f, -0.4f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { 0.3925f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { 0.315f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.315f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.3925f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { 0.315f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.3925f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.4075f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { 0.4075f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.485f,  -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.485f,  -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { 0.4075f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { 0.485f,  -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		//Ventana izquierda
+		{ { -0.3f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },//
+		{ { -0.5f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { -0.5f, -0.4f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { -0.3f, -0.2f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },//
+		{ { -0.5f, -0.4f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { -0.3f, -0.4f, 0.0f } ,{ 0.5f, 0.1f, 0.1f } },
+		{ { -0.3925f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { -0.315f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.315f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.3925f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { -0.315f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.3925f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.4075f, -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { -0.4075f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.485f,  -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.485f,  -0.215f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },//
+		{ { -0.4075f, -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } },
+		{ { -0.485f,  -0.385f, 0.0f } ,{ 0.0f, 0.1f, 1.0f } }
+	};
+
+
+
+	//Se puso el nombre de las dos nuevas estructuras creadas, en lugar de las anteriores
+	const size_t bufferSize = sizeof(verticesEst);
+	const size_t vertexSize = sizeof(verticesEst[0]);
+	const size_t rgbOffset = sizeof(verticesEst[0].XYZ);
+
+	std::cout << "Buffer Size:" << bufferSize << std::endl;
+	std::cout << "Vertex Size:" << vertexSize << std::endl;
+	std::cout << "Buffer size:" << rgbOffset << std::endl;
+
+	//Para el primer triangulo
+	glGenBuffers(1, &VBO);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, verticesEst, GL_STATIC_DRAW);
+	//indice del primer atributo, numero de datos (3, float, false siempre, y tamanio de vertexSize
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, (GLvoid*)rgbOffset);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+
+	//Esto es para el segundo triangulo
+	const size_t bufferSize2 = sizeof(verticesCasa);
+	const size_t vertexSize2 = sizeof(verticesCasa[0]);
+	const size_t rgbOffset2 = sizeof(verticesCasa[0].XYZ);
+
+	std::cout << "Buffer Size:" << bufferSize2 << std::endl;
+	std::cout << "Vertex Size:" << vertexSize2 << std::endl;
+	std::cout << "Buffer size:" << rgbOffset2 << std::endl;
+
+
+
+	glGenBuffers(1, &VBO2);
+
+	glGenVertexArrays(1, &VAO2);
+	glBindVertexArray(VAO2);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize2, verticesCasa, GL_STATIC_DRAW);
+	//indice del primer atributo, numero de datos (3, float, false siempre, y tamanio de vertexSize
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, (GLvoid*)rgbOffset);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+
+
+//Se agregaron las letras C y E en el evento para monitorearlas
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+	if (action == GLFW_PRESS) {
+		switch (key) {
+		case GLFW_KEY_ESCAPE:
+			exitApp = true;
+			break;
+		case GLFW_KEY_C:
+			renderOne = true;
+			break;
+		case GLFW_KEY_E:
+			renderOne = false;
+			break;
+		}
+	}
+}
+
+
+
+//Se cambio el numero de nodos, ya que los dibujados fueron más, en cada condición
+void applicationLoop() {
+	bool psi = true;
+	while (psi) {
+		psi = processInput(true);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+		glUseProgram(shaderProgram);
+		//Si queremos dibujar mas triangulos, debemos cambiar el tres, por el numero de vertices a dibujr
+		if (renderOne) {
+			glBindVertexArray(VAO2);
+			glDrawArrays(GL_TRIANGLES, 0, 90);
+		}
+		else {
+			glBindVertexArray(VAO);
+			glDrawArrays(GL_TRIANGLES, 0, 48);
+		}
+		glBindVertexArray(0);
+
+		glfwSwapBuffers(window);
+	}
 }
-
-
-
-void destroyWindow() {
-	glfwDestroyWindow(window);
-	glfwTerminate();
-}
-
-void destroy() {
-	destroyWindow();
-	glUseProgram(0);
-
-	glDetachShader(shaderProgram, vertexShader);
-	glDetachShader(shaderProgram, fragmentShader);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	glDeleteProgram(shaderProgram);
-
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDeleteBuffers(1, &VBO);
-
-	glBindVertexArray(0);
-	glDeleteVertexArrays(1, &VAO);
-}
-
-void reshapeCallback(GLFWwindow* Window, int widthRes, int heightRes) {
-	screenWidth = widthRes;
-	screenHeight = heightRes;
-	glViewport(0, 0, widthRes, heightRes);
-}
-
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-	if (action == GLFW_PRESS) {
-		switch (key) {
-		case GLFW_KEY_ESCAPE:
-			exitApp = true;
-			break;
-		case GLFW_KEY_F:
-			renderOne = true;
-			break;
-		case GLFW_KEY_S:
-			renderOne = false; 
-			break;
-		}
-	}
-}
-
-void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
-	lastMousePosX = xpos;
-	lastMousePosY = ypos;
-}
-
-void mouseButtonCallback(GLFWwindow* window, int button, int state, int mod) {
-	if (state == GLFW_PRESS) {
-		switch (button) {
-		case GLFW_MOUSE_BUTTON_RIGHT:
-			std::cout << "lastMousePos.y:" << lastMousePosY << std::endl;
-			break;
-		case GLFW_MOUSE_BUTTON_LEFT:
-			std::cout << "lastMousePos.x:" << lastMousePosX << std::endl;
-			break;
-		case GLFW_MOUSE_BUTTON_MIDDLE:
-			std::cout << "lastMousePos.x:" << lastMousePosX << std::endl;
-			std::cout << "lastMousePos.y:" << lastMousePosY << std::endl;
-			break;
-		}
-	}
-}
-
-bool processInput(bool continueApplication){
-	if (exitApp || glfwWindowShouldClose(window) != 0) {
-		return false;
-	}
-	deltaTime = 1 / TimeManager::Instance().CalculateFrameRate(false);
-	glfwPollEvents();
-	return continueApplication;
-}
-
-void applicationLoop() {
-	bool psi = true;
-	while (psi) {
-		psi = processInput(true);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		
-		glUseProgram(shaderProgram);
-		//Si queremos dibujar mas triangulos, debemos cambiar el tres, por el numero de vertices a dibujr
-		if (renderOne) {
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-		}
-		else {
-			glBindVertexArray(VAO2);
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-		}
-		glBindVertexArray(0);
-
-		glfwSwapBuffers(window);
-	}
-}
-
 int main(int argc, char ** argv) {
 	init(800, 700, "Window GLFW", false);
 	applicationLoop();
