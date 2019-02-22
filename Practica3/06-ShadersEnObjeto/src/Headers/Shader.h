@@ -26,11 +26,11 @@ public:
 			const GLfloat *value) {
 		glUniformMatrix4fv(id, count, transpose, value);
 	}
-
+	//Este metodo sirve para activar los shaders que dessemos utilizar
 	void turnOn() {
 		glUseProgram(ShaderProgramId);
 	}
-
+	//Este desactiva el shader
 	void turnOff() {
 		glUseProgram(0);
 	}

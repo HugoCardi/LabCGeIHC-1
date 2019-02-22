@@ -251,7 +251,17 @@ void applicationLoop() {
 		GLint projLoc = shader.getUniformLocation("projection");
 
 		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -7.0f));
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 
+		//glmmat4 crea una matriz de 4x4
+		//glm::ortho crea una matriz de proyeccón rtogonal
+		//los parametros que se le dan son plano izquierdo, plano derecho, plano abajo, plano arriba 
+		//plano cercano y plano lejano.
+		//glm::mat4 projection = glm::ortho(-4.0, 4.0, -4.0, 4.0, 0.01, 100.0);
+
+		//Lo siguiente crea una amtriz de proyection en oeersoectuva
+		//glm::mat4 projection = glm::frustum(-0.005, 0.005, -0.005, 0.005, 0.01, 100.0);
+
+
+		glm::mat4 projection = glm::perspective(glm::radians(15.0f), 
 			(float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
