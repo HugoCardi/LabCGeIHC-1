@@ -211,6 +211,12 @@ void creaRectang() {
 		{ {-0.5f , 0.5f , 0.0f } , { 1.0f, 0.0f, 1.0f } },
 
 	};
+
+	GLuint indices[] = {
+		0,	1,	2,
+		0,	2,	3
+
+	};
 	const size_t  VertexSize = sizeof(vertices);
 	const size_t StrideSize = sizeof(vertices[0]);
 	const size_t OffsetPos = sizeof(vertices[0].XYZ);
@@ -229,6 +235,11 @@ void creaRectang() {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
+	glGenBuffers(1, &EBO);
+	//Ebo es de tipo element array buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	//Para volver a la configuracion inicial , descartando la anteriro
 	glBindVertexArray(0);
@@ -323,8 +334,9 @@ void applicationLoop() {
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
 		// This is for the render with index element
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glDrawArrays(GL_TRIANGLES, 0, 4);
+		//Esta es para dibujar por indices, parametros : Primitiva, Num indices, Tipo de dato, apuntador al inicio
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glDrawArrays(GL_TRIANGLES, 0, 4);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
