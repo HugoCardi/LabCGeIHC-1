@@ -35,6 +35,9 @@ GLFWwindow * window;
 bool exitApp = false;
 int lastMousePosX;
 int lastMousePosY;
+char selection = 'o';
+float degrees = 15.0;
+double closer = 0.01;
 
 double deltaTime;
 
@@ -189,6 +192,27 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 		case GLFW_KEY_ESCAPE:
 			exitApp = true;
 			break;
+		case GLFW_KEY_O:
+			selection = 'o';
+			break;
+		case GLFW_KEY_F:
+			selection = 'f';
+			break;
+		case GLFW_KEY_UP:
+			if (degrees < 345)
+				degrees += 15;
+			else
+				degrees = 0;
+			break;
+		case GLFW_KEY_P :
+			selection = 'p';
+			break;
+		case GLFW_KEY_C:
+			if (closer < 45.0)
+				closer += 0.002;
+			else
+				closer = 0.01;
+			break;
 		}
 	}
 }
@@ -249,20 +273,27 @@ void applicationLoop() {
 		GLint modelLoc = shader.getUniformLocation("model");
 		GLint viewLoc = shader.getUniformLocation("view");
 		GLint projLoc = shader.getUniformLocation("projection");
-
 		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -7.0f));
-		//glmmat4 crea una matriz de 4x4
-		//glm::ortho crea una matriz de proyeccón rtogonal
-		//los parametros que se le dan son plano izquierdo, plano derecho, plano abajo, plano arriba 
-		//plano cercano y plano lejano.
-		//glm::mat4 projection = glm::ortho(-4.0, 4.0, -4.0, 4.0, 0.01, 100.0);
-
-		//Lo siguiente crea una amtriz de proyection en oeersoectuva
-		//glm::mat4 projection = glm::frustum(-0.005, 0.005, -0.005, 0.005, 0.01, 100.0);
-
-
-		glm::mat4 projection = glm::perspective(glm::radians(15.0f), 
+		glm::mat4 projection;
+		switch (selection) {
+		case 'o':
+			//glm::ortho crea una matriz de proyeccón rtogonal
+			//los parametros que se le dan son plano izquierdo, plano derecho, plano abajo, plano arriba 
+			//plano cercano y plano lejano.
+			projection = glm::ortho(-4.0, 4.0, -4.0, 4.0, 0.01, 100.0);
+			break;
+		case 'f':
+			//Lo siguiente crea una amtriz de proyection en oeersoectuva
+			projection = glm::frustum(-0.005, 0.005, -0.005, 0.005, closer, 100.0);
+			break;
+		case 'p':
+			projection = glm::perspective(glm::radians(degrees), 
 			(float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+			break;
+		}
+		
+		//glmmat4 crea una matriz de 4x4
+		
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
