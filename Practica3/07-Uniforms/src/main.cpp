@@ -234,7 +234,7 @@ void applicationLoop() {
 		//Al ser un vec4, hay que enviar 4 valores.
 		//Los métodos de tipo glUniforms*
 		//Recibe ID de la variable y seguido de los cuatro valores flotantes.
-		glUniform4f(vertexColorLocation, redValue, 1.0, 1.0, 1.0f);
+		glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
 
 		glBindVertexArray(VAO);
 		// This is for the render with index element

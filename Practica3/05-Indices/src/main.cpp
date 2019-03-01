@@ -1,6 +1,6 @@
 //glew include
 #include <GL/glew.h>
-
+//Comentario Extra
 //std includes
 #include <string>
 #include <iostream>
@@ -207,19 +207,50 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 void creaEst() {
 	Vertex vertices[]= {
 		//Origen
-		{ { 0.0f,  0.0f, 0.0f } ,{ 1.0f, 1.0f, 1.0f } }, //0
-		//Parte arriba
-		{ {-0.2f, 0.8f, 0.0f } ,{ 1.0f, 0.5f, 0.0f } }, //1		{ {0.2f, 0.8f, 0.0f } ,{ 0.0f, 0.0f, 0.0f } }, //2
-		{ {0.0f, 0.8f, 0.0f } ,{ 0.1f, 0.1f, 0.0f } }, //3
-		{ { 0.0f, 1.0f, 0.0f } ,{ 0.5f, 1.0f, 1.0f } } //4
-
+		{ { 0.0f,  0.0f, 0.0f} , { 0.0f, 0.0f, 1.0f } }, 
+		//Parte de arriba
+		{ { -0.1f, 0.5f, 0.0f} , { 0.5f, 1.0f, 0.0f } }, 
+		{ { 0.1f, 0.5f, 0.0f } , { 0.5f, 1.0f, 0.0f } }, 
+		{ { 0.0f, 0.5f, 0.0f } , { 0.0f, 1.0f, 1.0f } }, 
+		{ { 0.0f, 0.6f, 0.0f } , { 0.0f, 1.0f, 0.0f } }, 
+		//Parte de abajo
+		{ { -0.1f, -0.5f, 0.0f} , { 0.5f, 1.0f, 0.0f } },
+		{ { 0.1f, -0.5f, 0.0f } , { 0.5f, 1.0f, 0.0f } }, 
+		{ { 0.0f, -0.5f, 0.0f } , { 0.0f, 1.0f, 1.0f } }, 
+		{ { 0.0f, -0.6f, 0.0f } , { 0.0f, 1.0f, 0.0f } }, 
+		//Izquierda
+		{ { -0.5f, -0.1f, 0.0f} , { 0.5f, 1.0f, 0.0f } },
+		{ { -0.5f, 0.1f, 0.0f } , { 0.5f, 1.0f, 0.0f } }, 
+		{ { -0.5f, 0.0f, 0.0f } , { 0.0f, 1.0f, 1.0f } }, 
+		{ { -0.6f, 0.0f, 0.0f } , { 0.0f, 1.0f, 0.0f } },
+		//Derecha
+		{ {0.5f, -0.1f, 0.0f } , { 0.5f, 1.0f, 0.0f } }, 
+		{ { 0.5f, 0.1f, 0.0f } , { 0.5f, 1.0f, 0.0f } }, 
+		{ { 0.5f, 0.0f, 0.0f } , { 0.0f, 1.0f, 1.0f } }, 
+		{ { 0.6f, 0.0f, 0.0f } , { 0.0f, 1.0f, 0.0f } },
 	};
 
 		GLuint indices[] = {
+			//Vertices para el pico superior
 			0,3,1,
 			0,2,3,
 			3,4,1,
-			3,2,4
+			3,2,4,
+			//Vertices para los triangulos correspondientes al pico izquierdo
+			0,11,9,
+			0,10,11,
+			11,10,12,
+			11,12,9,
+			//Vertices para los triangulos corresponidnetes al pico inferior
+			0,5,7,
+			0,7,6,
+			7,5,8,
+			7,8,6,
+			//Vertices para los triangulos correspondientes al pico derecho
+			0,13,15,
+			0,15,14,
+			15,13,16,
+			15,16,14
 	};
 	const size_t  VertexSize = sizeof(vertices);
 	const size_t StrideSize = sizeof(vertices[0]);
@@ -382,7 +413,7 @@ void applicationLoop() {
 		glBindVertexArray(VAO);
 		// This is for the render with index element
 		//Esta es para dibujar por indices, parametros : Primitiva, Num indices, Tipo de dato, apuntador al inicio
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_INT, 0);
 		//glDrawArrays(GL_TRIANGLES, 0, 4);
 		glBindVertexArray(0);
 
