@@ -33,4 +33,12 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="transformaciones.vs">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="transformaciones.fs">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+  </ItemGroup>
 </Project>

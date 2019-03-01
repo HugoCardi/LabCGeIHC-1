@@ -10,7 +10,7 @@
 
 // program include
 #include "Headers/TimeManager.h"
-
+#include "Headers/Shader.h"
 //GLM include
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -18,6 +18,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 GLuint VBO, VAO, EBO;
+
+Shader shader;
+
 
 struct Vertex {
 	glm::vec3 m_Pos;
@@ -123,6 +126,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	glViewport(0, 0, screenWidth, screenHeight);
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
+	shader.initialize("../../Shaders/transformaciones.vs", "../../transformaciones.fs");
 
 	cubo();
 }
@@ -232,12 +237,13 @@ void applicationLoop() {
 		
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
+		shader.turnOn();
 		glBindVertexArray(VAO);
 		// This is for the render with index element
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (GLuint *)0);
 		glBindVertexArray(0);
 
+		shader.turnOff();
 		glfwSwapBuffers(window);
 	}
 }
