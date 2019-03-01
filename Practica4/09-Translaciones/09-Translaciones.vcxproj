@@ -137,8 +137,8 @@
     <ClInclude Include="src\Headers\TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="transformaciones.fs" />
-    <None Include="transformaciones.vs" />
+    <None Include="..\..\Shaders\transformaciones.fs" />
+    <None Include="..\..\Shaders\transformaciones.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
