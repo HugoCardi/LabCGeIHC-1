@@ -262,15 +262,17 @@ void applicationLoop() {
 
 
 		glBindVertexArray(VAO);
-
+		float scale = 1.0;
 		for (int i = 0; i < 10; i++) {
 			glm::mat4 model = glm::translate(
 				glm::mat4(1.0f),
 				cubePositions[i]);
 			model = glm::rotate(model, (float)i / 3.1416f, glm::vec3(1.0f, 0.3f, 0.0f));
+			model = glm::scale(model, glm::vec3(scale,scale,scale));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			// This is for the render with index element
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (GLuint *)0);
+			scale += 0.5;
 		}
 		
 		glBindVertexArray(0);
