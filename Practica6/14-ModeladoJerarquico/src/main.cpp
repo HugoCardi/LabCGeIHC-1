@@ -20,6 +20,8 @@
 #include "Headers/Sphere.h"
 #include "Headers/Cylinder.h"
 #include "Headers/Box.h"
+//Include Camera
+#include "Headers/FirstPersonCamera.h"
 
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
@@ -28,14 +30,18 @@ Box box;
 
 Shader shader;
 
+std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
+
 int screenWidth;
 int screenHeight;
 
 GLFWwindow * window;
 
 bool exitApp = false;
-int lastMousePosX;
-int lastMousePosY;
+int lastMousePosX, offsetX;
+int lastMousePosY, offsetY;
+float rot1, rot2, rot3 = 0;
+
 
 double deltaTime;
 
@@ -119,6 +125,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	box.setShader(&shader);
 	box.setColor(glm::vec3(0.2, 0.8, 0.4));
 
+	//camera->setSensitivity(1.0);
+
 }
 
 void destroyWindow() {
@@ -152,6 +160,8 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 }
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
+	offsetX = xpos - lastMousePosX;
+	offsetY = ypos - lastMousePosY;
 	lastMousePosX = xpos;
 	lastMousePosY = ypos;
 }
@@ -179,6 +189,28 @@ bool processInput(bool continueApplication) {
 	}
 	TimeManager::Instance().CalculateFrameRate(false);
 	deltaTime = TimeManager::Instance().DeltaTime;
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera->moveFrontCamera(true, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera->moveFrontCamera(false, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera->moveRightCamera(true, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera->moveRightCamera(false, deltaTime);
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+		camera->mouseMoveCamera(offsetX, offsetY, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		rot1 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+		rot2 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+		rot3 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		rot1 -= 0.1;
+
+	offsetX = 0;
+	offsetY = 0;
 	glfwPollEvents();
 	return continueApplication;
 }
@@ -197,8 +229,9 @@ void applicationLoop() {
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f),
 			(float)screenWidth / screenWidth, 0.01f, 100.0f);
 		// matrix de vista
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -8.0f));
 
+		//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -8.0f));
+		glm::mat4 view = camera->getViewMatrix();
 		// Matrix con diagonal unitaria
 		// Matriz del Cylindro del torso
 		glm::mat4 matrix0 = glm::mat4(1.0f);
@@ -212,9 +245,23 @@ void applicationLoop() {
 
 		glm::mat4 matrixs6 = glm::translate(matrixs5, glm::vec3(0.3f, 0.0f, 0.0f));
 
-		glm::mat4 matrix7 = glm::rotate(matrixs6, -0.2f, glm::vec3(0.0f, 0.0f, 1.0f));
-		matrix7 = glm::translate(matrix7, glm::vec3(0.25f, 0.0f, 0.0f));
-		matrix7 = glm::scale(matrix7, glm::vec3(0.5, 0.15, 0.15f));
+		matrixs6 = glm::rotate(matrixs6, rot1, glm::vec3(0.0f, 0.0f, 1.0f));
+		matrixs6 = glm::rotate(matrixs6, rot2, glm::vec3(0.0f, 1.0f, 0.0f));
+		matrixs6 = glm::rotate(matrixs6, rot3, glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+		glm::mat4 matrix7 = glm::translate(matrixs6, glm::vec3(0.25f, 0.0f, 0.0f));
+
+		glm::mat4 matrixs7 = glm::translate(matrix7, glm::vec3(0.3f, 0.0f, 0.0f));
+		matrixs7 = glm::scale(matrixs7, glm::vec3(0.1f, 0.1f, 0.1f));
+		sphere.setProjectionMatrix(projection);
+		sphere.setViewMatrix(view);
+		sphere.enableWireMode();
+		sphere.render(matrixs7);
+
+		//matrix7 = glm::translate(matrix7, glm::vec3(0.25f, 0.0f, 0.0f));
+		matrix7 = glm::rotate(matrix7, 1.5708f, glm::vec3(0.0f, 0.0f, 1.0f));
+		matrix7 = glm::scale(matrix7, glm::vec3(0.15, 0.5, 0.15f));
 		cylinder.setProjectionMatrix(projection);
 		cylinder.setViewMatrix(view);
 		cylinder.enableWireMode();
