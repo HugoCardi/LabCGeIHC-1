@@ -41,8 +41,11 @@ bool exitApp = false;
 int lastMousePosX, offsetX;
 int lastMousePosY, offsetY;
 float rot1, rot2, rot3 = 0;
-
-
+//Rota1, rota2, y rota3 pertenecen al dibujo del antebrazo y son los encargados de girar la esfera que une
+//hombe y antebrazo
+float rota1, rota2, rota3 = 0;
+//flotbn es la variablq que usamos para controlar la rotación del puño
+float rotb1, rotb2, rotb3 = 0;
 double deltaTime;
 
 // Se definen todos las funciones.
@@ -109,6 +112,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	shader.initialize("../../Shaders/transformaciones.vs", "../../Shaders/transformaciones.fs");
 
+	//En este punto debemos inicializar las figuras elementales, cada una con sus respectivos argumentos
 	sphere.init();
 	sphere.setShader(&shader);
 	sphere.setColor(glm::vec3(0.3, 0.3, 1.0));
@@ -189,7 +193,10 @@ bool processInput(bool continueApplication) {
 	}
 	TimeManager::Instance().CalculateFrameRate(false);
 	deltaTime = TimeManager::Instance().DeltaTime;
-
+	//A continuación controlaremos el manejo de eventos dependiedno de las teclas que utilize el usuario
+	//1,2,3, son las encargadas de girar la esfera del hombro.
+	//4,5,6 tienen la funcionalidad de controlar la esfera que representa al codo del muñeco
+	//7,8,9 son las articulaciones que mueven la esfera correspondiente al puño
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -208,6 +215,22 @@ bool processInput(bool continueApplication) {
 		rot3 += 0.1;
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		rot1 -= 0.1;
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+		rota1 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+		rota2 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+		rota3 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+		rota1 -= 0.1;
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+		rotb1 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
+		rotb2 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+		rotb3 += 0.1;
+	if (glfwGetKey(window, GLFW_KEY_COMMA) == GLFW_PRESS)
+		rotb1 -= 0.1;
 
 	offsetX = 0;
 	offsetY = 0;
@@ -242,23 +265,65 @@ void applicationLoop() {
 		// Se escala el cylidro del torso
 
 		glm::mat4 matrixs5 = glm::translate(matrix0, glm::vec3(0.0f, 0.5f, 0.0f));
-
 		glm::mat4 matrixs6 = glm::translate(matrixs5, glm::vec3(0.3f, 0.0f, 0.0f));
-
+		//Con las sigueintes tres instrucciones, controlamos la rotacion sobre cada eje de la figura
+		//en este caso, la rotacion sobre x, y , y z de la matriz que representa el hombro del muñeco
 		matrixs6 = glm::rotate(matrixs6, rot1, glm::vec3(0.0f, 0.0f, 1.0f));
 		matrixs6 = glm::rotate(matrixs6, rot2, glm::vec3(0.0f, 1.0f, 0.0f));
 		matrixs6 = glm::rotate(matrixs6, rot3, glm::vec3(1.0f, 0.0f, 0.0f));
 
-
+		// a continuacion instanciamos las figuras elementales :brazo.hombro, haciendo referencia relativa a otras figuras
 		glm::mat4 matrix7 = glm::translate(matrixs6, glm::vec3(0.25f, 0.0f, 0.0f));
-
 		glm::mat4 matrixs7 = glm::translate(matrix7, glm::vec3(0.3f, 0.0f, 0.0f));
+		//para rotar el codo, repetimos los pasos con los que rotamos el hombro del muñeco
+		matrixs7 = glm::rotate(matrixs7, rota1, glm::vec3(0.0f, 0.0f, 1.0f));
+		matrixs7 = glm::rotate(matrixs7, rota2, glm::vec3(0.0f, 1.0f, 0.0f));
+		matrixs7 = glm::rotate(matrixs7, rota3, glm::vec3(1.0f, 0.0f, 0.0f));
+		//fin rotar codo
+		// instanciamos el antebrazo del muñeco
+		glm::mat4 matrixt = glm::rotate(matrixs7, 0.3f, glm::vec3(0.0f, 0.0f, 1.0f));
+		//fin antebrazo
+		//esfera del punio, generamos una esfera que nos servira como referencia para la rotacion y ubicacion del puño
+		glm::mat4 matrixs8 = glm::translate(matrixs7, glm::vec3(0.19f, -0.6f, 0.0f));
+		//fin punio
+		//para rotar el puño, repetimos los pasos con los que rotamos el codo y el hombro
+		matrixs8 = glm::rotate(matrixs8, rotb1, glm::vec3(0.0f, 0.0f, 1.0f));
+		matrixs8 = glm::rotate(matrixs8, rotb2, glm::vec3(0.0f, 1.0f, 0.0f));
+		matrixs8 = glm::rotate(matrixs8, rotb3, glm::vec3(1.0f, 0.0f, 0.0f));
+		// a continuacion instanciamos una matriz que sera la base del puño
+		glm::mat4 matrixfist = glm::translate(matrixs8, glm::vec3(-0.01, -0.01f, 0.0f));
+		//hacemos el escalamiento correspondiente y transmitimos al render la matriz de cada figura elemental para que sea
+		//renderizada
+		matrixs8 = glm::scale(matrixs8, glm::vec3(0.1f, 0.1f, 0.1f));
+		sphere.setProjectionMatrix(projection);
+		sphere.setViewMatrix(view);
+		sphere.enableWireMode();
+		sphere.render(matrixs8);
+
+
+		matrixfist = glm::scale(matrixfist, glm::vec3(0.1, 0.1, 0.1));
+		box.setProjectionMatrix(projection);
+		box.setViewMatrix(view);
+		//box.enableWireMode();
+		box.setColor(glm::vec3(0.8, 0.3, 1.0));
+		box.render(matrixfist);
+
+
+
+		matrixt = glm::translate(matrixt, glm::vec3(0.0f, -0.3f, 0.0f));
+		matrixt = glm::scale(matrixt, glm::vec3(0.1, 0.6, 0.1));
+		cylinder2.setProjectionMatrix(projection);
+		cylinder2.setViewMatrix(view);
+		cylinder2.enableWireMode();
+		cylinder.setColor(glm::vec3(0.8, 0.3, 1.0));
+		cylinder2.render(matrixt);
+
 		matrixs7 = glm::scale(matrixs7, glm::vec3(0.1f, 0.1f, 0.1f));
 		sphere.setProjectionMatrix(projection);
 		sphere.setViewMatrix(view);
 		sphere.enableWireMode();
 		sphere.render(matrixs7);
-
+		
 		//matrix7 = glm::translate(matrix7, glm::vec3(0.25f, 0.0f, 0.0f));
 		matrix7 = glm::rotate(matrix7, 1.5708f, glm::vec3(0.0f, 0.0f, 1.0f));
 		matrix7 = glm::scale(matrix7, glm::vec3(0.15, 0.5, 0.15f));
