@@ -15,9 +15,10 @@ public:
 
 	Texture(const std::string& FileName);
 	Texture(GLenum TextureTarget, const std::string& FileName);
-	FIBITMAP* loadImage();
+	FIBITMAP* loadImage(bool flip = true);
 	GLubyte* convertToData(FIBITMAP* bitmap, int &width, int &height);
 	void freeImage(FIBITMAP* bitmap);
+	//bool flip ;
 	bool load();
 	void bind(GLenum TextureUnit);
 	virtual ~Texture();
