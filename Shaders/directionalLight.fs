@@ -5,7 +5,7 @@ struct Light {
     vec3 diffuse;
     vec3 specular;
 };
-
+//Recibe una direccion ya no una posicion
 out vec4 color;
 
 in vec3 fragPos;  
