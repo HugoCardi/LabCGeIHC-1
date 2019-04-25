@@ -353,7 +353,7 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureID2);
-		sphere.setShader(&shaderSpotLight);
+		sphere.setShader(&shaderDirectionLight);
 		sphere.setProjectionMatrix(projection);
 		sphere.setViewMatrix(view);
 		sphere.setPosition(glm::vec3(0.0, 0.0, 0.0));
@@ -361,33 +361,40 @@ void applicationLoop() {
 		// Iluminación
 		glm::mat4 lightModelmatrix = glm::rotate(cubeModelMatrix, angle, glm::vec3(0.0f, 1.0f, 0.0f));
 		lightModelmatrix = glm::translate(lightModelmatrix, glm::vec3(0.0f, 0.0f, -ratio));
-		shaderSpotLight.turnOn();
-		//glUniform3fv(shaderSpotLight.getUniformLocation("light.position"), 1, glm::value_ptr(glm::vec3(2.0f ,0.0f , 10.0f)));
-		//glUniform3fv(shaderSpotLight.getUniformLocation("light.direction"), 1, glm::value_ptr(glm::vec3(-0.3f, -1.0f, -0.2f)));
+		shaderDirectionLight.turnOn();
+		
+		glUniform3fv(shaderDirectionLight.getUniformLocation("light.position"), 1, glm::value_ptr(glm::vec3(2.0f ,50.0f , 76.0f)));
+		glUniform3fv(shaderDirectionLight.getUniformLocation("light.direction"), 1, glm::value_ptr(glm::vec3(0.0f, 0.0f, -1.9f)));
 		glUniform3fv(shaderSpotLight.getUniformLocation("light.position"), 1, glm::value_ptr(camera->getPosition()));
 		glUniform3fv(shaderSpotLight.getUniformLocation("light.direction"),1, glm::value_ptr(camera->getFront()));
-		glUniform3fv(shaderSpotLight.getUniformLocation("viewPos"), 1, glm::value_ptr(camera->getPosition()));
-		glUniform3f(shaderSpotLight.getUniformLocation("light.ambient"), 0.2, 0.2, 0.2);
-		glUniform3f(shaderSpotLight.getUniformLocation("light.diffuse"), 0.2, 0.3, 0.6);
-		glUniform3f(shaderSpotLight.getUniformLocation("light.specular"), 0.5, 0.3, 0.2);
-		glUniform3f(shaderSpotLight.getUniformLocation("material.ambient"), 1.0, 0.2, 0.6);
-		glUniform3f(shaderSpotLight.getUniformLocation("material.diffuse"), 0.4, 0.5, 0.8);
-		glUniform3f(shaderSpotLight.getUniformLocation("material.specular"), 0.5, 0.3, 0.2);
-		glUniform1f(shaderSpotLight.getUniformLocation("light.cutOff"), glm::cos(glm::radians(5.0f)));
-		glUniform1f(shaderSpotLight.getUniformLocation("light.outerCutOff"), glm::cos(glm::radians(7.0f)));
-		glUniform1f(shaderSpotLight.getUniformLocation("light.constant"), 1.0f);
-		glUniform1f(shaderSpotLight.getUniformLocation("light.linear"), 0.027f);
-		glUniform1f(shaderSpotLight.getUniformLocation("light.quadratics"), 0.0028f);
-		glUniform1f(shaderSpotLight.getUniformLocation("material.shininess"), 32.0);
+		glUniform3fv(shaderDirectionLight.getUniformLocation("viewPos"), 1, glm::value_ptr(camera->getPosition()));
+		glUniform3f(shaderDirectionLight.getUniformLocation("light.ambient"), 0.2, 0.2, 0.2);
+		glUniform3f(shaderDirectionLight.getUniformLocation("light.diffuse"), 0.2, 0.3, 0.6);
+		glUniform3f(shaderDirectionLight.getUniformLocation("light.specular"), 0.5, 0.3, 0.2);
+		glUniform3f(shaderDirectionLight.getUniformLocation("material.ambient"), 1.0, 0.2, 0.6);
+		glUniform3f(shaderDirectionLight.getUniformLocation("material.diffuse"), 0.4, 0.5, 0.8);
+		glUniform3f(shaderDirectionLight.getUniformLocation("material.specular"), 0.5, 0.3, 0.2);
+		//glUniform1f(shaderPointLight.getUniformLocation("light.cutOff"), glm::cos(glm::radians(5.0f)));
+		//glUniform1f(shaderPointLight.getUniformLocation("light.outerCutOff"), glm::cos(glm::radians(7.0f)));
+		glUniform1f(shaderDirectionLight.getUniformLocation("light.constant"), 1.0f);
+		glUniform1f(shaderDirectionLight.getUniformLocation("light.linear"), 0.022f);
+		glUniform1f(shaderDirectionLight.getUniformLocation("light.quadratics"), 0.0019f);
+		glUniform1f(shaderDirectionLight.getUniformLocation("material.shininess"), 32.0);
 		sphere.render();
+		//1.0 0.7 1.8
+		//1.0 0.09 0.032
+		//1.0 0.022 0.0019
 
-		sphere2.setShader(&shaderSpotLight);
+		sphere2.setShader(&shaderDirectionLight);
 		sphere2.setProjectionMatrix(projection);
 		sphere2.setViewMatrix(view);
 		sphere2.setPosition(glm::vec3(0.0, 0.0, -20.0));
 		sphere2.setScale(glm::vec3(1.0, 1.0, 1.0));
 		sphere2.render();
-		
+		shaderSpotLight.turnOn();
+
+
+
 		cylinder2.setProjectionMatrix(projection);
 		cylinder2.setViewMatrix(view);
 		cylinder2.setShader(&shaderSpotLight);
