@@ -44,7 +44,7 @@ Shader shaderMateriales;
 Shader shaderDirectionLight;
 Shader shaderPointLight;
 Shader shaderSpotLight;
-//Shader que tiene múltiples luces
+//Shader que tiene mÃºltiples luces
 Shader shaderLighting;
 
 Model modelRock;
@@ -82,8 +82,14 @@ int screenHeight;
 GLFWwindow * window;
 
 bool exitApp = false;
+bool movingLeft = false;
+bool movingNorth = false;
+bool movingHor = true;
 int lastMousePosX, offsetX;
 int lastMousePosY, offsetY;
+float mercX = 20.0;
+float mercY = 0.0; 
+float mercZ = 10.0;
 
 double deltaTime;
 
@@ -420,7 +426,7 @@ void applicationLoop() {
 		cylinder.setPosition(glm::vec3(0.0, 0.0, 0.0));
 		cylinder.setScale(glm::vec3(1.0, 1.0, 1.0));
 		
-		// Iluminación
+		// IluminaciÃ³n
 		glm::mat4 lightModelmatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
 		lightModelmatrix = glm::translate(lightModelmatrix, glm::vec3(0.0f, 0.0f, -ratio));
 
@@ -440,46 +446,52 @@ void applicationLoop() {
 		shaderLighting.turnOn();
 		glUniform3fv(shaderLighting.getUniformLocation("viewPos"), 1, glm::value_ptr(camera->getPosition()));
 		//Directional light
-		//Se envían los valores de las componentes difusas, ambientales y especulares.
-		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.ambient"), 0.00025, 0.00025, 0.00025);
-		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.diffuse"), 0.001, 0.001, 0.001);
-		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.specular"), 0.0015, 0.0015, 0.0015);
-		glUniform3fv(shaderLighting.getUniformLocation("directionalLight.direction"), 1, glm::value_ptr(glm::vec3(0, -1.0, 0.0)));
+		//Se envÃ­an los valores de las componentes difusas, ambientales y especulares.
+		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.ambient"), 0.025, 0.025, 0.025);
+		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.diffuse"), 0.071, 0.071, 0.071);
+		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.specular"), 0.075, 0.075, 0.075);
+		glUniform3fv(shaderLighting.getUniformLocation("directionalLight.direction"), 1, glm::value_ptr(glm::vec3(0, 5.0, 0.0)));
 		//Numero de luces spot y point
 		int locCount = shaderLighting.getUniformLocation("pointLightCount");
-		glUniform1i(shaderLighting.getUniformLocation("pointLightCount"), 2);
+		glUniform1i(shaderLighting.getUniformLocation("pointLightCount"), 0);
 		glUniform1i(shaderLighting.getUniformLocation("spotLightCount"), 1);
+		/*
 		// Point light
 		glUniform3fv(shaderLighting.getUniformLocation("pointLights[0].position"), 1, glm::value_ptr(glm::vec3(lightModelmatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))));
 		glUniform1f(shaderLighting.getUniformLocation("pointLights[0].constant"), 1.0f);
 		glUniform1f(shaderLighting.getUniformLocation("pointLights[0].linear"), 0.0014f);
 		glUniform1f(shaderLighting.getUniformLocation("pointLights[0].quadratics"), 0.0000007f);
 		glUniform3f(shaderLighting.getUniformLocation("pointLights[0].light.ambient"), 0.025, 0.025, 0.025);
-		glUniform3f(shaderLighting.getUniformLocation("pointLights[0].light.diffuse"), 0.2, 0.3, 0.15);
-		glUniform3f(shaderLighting.getUniformLocation("pointLights[0].light.specular"), 0.5, 0.1, 0.2);
-		//Otro Point
-		glUniform3fv(shaderLighting.getUniformLocation("pointLights[1].position"), 1, glm::value_ptr(glm::vec3(lightModelmatrix * glm::vec4(20.0f, 8.0f, 10.0f, 1.0f))));
+		glUniform3f(shaderLighting.getUniformLocation("pointLights[0].light.diffuse"), 0.02, 0.03, 0.015);
+		glUniform3f(shaderLighting.getUniformLocation("pointLights[0].light.specular"), 0.05, 0.01, 0.02);
+		//Otro Point Dentro de la casa 
+		
+		glUniform3fv(shaderLighting.getUniformLocation("pointLights[1].position"), 1, glm::value_ptr(glm::vec3(lightModelmatrix * glm::vec4(20.0f, 7.0f, 10.0f, 1.0f))));
 		glUniform1f(shaderLighting.getUniformLocation("pointLights[1].constant"), 1.0f);
 		glUniform1f(shaderLighting.getUniformLocation("pointLights[1].linear"), 0.7f);
 		glUniform1f(shaderLighting.getUniformLocation("pointLights[1].quadratics"), 1.8f);
-		glUniform3f(shaderLighting.getUniformLocation("pointLights[1].light.ambient"), 0.25, 0.25, 0.25);
-		glUniform3f(shaderLighting.getUniformLocation("pointLights[1].light.diffuse"), 0.2, 0.2, 0.2);
-		glUniform3f(shaderLighting.getUniformLocation("pointLights[1].light.specular"), 0.5, 0.3, 0.3);
-		
+		glUniform3f(shaderLighting.getUniformLocation("pointLights[1].light.ambient"), 0.75, 0.75, 0.75);
+		glUniform3f(shaderLighting.getUniformLocation("pointLights[1].light.diffuse"), 0.62, 0.62, 0.62);
+		glUniform3f(shaderLighting.getUniformLocation("pointLights[1].light.specular"), 0.75, 0.75, 0.75);
+		*/
 		// Spot light
 		glUniform3fv(shaderLighting.getUniformLocation("spotLights[0].position"), 1, glm::value_ptr(camera->getPosition()));
 		glUniform3fv(shaderLighting.getUniformLocation("spotLights[0].direction"), 1, glm::value_ptr(camera->getFront()));
-		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].cutOff"), glm::cos(glm::radians(0.05f)));
-		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].outerCutOff"), glm::cos(glm::radians(0.005f)));
+		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].cutOff"), glm::cos(glm::radians(0.45f)));
+		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].outerCutOff"), glm::cos(glm::radians(0.25f)));
 		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].constant"), 1.0f);
 		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].linear"), 0.14f);
 		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].quadratics"), 0.07f);
-		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.ambient"), 0.025, 0.025, 0.025);
+		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.ambient"), 0.45, 0.45, 0.45);
 		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.diffuse"), 0.7, 0.2, 0.6);
-		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.specular"), 0.1, 0.7, 0.8);
-		shaderLighting.turnOff();
+		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.specular"), 0.71, 0.7, 0.8);
 
-		//Se establece el shader con múltiples luces.
+
+
+
+		shaderLighting.turnOff();
+		
+		//Se establece el shader con mÃºltiples luces.
 		modelRock.setShader(&shaderLighting);
 		modelRock.setProjectionMatrix(projection);
 		modelRock.setViewMatrix(view);
@@ -497,17 +509,10 @@ void applicationLoop() {
 		modelMerc.setShader(&shaderLighting);
 		modelMerc.setProjectionMatrix(projection);
 		modelMerc.setViewMatrix(view);
-		modelMerc.setPosition(glm::vec3(20.0, 0.0, 10.0));
+		modelMerc.setPosition(glm::vec3(mercX, mercY, mercZ));
 		modelMerc.setScale(glm::vec3(0.1, 0.1, 0.1));
 		modelMerc.render();
-		/*
-		modelEuro.setShader(&shaderLighting);
-		modelEuro.setProjectionMatrix(projection);
-		modelEuro.setViewMatrix(view);
-		modelEuro.setPosition(glm::vec3(-5.0, 0.0, 25.0));
-		modelEuro.setScale(glm::vec3(0.1, 0.1, 0.1));
-		modelEuro.render();
-		*/
+
 
 		modelAirCraft.setShader(&shaderLighting);
 		modelAirCraft.setProjectionMatrix(projection);
@@ -582,10 +587,14 @@ void applicationLoop() {
 		shaderCubeTexture.turnOff();
 
 		if (finishRotation) {
-			if (direcionAirCraft)
+			if (direcionAirCraft) {
 				aircraftZ -= 0.01;
-			else
+				//mercZ -= 0.01;
+			}
+			else {
 				aircraftZ += 0.01;
+				//mercZ += 0.01;
+			}
 			if (direcionAirCraft && aircraftZ < -6.0) {
 				direcionAirCraft = false;
 				finishRotation = false;
@@ -603,14 +612,17 @@ void applicationLoop() {
 					finishRotation = true;
 					rotationAirCraft = glm::radians(180.0f);
 				}
+				//mercX -= 0.1;
 			}
 			else {
 				if (rotationAirCraft > glm::radians(360.0f)) {
 					finishRotation = true;
 					rotationAirCraft = glm::radians(0.0f);
 				}
+				//mercX += 0.1;
 			}
 		}
+		
 
 		glfwSwapBuffers(window);
 	}
