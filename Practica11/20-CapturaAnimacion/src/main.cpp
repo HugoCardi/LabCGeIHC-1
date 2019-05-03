@@ -398,38 +398,38 @@ bool processInput(bool continueApplication) {
 	TimeManager::Instance().CalculateFrameRate(false);
 	deltaTime = TimeManager::Instance().DeltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->moveFrontCamera(true, deltaTime);
+		camera->moveFrontCamera(true, 3.0*deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->moveFrontCamera(false, deltaTime);
+		camera->moveFrontCamera(false, 3.0*deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->moveRightCamera(false, deltaTime);
+		camera->moveRightCamera(false, 3.0*deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->moveRightCamera(true, deltaTime);
+		camera->moveRightCamera(true, 3.0*deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 			rot1 -= 0.02f;
 		else
-			rot1 += 0.02f;
+			rot1 += 0.007f;
 	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			rot2 -= 0.02f;
+			rot2 -= 0.007f;
 		else
-			rot2 += 0.02f;
+			rot2 += 0.007f;
 	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			rot3 -= 0.02f;
+			rot3 -= 0.007f;
 		else
-			rot3 += 0.02f;
+			rot3 += 0.007f;
 	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			rot4 -= 0.02f;
+			rot4 -= 0.007f;
 		else
-			rot4 += 0.02f;
+			rot4 += 0.007f;
 	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			rot5 -= 0.02f;
+			rot5 -= 0.007f;
 		else
-			rot5 += 0.02f;
+			rot5 += 0.007f;
 	if (availableSave && glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		saveFrame = true;
 		availableSave = false;
@@ -504,6 +504,7 @@ void applicationLoop() {
 		glm::mat4 matrixL0 = glm::mat4(1.0f);
 		
 		// Se modela siempre con los ejes de giro en el eje z
+		//Convencion denavit- Hartenberg para calcular la cinematica directa de un cuerpo rigido
 		// Articulacion 1
 		matrixL0 = glm::rotate(matrixL0, rot1, glm::vec3(0.0f, 0.0f, 1.0f));
 		if (saveFrame)
