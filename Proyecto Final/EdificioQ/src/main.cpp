@@ -35,7 +35,8 @@ std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
-Box boxCesped, boxCimientos, boxPiso;
+Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados;
+Box boxPiedras, boxPiedras2, boxTierra;
 Box boxWater;
 
 Sphere sphereAnimacion(20, 20);
@@ -51,13 +52,14 @@ Shader shaderPointLight;
 Shader shaderSpotLight;
 Shader shaderLighting;
 
-Model modelRock;
+Model modelTree;
 Model modelRail;
 Model modelAirCraft;
 Model arturito;
 Model modelTrain;
 
-GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMetalID;
+GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
+GLuint texturePiedrasID, textureTierraID;
 GLuint cubeTextureID;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
@@ -228,13 +230,23 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	cylinder.init();
 	boxPiso.init();
 	boxPiso.scaleUVS(glm::vec2(35.0, 35.0));
+	boxMarmolCentral.init();
+	boxMarmolCentral.scaleUVS(glm::vec2(40.0, 27.0));
+	boxMarmolLados.init();
+	boxMarmolLados.scaleUVS(glm::vec2(33.0, 130.0));
 	boxCimientos.init();
 	boxCimientos.scaleUVS(glm::vec2(50.0, 50.0));
 	boxCesped.init();
 	boxCesped.scaleUVS(glm::vec2(100.0, 100.0));
+	boxPiedras.init();
+	boxPiedras.scaleUVS(glm::vec2(5.0, 1.0));
+	boxPiedras2.init();
+	boxPiedras2.scaleUVS(glm::vec2(1.0, 5.0));
+	boxTierra.init();
+	boxTierra.scaleUVS(glm::vec2(5.0, 5.0));
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
-	modelRock.loadModel("../../models/rock/rock.obj");
+	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelRail.loadModel("../../models/railroad/railroad_track.obj");
 	modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -340,11 +352,52 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
-	texture = Texture("../../Textures/metal.jpg");
+	//Textura Piso Mosaico
+	texture = Texture("../../Textures/piso_marmol.jpg");
 	bitmap = texture.loadImage(false);
 	data = texture.convertToData(bitmap, imageWidth, imageHeight);
-	glGenTextures(1, &textureMetalID);
-	glBindTexture(GL_TEXTURE_2D, textureMetalID);
+	glGenTextures(1, &textureMarmolID);
+	glBindTexture(GL_TEXTURE_2D, textureMarmolID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Piedras
+	texture = Texture("../../Textures/piedras.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &texturePiedrasID);
+	glBindTexture(GL_TEXTURE_2D, texturePiedrasID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Tierras
+	texture = Texture("../../Textures/tierra.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureTierraID);
+	glBindTexture(GL_TEXTURE_2D, textureTierraID);
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -405,7 +458,12 @@ void destroy() {
 
 	boxCesped.destroy();
 	boxCimientos.destroy();
+	boxMarmolCentral.destroy();
+	boxMarmolLados.destroy();
+	boxPiedras.destroy();
+	boxPiedras2.destroy();
 	boxPiso.destroy();
+	boxTierra.destroy();
 	boxWater.destroy();
 }
 
@@ -577,12 +635,12 @@ void applicationLoop() {
 		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.specular"), 0.1, 0.7, 0.8);
 		shaderLighting.turnOff();
 
-		modelRock.setShader(&shaderLighting);
-		modelRock.setProjectionMatrix(projection);
-		modelRock.setViewMatrix(view);
-		modelRock.setPosition(glm::vec3(5.0, 3.0, -20.0));
-		modelRock.setScale(glm::vec3(1.0, 1.0, 1.0));
-		modelRock.render();
+		modelTree.setShader(&shaderLighting);
+		modelTree.setProjectionMatrix(projection);
+		modelTree.setViewMatrix(view);
+		modelTree.setPosition(glm::vec3(0.0, 0.4, 4.0));
+		modelTree.setScale(glm::vec3(1.0, 1.0, 1.0));
+		modelTree.render();
 
 		modelRail.setShader(&shaderLighting);
 		modelRail.setProjectionMatrix(projection);
@@ -777,13 +835,76 @@ void applicationLoop() {
 		boxCimientos.render();
 
 		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureMarmolID);
+		boxMarmolCentral.setShader(&shaderLighting);
+		boxMarmolCentral.setProjectionMatrix(projection);
+		boxMarmolCentral.setViewMatrix(view);
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 0.201, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(10.0, 0.001, 8.0));
+		boxMarmolCentral.render();
+		boxMarmolLados.setShader(&shaderLighting);
+		boxMarmolLados.setProjectionMatrix(projection);
+		boxMarmolLados.setViewMatrix(view);
+		boxMarmolLados.setPosition(glm::vec3(9.33, 0.201, -14.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 36.67));
+		boxMarmolLados.render();
+		boxMarmolLados.setPosition(glm::vec3(-9.33, 0.201, -2.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 28.67));
+		boxMarmolLados.render();
+
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePisoExtID);
 		boxPiso.setShader(&shaderLighting);
 		boxPiso.setProjectionMatrix(projection);
 		boxPiso.setViewMatrix(view);
-		boxPiso.setPosition(glm::vec3(0.0, 0.0505, 4.0));
-		boxPiso.setScale(glm::vec3(7.33, 0.1, 16.0));
+		boxPiso.setPosition(glm::vec3(0.0, 0.0505, 0.67));
+		boxPiso.setScale(glm::vec3(7.33, 0.1, 9.33));
 		boxPiso.render();
+		boxPiso.setPosition(glm::vec3(0.67, 0.0255, 8.67));
+		boxPiso.setScale(glm::vec3(8.67, 0.05, 6.66));
+		boxPiso.render();
+		boxPiso.setPosition(glm::vec3(9.33, 0.0255, 9.33));
+		boxPiso.setScale(glm::vec3(8.67, 0.05, 5.33));
+		boxPiso.render();
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePiedrasID);
+		boxPiedras.setShader(&shaderLighting);
+		boxPiedras.setProjectionMatrix(projection);
+		boxPiedras.setViewMatrix(view);
+		boxPiedras.setPosition(glm::vec3(4.33, 0.1505, 5.17));
+		boxPiedras.setScale(glm::vec3(1.33, 0.3, 0.33));
+		boxPiedras.render();
+		boxPiedras.setPosition(glm::vec3(6.0, 0.1505, 6.5));
+		boxPiedras.setScale(glm::vec3(2.0, 0.3, 0.33));
+		boxPiedras.render();
+		boxPiedras.setPosition(glm::vec3(0.0, 0.2505, 5.17));
+		boxPiedras.setScale(glm::vec3(2.67, 0.3, 0.33));
+		boxPiedras.render();
+		boxPiedras.setPosition(glm::vec3(0.0, 0.2505, 2.83));
+		boxPiedras.setScale(glm::vec3(2.67, 0.3, 0.33));
+		boxPiedras.render();
+		boxPiedras2.setShader(&shaderLighting);
+		boxPiedras2.setProjectionMatrix(projection);
+		boxPiedras2.setViewMatrix(view);
+		boxPiedras2.setPosition(glm::vec3(5.17, 0.1505, 5.67));
+		boxPiedras2.setScale(glm::vec3(0.33, 0.3, 1.33));
+		boxPiedras2.render();
+		boxPiedras2.setPosition(glm::vec3(1.16, 0.2505, 4.0));
+		boxPiedras2.setScale(glm::vec3(0.33, 0.3, 2.33));
+		boxPiedras2.render();
+		boxPiedras2.setPosition(glm::vec3(-1.16, 0.2505, 4.0));
+		boxPiedras2.setScale(glm::vec3(0.33, 0.3, 2.33));
+		boxPiedras2.render();
+	
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureTierraID);
+		boxTierra.setShader(&shaderLighting);
+		boxTierra.setProjectionMatrix(projection);
+		boxTierra.setViewMatrix(view);
+		boxTierra.setPosition(glm::vec3(0.0, 0.4005, 4.0));
+		boxTierra.setScale(glm::vec3(2.0, 0.001, 2.0));
+		boxTierra.render();
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureWaterID);
