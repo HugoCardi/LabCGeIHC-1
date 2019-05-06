@@ -53,10 +53,9 @@ Shader shaderSpotLight;
 Shader shaderLighting;
 
 Model modelTree;
-Model modelRail;
+Model modelPalma;
 Model modelAirCraft;
-Model arturito;
-Model modelTrain;
+Model modelMaceta;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID;
@@ -247,8 +246,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
-	modelRail.loadModel("../../models/railroad/railroad_track.obj");
-	modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
+	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
 	camera->setPosition(glm::vec3(0.0f, 0.0f, 0.4f));
 	
@@ -580,11 +579,11 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		shaderTexture.turnOff();
 		
-		cylinder.setShader(&shaderMateriales);
+		/*cylinder.setShader(&shaderMateriales);
 		cylinder.setProjectionMatrix(projection);
 		cylinder.setViewMatrix(view);
 		cylinder.setPosition(glm::vec3(0.0, 0.0, 0.0));
-		cylinder.setScale(glm::vec3(1.0, 1.0, 1.0));
+		cylinder.setScale(glm::vec3(1.0, 1.0, 1.0));*/
 		
 		// Iluminación
 		glm::mat4 lightModelmatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -642,21 +641,24 @@ void applicationLoop() {
 		modelTree.setScale(glm::vec3(1.0, 1.0, 1.0));
 		modelTree.render();
 
-		modelRail.setShader(&shaderLighting);
-		modelRail.setProjectionMatrix(projection);
-		modelRail.setViewMatrix(view);
-		modelRail.setPosition(glm::vec3(-10.0, 0.0, 25.0));
-		modelRail.setScale(glm::vec3(1.0, 1.0, 1.0));
-		modelRail.render();
+		modelPalma.setShader(&shaderLighting);
+		modelPalma.setProjectionMatrix(projection);
+		modelPalma.setViewMatrix(view);
+		modelPalma.setPosition(glm::vec3(4.0, 0.0, -3.67));
+		modelPalma.setScale(glm::vec3(0.1, 0.1, 0.1));
+		modelPalma.render();
+		modelPalma.setPosition(glm::vec3(4.0, 0.0, 4.5));
+		modelPalma.setScale(glm::vec3(0.1, 0.1, 0.1));
+		modelPalma.render();
 
-		modelAirCraft.setShader(&shaderLighting);
+		/*modelAirCraft.setShader(&shaderLighting);
 		modelAirCraft.setProjectionMatrix(projection);
 		modelAirCraft.setViewMatrix(view);
 		modelAirCraft.setScale(glm::vec3(1.0, 1.0, 1.0));
 		glm::mat4 matrixAirCraft = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, aircraftZ));
 		matrixAirCraft = glm::translate(matrixAirCraft, glm::vec3(10.0, 2.0, 15.0));
 		matrixAirCraft = glm::rotate(matrixAirCraft, rotationAirCraft, glm::vec3(0, 1, 0));
-		modelAirCraft.render(matrixAirCraft);
+		modelAirCraft.render(matrixAirCraft);*/
 
 		glm::quat firstQuat;
 		glm::quat secondQuat;
@@ -906,7 +908,7 @@ void applicationLoop() {
 		boxTierra.setScale(glm::vec3(2.0, 0.001, 2.0));
 		boxTierra.render();
 
-		glActiveTexture(GL_TEXTURE0);
+		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureWaterID);
 		boxWater.setShader(&shaderLighting);
 		boxWater.setProjectionMatrix(projection);
@@ -914,7 +916,7 @@ void applicationLoop() {
 		boxWater.setPosition(glm::vec3(3.0, 2.0, -5.0));
 		boxWater.setScale(glm::vec3(10.0, 0.001, 10.0));
 		boxWater.offsetUVS(glm::vec2(0.0001, 0.0001));
-		boxWater.render();
+		boxWater.render();*/
 
 		if (angle > 2 * M_PI)
 			angle = 0.0;
