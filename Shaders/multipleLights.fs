@@ -105,5 +105,6 @@ void main()
 	vec4 colorText = texture(texture1, our_uv);
 	if(colorText.a < 0.1)
 		discard;
-    color = vec4(calculateDirectionalLight(directionalLight.light, directionalLight.direction) + calculatePointLights() + calculateSpotLights(), 1.0);
+    color = vec4(calculateDirectionalLight(directionalLight.light, directionalLight.direction) + calculatePointLights() + calculateSpotLights(),1.0);
+	
 }

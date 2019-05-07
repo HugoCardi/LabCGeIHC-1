@@ -36,8 +36,9 @@ std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados;
-Box boxPiedras, boxPiedras2, boxTierra;
+Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal;
 Box boxWater;
+Box box;
 
 Sphere sphereAnimacion(20, 20);
 Cylinder cylinderAnimacion(20, 20, 0.5, 0.5);
@@ -58,7 +59,7 @@ Model modelAirCraft;
 Model modelMaceta;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
-GLuint texturePiedrasID, textureTierraID;
+GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID;
 GLuint cubeTextureID;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
@@ -205,7 +206,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	glEnable(GL_DEPTH_TEST);
 
 	shaderColor.initialize("../../Shaders/transformaciones.vs", "../../Shaders/transformaciones.fs");
-	shaderTexture.initialize("../../Shaders/texturizado_res.vs", "../../Shaders/texturizado_res.fs");
+	shaderTexture.initialize("../../Shaders/texturizado.vs", "../../Shaders/texturizado.fs");
 	shaderCubeTexture.initialize("../../Shaders/cubeTexture.vs", "../../Shaders/cubeTexture.fs");
 	shaderMateriales.initialize("../../Shaders/iluminacion_materiales_res.vs", "../../Shaders/iluminacion_materiales_res.fs");
 	shaderDirectionLight.initialize("../../Shaders/typeLight.vs", "../../Shaders/directionalLight.fs");
@@ -228,6 +229,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	sphere.init();
 	cylinder.init();
 	boxPiso.init();
+	box.init();
 	boxPiso.scaleUVS(glm::vec2(35.0, 35.0));
 	boxMarmolCentral.init();
 	boxMarmolCentral.scaleUVS(glm::vec2(40.0, 27.0));
@@ -243,13 +245,17 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxPiedras2.scaleUVS(glm::vec2(1.0, 5.0));
 	boxTierra.init();
 	boxTierra.scaleUVS(glm::vec2(5.0, 5.0));
+	boxMuro.init();
+	boxMuro.scaleUVS(glm::vec2(1.0, 15.0));
+	boxMuroLe.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
-	camera->setPosition(glm::vec3(0.0f, 0.0f, 0.4f));
+	camera->setPosition(glm::vec3(0.0f, 1.0f, 0.4f));
 	
 	// Textura Piso exterior
 	int imageWidth, imageHeight;
@@ -411,6 +417,86 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
+	//Textura Muro Concreto
+	texture = Texture("../../Textures/muroConcreto.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureMuroID);
+	glBindTexture(GL_TEXTURE_2D, textureMuroID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Muro Edificio
+	texture = Texture("../../Textures/muroLetras.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureMurEdifID);
+	glBindTexture(GL_TEXTURE_2D, textureMurEdifID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Muro Divisón
+	texture = Texture("../../Textures/muroDivision.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureMurDivID);
+	glBindTexture(GL_TEXTURE_2D, textureMurDivID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Ventanal
+	texture = Texture("../../Textures/goku.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureVentanalID);
+	glBindTexture(GL_TEXTURE_2D, textureVentanalID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
 	glGenTextures(1, &cubeTextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -463,6 +549,8 @@ void destroy() {
 	boxPiedras2.destroy();
 	boxPiso.destroy();
 	boxTierra.destroy();
+	boxMuro.destroy();
+	boxMuroLe.destroy();
 	boxWater.destroy();
 }
 
@@ -569,8 +657,8 @@ void applicationLoop() {
 		cylinder.setShader(&shaderTexture);
 		cylinder.setProjectionMatrix(projection);
 		cylinder.setViewMatrix(view);
-		cylinder.setPosition(glm::vec3(-3.0f, 2.0f, -3.0f));
-		glBindTexture(GL_TEXTURE_2D, textureCimientosID);
+		cylinder.setPosition(glm::vec3(-3.0f, -2.0f, -3.0f));
+		glBindTexture(GL_TEXTURE_2D, textureVentanalID);
 		cylinder.render(0, cylinder.getSlices() * cylinder.getStacks() * 2 * 3);
 		glBindTexture(GL_TEXTURE_2D, texturePisoExtID);
 		cylinder.render(cylinder.getSlices() * cylinder.getStacks() * 2 * 3, cylinder.getSlices() * 3);
@@ -579,6 +667,18 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		shaderTexture.turnOff();
 		
+
+		shaderTexture.turnOn();
+		// Importante si se quiere renderizar modelos y texturas
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureVentanalID);
+		box.setShader(&shaderTexture);
+		box.setProjectionMatrix(projection);
+		box.setViewMatrix(view);
+		box.setPosition(glm::vec3(-3.0f, -2.0f, -3.0f));
+		glBindTexture(GL_TEXTURE_2D, 0);
+		shaderTexture.turnOff();
+
 		/*cylinder.setShader(&shaderMateriales);
 		cylinder.setProjectionMatrix(projection);
 		cylinder.setViewMatrix(view);
@@ -605,9 +705,9 @@ void applicationLoop() {
 		shaderLighting.turnOn();
 		glUniform3fv(shaderLighting.getUniformLocation("viewPos"), 1, glm::value_ptr(camera->getPosition()));
 		//Directional light
-		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.ambient"), 0.025, 0.025, 0.025);
-		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.diffuse"), 0.1, 0.1, 0.1);
-		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.specular"), 0.15, 0.15, 0.15);
+		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.ambient"), 0.5, 0.5, 0.5);
+		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.diffuse"), 0.5, 0.5, 0.5);
+		glUniform3f(shaderLighting.getUniformLocation("directionalLight.light.specular"), 0.5, 0.5, 0.5);
 		glUniform3fv(shaderLighting.getUniformLocation("directionalLight.direction"), 1, glm::value_ptr(glm::vec3(0, -1.0, 0.0)));
 		//Numero de luces spot y point
 		int locCount = shaderLighting.getUniformLocation("pointLightCount");
@@ -630,8 +730,8 @@ void applicationLoop() {
 		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].linear"), 0.14f);
 		glUniform1f(shaderLighting.getUniformLocation("spotLights[0].quadratics"), 0.07f);
 		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.ambient"), 0.025, 0.025, 0.025);
-		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.diffuse"), 0.7, 0.2, 0.6);
-		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.specular"), 0.1, 0.7, 0.8);
+		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.diffuse"), 0.7, 0.7, 0.7);
+		glUniform3f(shaderLighting.getUniformLocation("spotLights[0].light.specular"), 0.8, 0.8, 0.8);
 		shaderLighting.turnOff();
 
 		modelTree.setShader(&shaderLighting);
@@ -812,6 +912,7 @@ void applicationLoop() {
 		matrixArturito = glm::rotate(matrixArturito, rotationAirCraft, glm::vec3(0, 1, 0));
 		arturito.render(matrixArturito);*/
 
+		//Piso principal (cesped)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureCespedID);
 		boxCesped.setShader(&shaderLighting);
@@ -821,56 +922,110 @@ void applicationLoop() {
 		boxCesped.setScale(glm::vec3(100.0, 0.001, 100.0));
 		boxCesped.render();
 
+		//Base del edificio
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureCimientosID);
 		boxCimientos.setShader(&shaderLighting);
 		boxCimientos.setProjectionMatrix(projection);
 		boxCimientos.setViewMatrix(view);
+		//Parte central
 		boxCimientos.setPosition(glm::vec3(0.0, 0.1005, -8.0));
 		boxCimientos.setScale(glm::vec3(10.0, 0.2, 8.0));
 		boxCimientos.render();
+		//Parte derecha
 		boxCimientos.setPosition(glm::vec3(9.33, 0.1005, -14.33));
 		boxCimientos.setScale(glm::vec3(8.67, 0.2, 36.67));
 		boxCimientos.render();
+		//Parte izquierda
 		boxCimientos.setPosition(glm::vec3(-9.33, 0.1005, -2.33));
 		boxCimientos.setScale(glm::vec3(8.67, 0.2, 28.67));
 		boxCimientos.render();
 
+		//Piso interior del edificio
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureMarmolID);
 		boxMarmolCentral.setShader(&shaderLighting);
 		boxMarmolCentral.setProjectionMatrix(projection);
 		boxMarmolCentral.setViewMatrix(view);
+		//Parte central planta baja
 		boxMarmolCentral.setPosition(glm::vec3(0.0, 0.201, -8.0));
 		boxMarmolCentral.setScale(glm::vec3(10.0, 0.001, 8.0));
 		boxMarmolCentral.render();
+		//Primer piso
+		//Lado izq escaleras
+		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 2.5345, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 8.0));
+		boxMarmolCentral.render();
+		//Frente escaleras
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 2.5345, -5.6667));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.3333));
+		boxMarmolCentral.render();
+		//Lado der escaleras
+		boxMarmolCentral.setPosition(glm::vec3(3.3333, 2.5345, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 8.0));
+		boxMarmolCentral.render();
+		//Segundo piso
+		//Lado izq escaleras
+		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 4.8675, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 8.0));
+		boxMarmolCentral.render();
+		//Frente escaleras
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 4.8675, -5.6667));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.3333));
+		boxMarmolCentral.render();
+		//Lado der escaleras
+		boxMarmolCentral.setPosition(glm::vec3(3.3333, 4.8675, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 8.0));
+		boxMarmolCentral.render();
+		//Tercer piso
+		//Lado izq escaleras
+		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 7.201, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 8.0));
+		boxMarmolCentral.render();
+		//Frente escaleras
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 7.201, -5.6667));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.3333));
+		boxMarmolCentral.render();
+		//Lado der escaleras
+		boxMarmolCentral.setPosition(glm::vec3(3.3333, 7.201, -8.0));
+		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 8.0));
+		boxMarmolCentral.render();
+		//Piso laterales planta baja
 		boxMarmolLados.setShader(&shaderLighting);
 		boxMarmolLados.setProjectionMatrix(projection);
 		boxMarmolLados.setViewMatrix(view);
+		//Piso der planta baja
 		boxMarmolLados.setPosition(glm::vec3(9.33, 0.201, -14.33));
 		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 36.67));
 		boxMarmolLados.render();
+		//Piso izq planta baja
 		boxMarmolLados.setPosition(glm::vec3(-9.33, 0.201, -2.33));
 		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 28.67));
 		boxMarmolLados.render();
 
+		//Piso del exterior del edificio
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePisoExtID);
 		boxPiso.setShader(&shaderLighting);
 		boxPiso.setProjectionMatrix(projection);
 		boxPiso.setViewMatrix(view);
+		//Parte central
 		boxPiso.setPosition(glm::vec3(0.0, 0.0505, 0.67));
 		boxPiso.setScale(glm::vec3(7.33, 0.1, 9.33));
 		boxPiso.render();
+		//Parte central inferior
 		boxPiso.setPosition(glm::vec3(0.67, 0.0255, 8.67));
 		boxPiso.setScale(glm::vec3(8.67, 0.05, 6.66));
 		boxPiso.render();
+		//Parte lateral inferior
 		boxPiso.setPosition(glm::vec3(9.33, 0.0255, 9.33));
 		boxPiso.setScale(glm::vec3(8.67, 0.05, 5.33));
 		boxPiso.render();
 
+		//Barda de piedras
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePiedrasID);
+		//Bardas horizontales
 		boxPiedras.setShader(&shaderLighting);
 		boxPiedras.setProjectionMatrix(projection);
 		boxPiedras.setViewMatrix(view);
@@ -880,18 +1035,21 @@ void applicationLoop() {
 		boxPiedras.setPosition(glm::vec3(6.0, 0.1505, 6.5));
 		boxPiedras.setScale(glm::vec3(2.0, 0.3, 0.33));
 		boxPiedras.render();
+		//Jardinera
 		boxPiedras.setPosition(glm::vec3(0.0, 0.2505, 5.17));
 		boxPiedras.setScale(glm::vec3(2.67, 0.3, 0.33));
 		boxPiedras.render();
 		boxPiedras.setPosition(glm::vec3(0.0, 0.2505, 2.83));
 		boxPiedras.setScale(glm::vec3(2.67, 0.3, 0.33));
 		boxPiedras.render();
+		//Bardas verticales
 		boxPiedras2.setShader(&shaderLighting);
 		boxPiedras2.setProjectionMatrix(projection);
 		boxPiedras2.setViewMatrix(view);
 		boxPiedras2.setPosition(glm::vec3(5.17, 0.1505, 5.67));
 		boxPiedras2.setScale(glm::vec3(0.33, 0.3, 1.33));
 		boxPiedras2.render();
+		//Jardinera
 		boxPiedras2.setPosition(glm::vec3(1.16, 0.2505, 4.0));
 		boxPiedras2.setScale(glm::vec3(0.33, 0.3, 2.33));
 		boxPiedras2.render();
@@ -899,6 +1057,7 @@ void applicationLoop() {
 		boxPiedras2.setScale(glm::vec3(0.33, 0.3, 2.33));
 		boxPiedras2.render();
 	
+		//Tierra de la jardinera
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureTierraID);
 		boxTierra.setShader(&shaderLighting);
@@ -907,6 +1066,100 @@ void applicationLoop() {
 		boxTierra.setPosition(glm::vec3(0.0, 0.4005, 4.0));
 		boxTierra.setScale(glm::vec3(2.0, 0.001, 2.0));
 		boxTierra.render();
+
+		//Columnas del edificio
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureMuroID);
+		boxMuro.setShader(&shaderLighting);
+		boxMuro.setProjectionMatrix(projection);
+		boxMuro.setViewMatrix(view);
+		//Columnas parte frontal del edificio central
+		boxMuro.setPosition(glm::vec3(-4.88, 5.27, -4.25));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-1.67, 5.27, -4.25));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(1.67, 5.27, -4.25));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(4.88, 5.27, -4.25));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		//Columnas parte trasera del edificio central
+		boxMuro.setPosition(glm::vec3(-4.88, 5.27, -11.75));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-1.67, 5.27, -11.75));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(1.67, 5.27, -11.75));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(4.88, 5.27, -11.75));
+		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
+		boxMuro.render();
+		//Separación entre pisos
+		//Techo
+		boxMuro.setPosition(glm::vec3(-3.275, 9.68, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 1.01, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(0.0, 9.68, -4.1167));
+		boxMuro.setScale(glm::vec3(3.1, 1.01, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(3.275, 9.68, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 1.01, 0.233));
+		boxMuro.render();
+		//Entre primero y segundo
+		boxMuro.setPosition(glm::vec3(-3.275, 4.618, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(0.0, 4.618, -4.1167));
+		boxMuro.setScale(glm::vec3(3.1, 0.5, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(3.275, 4.618, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
+		boxMuro.render();
+		//Entre segundo y tercero
+		boxMuro.setPosition(glm::vec3(-3.275, 6.9515, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(0.0, 6.9515, -4.1167));
+		boxMuro.setScale(glm::vec3(3.1, 0.5, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(3.275, 6.9515, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
+		boxMuro.render();
+		//Entre planta baja y primero
+		boxMuro.setPosition(glm::vec3(-3.275, 2.285, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(0.0, 2.285, -4.1167));
+		boxMuro.setScale(glm::vec3(3.1, 0.5, 0.233));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(3.275, 2.285, -4.1167));
+		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
+		boxMuro.render();
+
+		//Textura con el nombre del edificio
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureMurEdifID);
+		boxMuroLe.setShader(&shaderLighting);
+		boxMuroLe.setProjectionMatrix(projection);
+		boxMuroLe.setViewMatrix(view);
+		boxMuroLe.setPosition(glm::vec3(0.0, 2.285, -4.0));
+		boxMuroLe.setScale(glm::vec3(3.1, 0.5, 0.0001));
+		boxMuroLe.render();
+
+		//Textura con la division a la que pertenece
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureMurDivID);
+		boxMuroLe.setShader(&shaderLighting);
+		boxMuroLe.setProjectionMatrix(projection);
+		boxMuroLe.setViewMatrix(view);
+		boxMuroLe.setPosition(glm::vec3(- 3.275, 2.285, -4.0));
+		boxMuroLe.setScale(glm::vec3(2.983, 0.5, 0.0001));
+		boxMuroLe.render();
 
 		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureWaterID);

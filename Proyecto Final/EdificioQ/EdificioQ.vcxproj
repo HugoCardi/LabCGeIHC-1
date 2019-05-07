@@ -45,6 +45,35 @@
     <ClInclude Include="src\Headers\Texture.h" />
     <ClInclude Include="src\Headers\TimeManager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Shaders\basic.fs" />
+    <None Include="..\..\Shaders\basic.vs" />
+    <None Include="..\..\Shaders\cubeTexture.fs" />
+    <None Include="..\..\Shaders\cubeTexture.vs" />
+    <None Include="..\..\Shaders\directionalLight.fs" />
+    <None Include="..\..\Shaders\iluminacion_ejercicio.fs" />
+    <None Include="..\..\Shaders\iluminacion_ejercicio.vs" />
+    <None Include="..\..\Shaders\iluminacion_ejercicio_res.fs" />
+    <None Include="..\..\Shaders\iluminacion_ejercicio_res.vs" />
+    <None Include="..\..\Shaders\iluminacion_materiales_ejercicio.fs" />
+    <None Include="..\..\Shaders\iluminacion_materiales_ejercicio.vs" />
+    <None Include="..\..\Shaders\iluminacion_materiales_res.fs" />
+    <None Include="..\..\Shaders\iluminacion_materiales_res.vs" />
+    <None Include="..\..\Shaders\multipleLights.fs" />
+    <None Include="..\..\Shaders\pointLight.fs" />
+    <None Include="..\..\Shaders\sistemasCoordenadas.fs" />
+    <None Include="..\..\Shaders\sistemasCoordenadas.vs" />
+    <None Include="..\..\Shaders\spotLight.fs" />
+    <None Include="..\..\Shaders\texturizado.fs" />
+    <None Include="..\..\Shaders\texturizado.vs" />
+    <None Include="..\..\Shaders\texturizado_res.fs" />
+    <None Include="..\..\Shaders\texturizado_res.vs" />
+    <None Include="..\..\Shaders\transformaciones.fs" />
+    <None Include="..\..\Shaders\transformaciones.vs" />
+    <None Include="..\..\Shaders\typeLight.vs" />
+    <None Include="..\..\Shaders\uniform.fs" />
+    <None Include="..\..\Shaders\uniform.vs" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{196AB26E-C8C5-4E57-A964-120BD7B9B825}</ProjectGuid>
