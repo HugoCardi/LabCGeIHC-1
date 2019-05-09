@@ -35,10 +35,9 @@ std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
-Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados;
-Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal;
-Box boxWater;
-Box box;
+Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras;
+Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc;
+Box boxWater, box;
 
 Sphere sphereAnimacion(20, 20);
 Cylinder cylinderAnimacion(20, 20, 0.5, 0.5);
@@ -59,8 +58,11 @@ Model modelAirCraft;
 Model modelMaceta;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
-GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID;
+GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
+GLuint textureParedEscID;
 GLuint cubeTextureID;
+
+double yEscaleras = 0.25455, zEscaleras = -7.3333505;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
 	std::vector<std::vector<glm::mat4>> keyFrames;
@@ -229,7 +231,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	sphere.init();
 	cylinder.init();
 	boxPiso.init();
-	box.init();
+	boxVentanal.init();
 	boxPiso.scaleUVS(glm::vec2(35.0, 35.0));
 	boxMarmolCentral.init();
 	boxMarmolCentral.scaleUVS(glm::vec2(40.0, 27.0));
@@ -248,6 +250,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxMuro.init();
 	boxMuro.scaleUVS(glm::vec2(1.0, 15.0));
 	boxMuroLe.init();
+	boxEscaleras.init();
+	boxEscaleras.scaleUVS(glm::vec2(1.0, 5.0));
+	boxParedEsc.init();
+	boxParedEsc.scaleUVS(glm::vec2(20.0, 10.0));
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
@@ -478,11 +484,51 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	texture.freeImage(bitmap);
 
 	//Textura Ventanal
-	texture = Texture("../../Textures/goku.png");
+	texture = Texture("../../Textures/ventanal.png");
 	bitmap = texture.loadImage(false);
 	data = texture.convertToData(bitmap, imageWidth, imageHeight);
 	glGenTextures(1, &textureVentanalID);
 	glBindTexture(GL_TEXTURE_2D, textureVentanalID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Escaleras concreto
+	texture = Texture("../../Textures/concreto.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureEscalerasID);
+	glBindTexture(GL_TEXTURE_2D, textureEscalerasID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Pared Escaleras
+	texture = Texture("../../Textures/paredEscaleras.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureParedEscID);
+	glBindTexture(GL_TEXTURE_2D, textureParedEscID);
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -551,6 +597,8 @@ void destroy() {
 	boxTierra.destroy();
 	boxMuro.destroy();
 	boxMuroLe.destroy();
+	boxVentanal.destroy();
+	boxEscaleras.destroy();
 	boxWater.destroy();
 }
 
@@ -744,7 +792,7 @@ void applicationLoop() {
 		modelPalma.setShader(&shaderLighting);
 		modelPalma.setProjectionMatrix(projection);
 		modelPalma.setViewMatrix(view);
-		modelPalma.setPosition(glm::vec3(4.0, 0.0, -3.67));
+		modelPalma.setPosition(glm::vec3(4.0, 0.0, -3.0));
 		modelPalma.setScale(glm::vec3(0.1, 0.1, 0.1));
 		modelPalma.render();
 		modelPalma.setPosition(glm::vec3(4.0, 0.0, 4.5));
@@ -953,43 +1001,44 @@ void applicationLoop() {
 		boxMarmolCentral.render();
 		//Primer piso
 		//Lado izq escaleras
-		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 2.5345, -8.0));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 8.0));
+		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 2.5345, -8.11667));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 7.7667));
 		boxMarmolCentral.render();
 		//Frente escaleras
-		boxMarmolCentral.setPosition(glm::vec3(0.0, 2.5345, -5.6667));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.3333));
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 2.5345, -5.783367));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxMarmolCentral.render();
 		//Lado der escaleras
-		boxMarmolCentral.setPosition(glm::vec3(3.3333, 2.5345, -8.0));
-		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 8.0));
+		boxMarmolCentral.setPosition(glm::vec3(3.3333, 2.5345, -8.11667));
+		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 7.7667));
 		boxMarmolCentral.render();
 		//Segundo piso
 		//Lado izq escaleras
-		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 4.8675, -8.0));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 8.0));
+		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 4.8675, -8.11667));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 7.7667));
 		boxMarmolCentral.render();
 		//Frente escaleras
-		boxMarmolCentral.setPosition(glm::vec3(0.0, 4.8675, -5.6667));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.3333));
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 4.8675, -5.783367));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxMarmolCentral.render();
 		//Lado der escaleras
-		boxMarmolCentral.setPosition(glm::vec3(3.3333, 4.8675, -8.0));
-		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 8.0));
+		boxMarmolCentral.setPosition(glm::vec3(3.3333, 4.8675, -8.11667));
+		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 7.7667));
 		boxMarmolCentral.render();
 		//Tercer piso
 		//Lado izq escaleras
-		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 7.201, -8.0));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 8.0));
+		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 7.201, -8.11667));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 7.7667));
 		boxMarmolCentral.render();
 		//Frente escaleras
-		boxMarmolCentral.setPosition(glm::vec3(0.0, 7.201, -5.6667));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.3333));
+		boxMarmolCentral.setPosition(glm::vec3(0.0, 7.201, -5.783367));
+		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxMarmolCentral.render();
 		//Lado der escaleras
-		boxMarmolCentral.setPosition(glm::vec3(3.3333, 7.201, -8.0));
-		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 8.0));
+		boxMarmolCentral.setPosition(glm::vec3(3.3333, 7.201, -8.11667));
+		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 7.7667));
 		boxMarmolCentral.render();
+		//Pisos Laterales
 		//Piso laterales planta baja
 		boxMarmolLados.setShader(&shaderLighting);
 		boxMarmolLados.setProjectionMatrix(projection);
@@ -998,8 +1047,32 @@ void applicationLoop() {
 		boxMarmolLados.setPosition(glm::vec3(9.33, 0.201, -14.33));
 		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 36.67));
 		boxMarmolLados.render();
+		//Piso der primer piso
+		boxMarmolLados.setPosition(glm::vec3(9.33, 2.5345, -14.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 36.67));
+		boxMarmolLados.render();
+		//Piso der segundo piso
+		boxMarmolLados.setPosition(glm::vec3(9.33, 4.8675, -14.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 36.67));
+		boxMarmolLados.render();
+		//Piso der tercer piso
+		boxMarmolLados.setPosition(glm::vec3(9.33, 7.201, -14.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 36.67));
+		boxMarmolLados.render();
 		//Piso izq planta baja
 		boxMarmolLados.setPosition(glm::vec3(-9.33, 0.201, -2.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 28.67));
+		boxMarmolLados.render();
+		//Piso izq primer piso
+		boxMarmolLados.setPosition(glm::vec3(-9.33, 2.5345, -2.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 28.67));
+		boxMarmolLados.render();
+		//Piso izq segundo piso
+		boxMarmolLados.setPosition(glm::vec3(-9.33, 4.8675, -2.33));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 28.67));
+		boxMarmolLados.render();
+		//Piso izq tercer piso
+		boxMarmolLados.setPosition(glm::vec3(-9.33, 7.201, -2.33));
 		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 28.67));
 		boxMarmolLados.render();
 
@@ -1101,13 +1174,13 @@ void applicationLoop() {
 		boxMuro.render();
 		//Separación entre pisos
 		//Techo
-		boxMuro.setPosition(glm::vec3(-3.275, 9.68, -4.1167));
+		boxMuro.setPosition(glm::vec3(-3.275, 9.8265, -4.1167));
 		boxMuro.setScale(glm::vec3(2.983, 1.01, 0.233));
 		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(0.0, 9.68, -4.1167));
+		boxMuro.setPosition(glm::vec3(0.0, 9.8265, -4.1167));
 		boxMuro.setScale(glm::vec3(3.1, 1.01, 0.233));
 		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(3.275, 9.68, -4.1167));
+		boxMuro.setPosition(glm::vec3(3.275, 9.8265, -4.1167));
 		boxMuro.setScale(glm::vec3(2.983, 1.01, 0.233));
 		boxMuro.render();
 		//Entre primero y segundo
@@ -1140,6 +1213,23 @@ void applicationLoop() {
 		boxMuro.setPosition(glm::vec3(3.275, 2.285, -4.1167));
 		boxMuro.setScale(glm::vec3(2.983, 0.5, 0.233));
 		boxMuro.render();
+		//Parte posterior de la esclera
+		//Entre planta baja y primero
+		boxMuro.setPosition(glm::vec3(0.0, 0.78485, -11.8835));
+		boxMuro.setScale(glm::vec3(3.1, 1.1667, 0.233));
+		boxMuro.render();
+		//Entre primer piso y segundo
+		boxMuro.setPosition(glm::vec3(0.0, 3.4515, -11.8835));
+		boxMuro.setScale(glm::vec3(3.1, 0.4995, 0.233));
+		boxMuro.render();
+		//Entre primer piso y segundo
+		boxMuro.setPosition(glm::vec3(0.0, 5.78475, -11.8835));
+		boxMuro.setScale(glm::vec3(3.1, 0.5, 0.233));
+		boxMuro.render();
+		//Entre tercer piso y techo
+		boxMuro.setPosition(glm::vec3(0.0, 9.0998, -11.8835));
+		boxMuro.setScale(glm::vec3(3.1, 2.46325, 0.233));
+		boxMuro.render();
 
 		//Textura con el nombre del edificio
 		glActiveTexture(GL_TEXTURE0);
@@ -1160,6 +1250,180 @@ void applicationLoop() {
 		boxMuroLe.setPosition(glm::vec3(- 3.275, 2.285, -4.0));
 		boxMuroLe.setScale(glm::vec3(2.983, 0.5, 0.0001));
 		boxMuroLe.render();
+
+		//Textura con los ventanales
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureVentanalID);
+		boxVentanal.setShader(&shaderLighting);
+		boxVentanal.setProjectionMatrix(projection);
+		boxVentanal.setViewMatrix(view);
+		//Ventanales planta baja
+		//Lado izq 
+		boxVentanal.setPosition(glm::vec3(-3.275, 1.11825, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
+		boxVentanal.render();
+		//Central
+		boxVentanal.setPosition(glm::vec3(0.0, 1.11825, -4.1167));
+		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
+		//boxVentanal.render();
+		//Lado der
+		boxVentanal.setPosition(glm::vec3(3.275, 1.11825, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
+		boxVentanal.render();
+		//Ventanales Primer piso
+		//Lado izq 
+		boxVentanal.setPosition(glm::vec3(-3.275, 3.45175, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
+		boxVentanal.render();
+		//Central
+		boxVentanal.setPosition(glm::vec3(0.0, 3.45175, -4.1167));
+		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
+		boxVentanal.render();
+		//Lado der
+		boxVentanal.setPosition(glm::vec3(3.275, 3.45175, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
+		boxVentanal.render();
+		//Ventanales Segundo piso
+		//Lado izq 
+		boxVentanal.setPosition(glm::vec3(-3.275, 5.78475, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
+		boxVentanal.render();
+		//Central
+		boxVentanal.setPosition(glm::vec3(0.0, 5.78475, -4.1167));
+		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
+		boxVentanal.render();
+		//Lado der
+		boxVentanal.setPosition(glm::vec3(3.275, 5.78475, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
+		boxVentanal.render();
+		//Ventanales Tercer piso
+		//Lado izq 
+		boxVentanal.setPosition(glm::vec3(-3.275, 8.2615, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 2.12, 0.001));
+		boxVentanal.render();
+		//Central
+		boxVentanal.setPosition(glm::vec3(0.0, 8.2615, -4.1167));
+		boxVentanal.setScale(glm::vec3(3.1, 2.12, 0.001));
+		boxVentanal.render();
+		//Lado der
+		boxVentanal.setPosition(glm::vec3(3.275, 8.2615, -4.1167));
+		boxVentanal.setScale(glm::vec3(2.983, 2.12, 0.001));
+		boxVentanal.render();
+		//Ventanales de la Parte Trasera
+		//Primer piso y planta baja
+		boxVentanal.setPosition(glm::vec3(0.0, 2.285, -11.8835));
+		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
+		boxVentanal.render();
+		//Segundo piso y tercero
+		boxVentanal.setPosition(glm::vec3(0.0, 4.618, -11.8835));
+		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
+		boxVentanal.render();
+		//Tercer piso y cuarto
+		boxVentanal.setPosition(glm::vec3(0.0, 6.9515, -11.8835));
+		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
+		boxVentanal.render();
+
+		//Pared Lateral Escaleras
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureParedEscID);
+		boxParedEsc.setShader(&shaderLighting);
+		boxParedEsc.setProjectionMatrix(projection);
+		boxParedEsc.setViewMatrix(view);
+		boxParedEsc.setPosition(glm::vec3(-1.6125, 5.27, -9.4166));
+		boxParedEsc.setScale(glm::vec3(0.115, 10.13, 4.166733));
+		boxParedEsc.render();
+		boxParedEsc.setPosition(glm::vec3(0.0, 5.27, -8.79997));
+		boxParedEsc.setScale(glm::vec3(0.115, 10.13, 2.93339));
+		boxParedEsc.render();
+		boxParedEsc.setPosition(glm::vec3(1.6125, 5.27, -9.4166));
+		boxParedEsc.setScale(glm::vec3(0.115, 10.13, 4.166733));
+		boxParedEsc.render();
+
+		//Escaleras
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureEscalerasID);
+		boxEscaleras.setShader(&shaderLighting);
+		boxEscaleras.setProjectionMatrix(projection);
+		boxEscaleras.setViewMatrix(view);
+		//Primera parte escaleras hacia primer piso
+		//Matriz del escalón
+		glm::mat4 matrix0 = glm::mat4(1.0f);
+		//Se coloca el escalon en la posicón inicial
+		matrix0 = glm::translate(matrix0, glm::vec3(0.77915, 0.243168, -7.43804));
+		boxEscaleras.setScale(glm::vec3(1.5517, 0.083339, 0.209527));
+		boxEscaleras.render(matrix0);
+		for (int i = 0; i < 13; i++) {
+			matrix0 = glm::translate(matrix0, glm::vec3(0.0f, 0.083339f, -0.209527f));
+			boxEscaleras.setScale(glm::vec3(1.5517, 0.083339, 0.209527));
+			boxEscaleras.render(matrix0);
+		}
+		//Descanso escaleras hacia primer piso
+		matrix0 = glm::translate(matrix0, glm::vec3(-0.77585, 0.0, -0.85476));
+		boxEscaleras.setScale(glm::vec3(3.1035, 0.083339, 1.5));
+		boxEscaleras.render(matrix0);
+		//Segunda parte escaleras hacia primer piso
+		//Se coloca el escalon en la posicón inicial
+		matrix0 = glm::translate(matrix0, glm::vec3(-0.7758, 0.083339, 0.85476));
+		boxEscaleras.setScale(glm::vec3(1.5517, 0.083339, 0.209527));
+		boxEscaleras.render(matrix0);
+		for (int i = 0; i < 13; i++) {
+			matrix0 = glm::translate(matrix0, glm::vec3(0.0f, 0.083339f, 0.209527));
+			boxEscaleras.setScale(glm::vec3(1.5517, 0.083339, 0.209527));
+			boxEscaleras.render(matrix0);
+		}
+		//Primera parte escaleras hacia el segundo piso
+		//Matriz del escalón
+		glm::mat4 matrix1 = glm::mat4(1.0f);
+		//Se coloca el escalon en la posicón inicial
+		matrix1 = glm::translate(matrix1, glm::vec3(0.77915f, 2.57665f, -7.43804f));
+		boxEscaleras.setScale(glm::vec3(1.5517, 0.0833, 0.209527));
+		boxEscaleras.render(matrix1);
+		for (int i = 0; i < 13; i++) {
+			matrix1 = glm::translate(matrix1, glm::vec3(0.0f, 0.0833f, -0.209527f));
+			boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
+			boxEscaleras.render(matrix1);
+		}
+		//Descanso escaleras hacia primer piso
+		matrix1 = glm::translate(matrix1, glm::vec3(-0.7758, 0.0, -0.85476));
+		boxEscaleras.setScale(glm::vec3(3.1035, 0.0833, 1.5));
+		boxEscaleras.render(matrix1);
+		//Segunda parte escaleras hacia primer piso
+		//Se coloca el escalon en la posicón inicial
+		matrix1 = glm::translate(matrix1, glm::vec3(-0.7758, 0.0833, 0.85476));
+		boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
+		boxEscaleras.render(matrix1);
+		for (int i = 0; i < 13; i++) {
+			matrix1 = glm::translate(matrix1, glm::vec3(0.0f, 0.0833f, 0.209527));
+			boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
+			boxEscaleras.render(matrix1);
+		}
+		//Primera parte escaleras hacia el segundo piso
+		//Matriz del escalón
+		glm::mat4 matrix2 = glm::mat4(1.0f);
+		//Se coloca el escalon en la posicón inicial
+		matrix2 = glm::translate(matrix2, glm::vec3(0.77915f, 4.90965f, -7.43804f));
+		boxEscaleras.setScale(glm::vec3(1.5517, 0.0833, 0.209527));
+		boxEscaleras.render(matrix2);
+		for (int i = 0; i < 13; i++) {
+			matrix2 = glm::translate(matrix2, glm::vec3(0.0f, 0.0833f, -0.209527f));
+			boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
+			boxEscaleras.render(matrix2);
+		}
+		//Descanso escaleras hacia primer piso
+		matrix2 = glm::translate(matrix2, glm::vec3(-0.7758, 0.0, -0.85476));
+		boxEscaleras.setScale(glm::vec3(3.1035, 0.0833, 1.5));
+		boxEscaleras.render(matrix2);
+		//Segunda parte escaleras hacia primer piso
+		//Se coloca el escalon en la posicón inicial
+		matrix2 = glm::translate(matrix2, glm::vec3(-0.7758, 0.0833, 0.85476));
+		boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
+		boxEscaleras.render(matrix2);
+		for (int i = 0; i < 13; i++) {
+			matrix2 = glm::translate(matrix2, glm::vec3(0.0f, 0.0833f, 0.209527));
+			boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
+			boxEscaleras.render(matrix2);
+		}
+		
 
 		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureWaterID);
