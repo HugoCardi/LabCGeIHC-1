@@ -463,7 +463,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
-	//Textura Muro Divis髇
+	//Textura Muro Divis贸n
 	texture = Texture("../../Textures/muroDivision.png");
 	bitmap = texture.loadImage(false);
 	data = texture.convertToData(bitmap, imageWidth, imageHeight);
@@ -733,7 +733,7 @@ void applicationLoop() {
 		cylinder.setPosition(glm::vec3(0.0, 0.0, 0.0));
 		cylinder.setScale(glm::vec3(1.0, 1.0, 1.0));*/
 		
-		// Iluminaci髇
+		// Iluminaci贸n
 		glm::mat4 lightModelmatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
 		lightModelmatrix = glm::translate(lightModelmatrix, glm::vec3(0.0f, 0.0f, -ratio));
 
@@ -1172,7 +1172,7 @@ void applicationLoop() {
 		boxMuro.setPosition(glm::vec3(4.88, 5.27, -11.75));
 		boxMuro.setScale(glm::vec3(0.23, 10.13, 0.5));
 		boxMuro.render();
-		//Separaci髇 entre pisos
+		//Separaci贸n entre pisos
 		//Techo
 		boxMuro.setPosition(glm::vec3(-3.275, 9.8265, -4.1167));
 		boxMuro.setScale(glm::vec3(2.983, 1.01, 0.233));
@@ -1323,6 +1323,194 @@ void applicationLoop() {
 		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
 		boxVentanal.render();
 
+				//HUGO CRUZ 08/05/2019
+		//COLUMNAS LADO DERECHO//2.109 mit -15.2205 long 34.659
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureTierraID);
+		boxMuro.setShader(&shaderLighting);
+		boxMuro.setProjectionMatrix(projection);
+		boxMuro.setViewMatrix(view);
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Segundo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 5));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 5));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Tercer Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 4));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 4));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Cuarto Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Quinto Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Sexto Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 1));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 1));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Septimo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Octavo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55 + 3.108 * 7));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55 + 3.108 * 7));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Noveno Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55 + 3.108 * 8));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55 + 3.108 * 8));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Decimo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Onceavo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107 + 3.108 ));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Doceavo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+
+		//Separaci贸n entre pisos
+		//Techo Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 9.68, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+		//Techo DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 9.68, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+
+		//Tercero Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 6.9515, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+		//Tercero DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 6.9515, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+
+
+		//Segundo Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 4.618, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+		//Segundo DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 4.618, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+
+
+		//Primerop Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 2.285, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+		//Primero DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 2.285, -15.220));
+		boxMuro.setScale(glm::vec3(0.233, 1.01, 34.659));
+		boxMuro.render();
+
+		
+			
+
+
+
+		
+
+		//COLUMNA LADO IZQUIERDO
+		//Primer Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Segundo Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Tercer Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Cuarto Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Quinto Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Sexto Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -11.89 - 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -11.89 - 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+
+		
+		
+		
+		
+		
+		
+		
 		//Pared Lateral Escaleras
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureParedEscID);
@@ -1339,6 +1527,11 @@ void applicationLoop() {
 		boxParedEsc.setScale(glm::vec3(0.115, 10.13, 4.166733));
 		boxParedEsc.render();
 
+		
+		
+		
+		
+		
 		//Escaleras
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureEscalerasID);
@@ -1346,9 +1539,9 @@ void applicationLoop() {
 		boxEscaleras.setProjectionMatrix(projection);
 		boxEscaleras.setViewMatrix(view);
 		//Primera parte escaleras hacia primer piso
-		//Matriz del escal髇
+		//Matriz del escal贸n
 		glm::mat4 matrix0 = glm::mat4(1.0f);
-		//Se coloca el escalon en la posic髇 inicial
+		//Se coloca el escalon en la posic贸n inicial
 		matrix0 = glm::translate(matrix0, glm::vec3(0.77915, 0.243168, -7.43804));
 		boxEscaleras.setScale(glm::vec3(1.5517, 0.083339, 0.209527));
 		boxEscaleras.render(matrix0);
@@ -1362,7 +1555,7 @@ void applicationLoop() {
 		boxEscaleras.setScale(glm::vec3(3.1035, 0.083339, 1.5));
 		boxEscaleras.render(matrix0);
 		//Segunda parte escaleras hacia primer piso
-		//Se coloca el escalon en la posic髇 inicial
+		//Se coloca el escalon en la posic贸n inicial
 		matrix0 = glm::translate(matrix0, glm::vec3(-0.7758, 0.083339, 0.85476));
 		boxEscaleras.setScale(glm::vec3(1.5517, 0.083339, 0.209527));
 		boxEscaleras.render(matrix0);
@@ -1372,9 +1565,9 @@ void applicationLoop() {
 			boxEscaleras.render(matrix0);
 		}
 		//Primera parte escaleras hacia el segundo piso
-		//Matriz del escal髇
+		//Matriz del escal贸n
 		glm::mat4 matrix1 = glm::mat4(1.0f);
-		//Se coloca el escalon en la posic髇 inicial
+		//Se coloca el escalon en la posic贸n inicial
 		matrix1 = glm::translate(matrix1, glm::vec3(0.77915f, 2.57665f, -7.43804f));
 		boxEscaleras.setScale(glm::vec3(1.5517, 0.0833, 0.209527));
 		boxEscaleras.render(matrix1);
@@ -1388,7 +1581,7 @@ void applicationLoop() {
 		boxEscaleras.setScale(glm::vec3(3.1035, 0.0833, 1.5));
 		boxEscaleras.render(matrix1);
 		//Segunda parte escaleras hacia primer piso
-		//Se coloca el escalon en la posic髇 inicial
+		//Se coloca el escalon en la posic贸n inicial
 		matrix1 = glm::translate(matrix1, glm::vec3(-0.7758, 0.0833, 0.85476));
 		boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
 		boxEscaleras.render(matrix1);
@@ -1398,9 +1591,9 @@ void applicationLoop() {
 			boxEscaleras.render(matrix1);
 		}
 		//Primera parte escaleras hacia el segundo piso
-		//Matriz del escal髇
+		//Matriz del escal贸n
 		glm::mat4 matrix2 = glm::mat4(1.0f);
-		//Se coloca el escalon en la posic髇 inicial
+		//Se coloca el escalon en la posic贸n inicial
 		matrix2 = glm::translate(matrix2, glm::vec3(0.77915f, 4.90965f, -7.43804f));
 		boxEscaleras.setScale(glm::vec3(1.5517, 0.0833, 0.209527));
 		boxEscaleras.render(matrix2);
@@ -1414,7 +1607,7 @@ void applicationLoop() {
 		boxEscaleras.setScale(glm::vec3(3.1035, 0.0833, 1.5));
 		boxEscaleras.render(matrix2);
 		//Segunda parte escaleras hacia primer piso
-		//Se coloca el escalon en la posic髇 inicial
+		//Se coloca el escalon en la posic贸n inicial
 		matrix2 = glm::translate(matrix2, glm::vec3(-0.7758, 0.0833, 0.85476));
 		boxEscaleras.setScale(glm::vec3(1.6667, 0.0833, 0.209527));
 		boxEscaleras.render(matrix2);
