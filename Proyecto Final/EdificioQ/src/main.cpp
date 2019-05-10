@@ -35,8 +35,8 @@ std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
-Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano;
-Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon;
+Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
+Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
 Box boxWater, box;
 
 Sphere sphereAnimacion(20, 20);
@@ -59,7 +59,7 @@ Model modelMaceta;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
-GLuint textureParedEscID, textureVentanaBanoID, textureTechoID, texturePlafonID;
+GLuint textureParedEscID, textureVentanaBanoID, textureTechoID, texturePlafonID, textureLadrillosID, texturePuertaID;
 GLuint cubeTextureID;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
@@ -255,9 +255,12 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxVentanaBano.init();
 	boxVentanaBano.scaleUVS(glm::vec2(3.0, 1.0));
 	boxPlafon.init();
-	boxPlafon.scaleUVS(glm::vec2(20.0, 15.0));
+	boxPlafon.scaleUVS(glm::vec2(10.0, 8.0));
 	boxTecho.init();
 	boxTecho.scaleUVS(glm::vec2(20.0, 20.0));
+	boxLadrillos.init();
+	boxLadrillos.scaleUVS(glm::vec2(12.0, 4.0));
+	boxPuerta.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
@@ -567,6 +570,26 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
+	//Textura Pared de Ladrillos
+	texture = Texture("../../Textures/pared_ladrillos.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureLadrillosID);
+	glBindTexture(GL_TEXTURE_2D, textureLadrillosID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
 	//Textura Plafon
 	texture = Texture("../../Textures/plafon.jpg");
 	bitmap = texture.loadImage(false);
@@ -593,6 +616,26 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	data = texture.convertToData(bitmap, imageWidth, imageHeight);
 	glGenTextures(1, &textureVentanaBanoID);
 	glBindTexture(GL_TEXTURE_2D, textureVentanaBanoID);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Perta Salon
+	texture = Texture("../../Textures/puertaSalon.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &texturePuertaID);
+	glBindTexture(GL_TEXTURE_2D, texturePuertaID);
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -667,6 +710,8 @@ void destroy() {
 	boxVentanaBano.destroy();
 	boxPlafon.destroy();
 	boxTecho.destroy();
+	boxLadrillos.destroy();
+	boxPuerta.destroy();
 	boxWater.destroy();
 }
 
@@ -1190,18 +1235,9 @@ void applicationLoop() {
 		boxPlafon.setPosition(glm::vec3(3.3333, 6.701, -8.087545));
 		boxPlafon.setScale(glm::vec3(3.333, 0.001, 7.70845));
 		boxPlafon.render();
-		//Parte central tercer piso
-		//Lado izq escaleras
-		boxPlafon.setPosition(glm::vec3(-3.3333, 9.321, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 7.70845));
-		boxPlafon.render();
-		//Frente escaleras
-		boxPlafon.setPosition(glm::vec3(0.0, 9.321, -5.783367));
-		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 3.099967));
-		boxPlafon.render();
-		//Lado der escaleras
-		boxPlafon.setPosition(glm::vec3(3.3333, 9.321, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		//Tercer piso
+		boxPlafon.setPosition(glm::vec3(0.0, 9.321, -8.029125));
+		boxPlafon.setScale(glm::vec3(10.0, 0.001, 7.82525));
 		boxPlafon.render();
 
 
@@ -1216,6 +1252,120 @@ void applicationLoop() {
 		boxTecho.setScale(glm::vec3(10.0, 0.001, 7.94175));
 		boxTecho.render();
 
+
+		//Ladrillos de la pared central
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureLadrillosID);
+		boxLadrillos.setShader(&shaderLighting);
+		boxLadrillos.setProjectionMatrix(projection);
+		boxLadrillos.setViewMatrix(view);
+		//Planta baja
+		//Lado izquierdo
+		boxLadrillos.setPosition(glm::vec3(-2.47135, 1.1182, -7.28361));
+		boxLadrillos.setScale(glm::vec3(5.0575, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Lado derecho
+		boxLadrillos.setPosition(glm::vec3(3.276, 1.1182, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Primer piso
+		//Lado izquierdo
+		boxLadrillos.setPosition(glm::vec3(-3.276, 3.45175, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Lado derecho
+		boxLadrillos.setPosition(glm::vec3(3.276, 3.45175, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Segundo piso
+		//Lado izquierdo
+		boxLadrillos.setPosition(glm::vec3(-3.276, 5.78425, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Lado derecho
+		boxLadrillos.setPosition(glm::vec3(3.276, 5.78425, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Tercer piso
+		//Lado izquierdo
+		boxLadrillos.setPosition(glm::vec3(-3.276, 8.261, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 2.12, 0.1));
+		boxLadrillos.render();
+		//Lado derecho
+		boxLadrillos.setPosition(glm::vec3(3.276, 8.261, -7.28361));
+		boxLadrillos.setScale(glm::vec3(3.4485, 2.12, 0.1));
+		boxLadrillos.render();
+		//Ladrillos laterales izquierdos
+		boxLadrillos.setPosition(glm::vec3(-4.945, 1.1182, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 4.43339));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-4.945, 3.45175, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 4.43339));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-4.945, 5.78425, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 4.43339));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-4.945, 8.261, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 2.12, 4.43339));
+		boxLadrillos.render();
+		//Ladrillos laterales derechos
+		boxLadrillos.setPosition(glm::vec3(4.945, 1.1182, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 4.43339));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(4.945, 3.45175, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 4.43339));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(4.945, 5.78425, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 4.43339));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(4.945, 8.261, -9.5503));
+		boxLadrillos.setScale(glm::vec3(0.1, 2.12, 4.43339));
+		boxLadrillos.render();
+
+
+		//Puerta de los salones
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaID);
+		boxPuerta.setShader(&shaderLighting);
+		boxPuerta.setProjectionMatrix(projection);
+		boxPuerta.setViewMatrix(view);
+		//Lado izquierdo
+		//Planta baja
+		boxPuerta.setPosition(glm::vec3(-0.833375, 0.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-3.99495, 0.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Primer piso 
+		boxPuerta.setPosition(glm::vec3(-3.99495, 3.285, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Segundo piso
+		boxPuerta.setPosition(glm::vec3(-3.99495, 5.618, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Tercer piso
+		boxPuerta.setPosition(glm::vec3(-3.99495, 7.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Lado derecho
+		//Planta baja
+		boxPuerta.setPosition(glm::vec3(3.99495, 0.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Primer piso 
+		boxPuerta.setPosition(glm::vec3(3.99495, 3.285, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Segundo piso
+		boxPuerta.setPosition(glm::vec3(3.99495, 5.618, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Tercer piso
+		boxPuerta.setPosition(glm::vec3(3.99495, 7.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
 
 
 		//Piso del exterior del edificio
@@ -1742,9 +1892,9 @@ void applicationLoop() {
 		boxParedEsc.setScale(glm::vec3(1.5517, 0.5, 0.001));
 		boxParedEsc.render();
 		//Escondiendo subida al techo
-		boxParedEsc.setPosition(glm::vec3(-0.77915, 2.285, -7.333276));
-		boxParedEsc.setScale(glm::vec3(1.5517, 0.5, 0.001));
-		//boxParedEsc.render();
+		boxParedEsc.setPosition(glm::vec3(0.77915, 8.0105, -7.333276));
+		boxParedEsc.setScale(glm::vec3(1.5517, 2.62, 0.001));
+		boxParedEsc.render();
 
 		
 		//Escaleras
@@ -1833,7 +1983,7 @@ void applicationLoop() {
 		}
 		
 
-		//Pared Trasera de las partes laterales
+		//Ventana del bano del edificio central
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureVentanaBanoID);
 		boxVentanaBano.setShader(&shaderLighting);
