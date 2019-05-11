@@ -56,10 +56,17 @@ Model modelTree;
 Model modelPalma;
 Model modelAirCraft;
 Model modelMaceta;
+Model busto;
+Model radio;
+Model asientos;
+Model maquina;
 Model computadora;
 Model silla;
 Model pizarron;
 Model avioneta;
+Model maestro;
+Model mesa;
+
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
@@ -269,10 +276,17 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	busto.loadModel("../../models/busto/busto.obj");
+	radio.loadModel("../../models/radio/radio.obj");
+	asientos.loadModel("../../models/asientos/asientos.obj");
+	maquina.loadModel("../../models/maquina/maquina.obj");
 	computadora.loadModel("../../models/computadora/computadora.obj");
 	silla.loadModel("../../models/silla/silla.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
+	maestro.loadModel("../../models/maestro/persona.obj");
+	mesa.loadModel("../../models/mesa/mesa.obj");
+	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -908,7 +922,7 @@ void applicationLoop() {
 		modelTree.setViewMatrix(view);
 		modelTree.setPosition(glm::vec3(0.0, 0.4, 4.0));
 		modelTree.setScale(glm::vec3(1.0, 1.0, 1.0));
-		//modelTree.render();
+		modelTree.render();
 
 		modelPalma.setShader(&shaderLighting);
 		modelPalma.setProjectionMatrix(projection);
@@ -920,29 +934,94 @@ void applicationLoop() {
 		modelPalma.setScale(glm::vec3(0.1, 0.1, 0.1));
 		modelPalma.render();
 
+		busto.setShader(&shaderLighting);
+		busto.setProjectionMatrix(projection);
+		busto.setViewMatrix(view);
+		busto.setPosition(glm::vec3(0.0, 0.0, 2.0));
+		busto.setScale(glm::vec3(0.7, 0.7, 0.7));
+		busto.render();
+
+		mesa.setShader(&shaderLighting);
+		mesa.setProjectionMatrix(projection);
+		mesa.setViewMatrix(view);
+		mesa.setScale(glm::vec3(0.6, 0.6, 0.6));
+		glm::mat4 me = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
+		me = glm::translate(me, glm::vec3(-2.0, 0.2, -5.5));
+		me = glm::rotate(me, glm::radians(-90.0f), glm::vec3(0, 1, 0));
+		mesa.render(me);
+
+		radio.setShader(&shaderLighting);
+		radio.setProjectionMatrix(projection);
+		radio.setViewMatrix(view);
+		radio.setScale(glm::vec3(0.05, 0.05, 0.05));
+		glm::mat4 ra = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
+		ra = glm::translate(ra, glm::vec3(-1.5, 0.7, -5.0));
+		ra = glm::rotate(ra, glm::radians(90.0f), glm::vec3(0, 1, 0));
+		radio.render(ra);
+
+		asientos.setShader(&shaderLighting);
+		asientos.setProjectionMatrix(projection);
+		asientos.setViewMatrix(view);
+		asientos.setScale(glm::vec3(0.0009, 0.0009, 0.0009));
+		glm::mat4 as = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
+		as = glm::translate(as, glm::vec3(-3.2, 0.4, -4.3));
+		as = glm::rotate(as, glm::radians(90.0f), glm::vec3(0, 1, 0));
+		asientos.render(as);
+		as = glm::translate(as, glm::vec3(0.0, 2.4, 0.0));
+		asientos.render(as);
+		as = glm::translate(as, glm::vec3(0.0, 2.4, 0.0));
+		asientos.render(as);
+		as = glm::translate(as, glm::vec3(0.0, 0.0, 3.2));
+		asientos.render(as);
+		as = glm::translate(as, glm::vec3(0.0, 0.0, 3.2));
+		asientos.render(as);
+		as = glm::translate(as, glm::vec3(0.0, -2.4, 0.0));
+		asientos.render(as);
+		as = glm::translate(as, glm::vec3(0.0, -2.4, 0.0));
+		asientos.render(as);
+
+		maquina.setShader(&shaderLighting);
+		maquina.setProjectionMatrix(projection);
+		maquina.setViewMatrix(view);
+		maquina.setPosition(glm::vec3(-2.0, 0.2, -7.0));
+		maquina.setScale(glm::vec3(0.3, 0.3, 0.15));
+		maquina.render();
+
 		computadora.setShader(&shaderLighting);
 		computadora.setProjectionMatrix(projection);
 		computadora.setViewMatrix(view);
 		computadora.setPosition(glm::vec3(0.0, 0.4, 4.0));
 		computadora.setScale(glm::vec3(0.08, 0.08, 0.08));
-		computadora.render();
+		//computadora.render();
 		computadora.setPosition(glm::vec3(9.33, 4.8675, -14.33));
 		computadora.render();
 
+		maestro.setShader(&shaderLighting);
+		maestro.setProjectionMatrix(projection);
+		maestro.setViewMatrix(view);
+		maestro.setPosition(glm::vec3(0.0, 0.4, 4.0));
+		maestro.setScale(glm::vec3(0.4, 0.4, 0.4));
+		//maestro.render();
+
+		
 		pizarron.setShader(&shaderLighting);
 		pizarron.setProjectionMatrix(projection);
 		pizarron.setViewMatrix(view);
 		pizarron.setScale(glm::vec3(0.4, 0.4, 0.4));
-		silla.setPosition(glm::vec3(0.0, 3.0, 2.0));
-		glm::mat4 pizz = glm::rotate(pizz, glm::radians(180.0f), glm::vec3(0, 1, 0));
-		pizarron.render(pizz);
+		glm::mat4 pizz = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
+		pizz = glm::translate(pizz, glm::vec3(0.0, 1.5, 2.0));
+		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
+		//pizarron.render(pizz);
 
+	
 		silla.setShader(&shaderLighting);
 		silla.setProjectionMatrix(projection);
 		silla.setViewMatrix(view);
-		silla.setPosition(glm::vec3(9.33, 4.8675, -14.33));
 		silla.setScale(glm::vec3(0.2, 0.2, 0.2));
-		//silla.render();
+		glm::mat4 si = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
+		si = glm::translate(si, glm::vec3(9.33, 4.8675, -14.33));
+		si = glm::rotate(si, glm::radians(-90.0f), glm::vec3(0, 1, 0));
+		//silla.render(si);
 
 		avioneta.setShader(&shaderLighting);
 		avioneta.setProjectionMatrix(projection);
@@ -950,6 +1029,7 @@ void applicationLoop() {
 		avioneta.setPosition(glm::vec3(0.0, 25.0, 2.0));
 		avioneta.setScale(glm::vec3(0.2, 0.2, 0.2));
 		avioneta.render();
+
 
 		/*modelAirCraft.setShader(&shaderLighting);
 		modelAirCraft.setProjectionMatrix(projection);
@@ -1115,6 +1195,14 @@ void applicationLoop() {
 		//Piso principal (cesped)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureCespedID);
+		//cubo de prueba
+		box.setShader(&shaderLighting);
+		box.setProjectionMatrix(projection);
+		box.setViewMatrix(view);
+		box.setPosition(glm::vec3(0.0, 1.0, 0.0));
+		box.setScale(glm::vec3(1.0, 1.0, 1.0));
+		box.render();
+
 		boxCesped.setShader(&shaderLighting);
 		boxCesped.setProjectionMatrix(projection);
 		boxCesped.setViewMatrix(view);

@@ -1,0 +1,22 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Stone_Marble
+Ka 0.000000 0.000000 0.000000
+Kd 0.560784 0.541176 0.533333
+Ks 0.330000 0.330000 0.330000
+map_Kd busto/Stone_Marble.jpg
+
+newmtl _Metal_Rough_1
+Ka 0.000000 0.000000 0.000000
+Kd 0.600000 0.615686 0.627451
+Ks 0.330000 0.330000 0.330000
+map_Kd busto/_Metal_Rough_1.jpg
+
+newmtl _43
+Ka 0.000000 0.000000 0.000000
+Kd 0.776471 0.756863 0.643137
+Ks 0.330000 0.330000 0.330000
+map_Kd busto/_43.jpg
+
