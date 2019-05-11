@@ -56,6 +56,10 @@ Model modelTree;
 Model modelPalma;
 Model modelAirCraft;
 Model modelMaceta;
+Model computadora;
+Model silla;
+Model pizarron;
+Model avioneta;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
@@ -265,6 +269,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	computadora.loadModel("../../models/computadora/computadora.obj");
+	silla.loadModel("../../models/silla/silla.obj");
+	pizarron.loadModel("../../models/pizarron/pizarron.obj");
+	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -900,7 +908,7 @@ void applicationLoop() {
 		modelTree.setViewMatrix(view);
 		modelTree.setPosition(glm::vec3(0.0, 0.4, 4.0));
 		modelTree.setScale(glm::vec3(1.0, 1.0, 1.0));
-		modelTree.render();
+		//modelTree.render();
 
 		modelPalma.setShader(&shaderLighting);
 		modelPalma.setProjectionMatrix(projection);
@@ -911,6 +919,37 @@ void applicationLoop() {
 		modelPalma.setPosition(glm::vec3(4.0, 0.0, 4.5));
 		modelPalma.setScale(glm::vec3(0.1, 0.1, 0.1));
 		modelPalma.render();
+
+		computadora.setShader(&shaderLighting);
+		computadora.setProjectionMatrix(projection);
+		computadora.setViewMatrix(view);
+		computadora.setPosition(glm::vec3(0.0, 0.4, 4.0));
+		computadora.setScale(glm::vec3(0.08, 0.08, 0.08));
+		computadora.render();
+		computadora.setPosition(glm::vec3(9.33, 4.8675, -14.33));
+		computadora.render();
+
+		pizarron.setShader(&shaderLighting);
+		pizarron.setProjectionMatrix(projection);
+		pizarron.setViewMatrix(view);
+		pizarron.setScale(glm::vec3(0.4, 0.4, 0.4));
+		silla.setPosition(glm::vec3(0.0, 3.0, 2.0));
+		glm::mat4 pizz = glm::rotate(pizz, glm::radians(180.0f), glm::vec3(0, 1, 0));
+		pizarron.render(pizz);
+
+		silla.setShader(&shaderLighting);
+		silla.setProjectionMatrix(projection);
+		silla.setViewMatrix(view);
+		silla.setPosition(glm::vec3(9.33, 4.8675, -14.33));
+		silla.setScale(glm::vec3(0.2, 0.2, 0.2));
+		//silla.render();
+
+		avioneta.setShader(&shaderLighting);
+		avioneta.setProjectionMatrix(projection);
+		avioneta.setViewMatrix(view);
+		avioneta.setPosition(glm::vec3(0.0, 25.0, 2.0));
+		avioneta.setScale(glm::vec3(0.2, 0.2, 0.2));
+		avioneta.render();
 
 		/*modelAirCraft.setShader(&shaderLighting);
 		modelAirCraft.setProjectionMatrix(projection);
@@ -2036,6 +2075,7 @@ void applicationLoop() {
 		sphere.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 		sphere.enableWireMode();
 		sphere.render(lightModelmatrix);
+
 
 		// Se Dibuja el Skybox
 		shaderCubeTexture.turnOn();
