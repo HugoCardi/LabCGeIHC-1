@@ -1536,11 +1536,14 @@ void applicationLoop() {
 		boxLadrillos.setPosition(glm::vec3(9.33, 1.1182, -18.106));
 		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
 		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(8.2117, 1.1182, -8.002875));
-		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 20.10625));
+		boxLadrillos.setPosition(glm::vec3(7.2117, 1.1182, -9.52645));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 17.059));
 		boxLadrillos.render();
 		boxLadrillos.setPosition(glm::vec3(5.045, 1.1182, -6.54211));
 		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 1.25));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(9.33, 1.1182, -0.999));
+		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
 		boxLadrillos.render();
 		//Primer piso
 		boxLadrillos.setPosition(glm::vec3(5.045, 3.45175, -6.85461));
@@ -1568,44 +1571,44 @@ void applicationLoop() {
 		boxParedSalon.setProjectionMatrix(projection);
 		boxParedSalon.setViewMatrix(view);
 		//Primer piso
-		boxLadrillos.setPosition(glm::vec3(9.33, 3.45175, -4.107));
-		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(9.33, 3.45175, -21.214));
-		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(7.2117, 3.45175, -12.6605));
-		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 17.007));
-		boxLadrillos.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 3.45175, -4.107));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 3.45175, -21.214));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 3.45175, -12.6605));
+		boxParedSalon.setScale(glm::vec3(0.1, 1.8335, 17.007));
+		boxParedSalon.render();
 		//Segundo pios
-		boxLadrillos.setPosition(glm::vec3(9.33, 5.78425, -4.107));
-		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(9.33, 5.78425, -21.214));
-		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(7.2117, 5.78425, -18.568));
-		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 5.196));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(7.2117, 5.78425, -9.5875));
-		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 10.761));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(7.2117, 6.5755, -15.468));
-		boxLadrillos.setScale(glm::vec3(0.1, 0.25, 1.0)); 
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(10.2886, 5.78425, -15.018));
-		boxLadrillos.setScale(glm::vec3(5.1799, 1.8335, 0.1));
-		boxLadrillos.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 5.78425, -4.107));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 5.78425, -21.214));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 5.78425, -18.568));
+		boxParedSalon.setScale(glm::vec3(0.1, 1.8335, 5.196));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 5.78425, -9.5875));
+		boxParedSalon.setScale(glm::vec3(0.1, 1.8335, 10.761));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 6.5755, -15.468));
+		boxParedSalon.setScale(glm::vec3(0.1, 0.25, 1.0));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(10.2886, 5.78425, -15.018));
+		boxParedSalon.setScale(glm::vec3(5.1799, 1.8335, 0.1));
+		boxParedSalon.render();
 		//Tercer piso
-		boxLadrillos.setPosition(glm::vec3(9.33, 8.261, -4.107));
-		boxLadrillos.setScale(glm::vec3(7.971, 2.12, 0.1));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(9.33, 8.261, -21.214));
-		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
-		boxLadrillos.render();
-		boxLadrillos.setPosition(glm::vec3(7.2117, 8.261, -12.6605));
-		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 17.007));
-		boxLadrillos.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 8.261, -4.107));
+		boxParedSalon.setScale(glm::vec3(7.971, 2.12, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 8.261, -21.214));
+		boxParedSalon.setScale(glm::vec3(7.971, 2.12, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 8.261, -12.6605));
+		boxParedSalon.setScale(glm::vec3(0.1, 2.12, 17.007));
+		boxParedSalon.render();
 
 
 
