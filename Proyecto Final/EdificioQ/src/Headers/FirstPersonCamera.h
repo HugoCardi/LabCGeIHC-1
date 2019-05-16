@@ -14,6 +14,7 @@ public:
 	void mouseMoveCamera(float xoffset, float yoffset, float dt);
 	void scrollMoveCamera(float soffset, float dt);
 	void updateCamera();
+	void update();
 	void moveFrontCamera(bool dir, float dt);
 	void moveRightCamera(bool dir, float dt);
 };
