@@ -11,6 +11,10 @@
 //glfw include
 #include <GLFW/glfw3.h>
 
+//openAl include
+#include <al.h>
+#include <AL/alut.h>
+
 //GLM include
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -148,12 +152,40 @@ int screenWidth;
 int screenHeight;
 
 GLFWwindow * window;
-
+bool aux = true;
 bool exitApp = false;
 int lastMousePosX, offsetX;
 int lastMousePosY, offsetY;
-
 double deltaTime;
+float compy = glm::cos(glm::radians(-45.0f));
+
+//SONIDO
+#define NUM_BUFFERS 3
+#define NUM_SOURCES 3
+#define NUM_ENVIRONMENTS 1
+
+ALfloat listenerPos[] = { 0.0, 0.0, 4.0 };
+ALfloat listenerVel[] = { 0.0, 0.0, 0.0 };
+ALfloat listenerOri[] = { 0.0, 0.0, 1.0, 0.0, 1.0, 0.0 };
+
+ALfloat source0Pos[] = { -20.0, 0.0, -10.0 };
+ALfloat source0Vel[] = { 1.0, 1.0, 1.0 };
+
+ALfloat source1Pos[] = { 2.0, 0.0, 0.0 };
+ALfloat source1Vel[] = { 0.0, 0.0, 0.0 };
+
+ALfloat source2Pos[] = { 0.0, 0.0, -4.0 };
+ALfloat source2Vel[] = { 0.0, 0.0, 0.0 };
+
+ALuint buffer[NUM_BUFFERS];
+ALuint source[NUM_SOURCES];
+ALuint environment[NUM_ENVIRONMENTS];
+
+ALsizei size, freq;
+ALenum format;
+ALvoid *data;
+int ch;
+ALboolean loop;
 
 // Se definen todos las funciones.
 void reshapeCallback(GLFWwindow* Window, int widthRes, int heightRes);
@@ -226,6 +258,57 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	shaderSpotLight.initialize("../../Shaders/typeLight.vs", "../../Shaders/spotLight.fs");
 	shaderLighting.initialize("../../Shaders/typeLight.vs", "../../Shaders/multipleLights.fs");
 
+	//sonido
+	alutInit(0, NULL);
+	alListenerfv(AL_POSITION, listenerPos);
+	alListenerfv(AL_VELOCITY, listenerVel);
+	alListenerfv(AL_ORIENTATION, listenerOri);
+
+	alGetError(); // clear any error messages
+	if (alGetError() != AL_NO_ERROR) {
+		printf("- Error creating buffers !!\n");
+		exit(1);
+	}
+	else {
+		printf("init() - No errors yet.");
+	}
+
+	// Generate buffers, or else no sound will happen!
+	alGenBuffers(NUM_BUFFERS, buffer);
+	buffer[0] = alutCreateBufferFromFile("../../sounds/MadSounds.wav");
+	buffer[1] = alutCreateBufferFromFile("../../sounds/sismica.wav");
+	alGetError(); /* clear error */
+	alGenSources(NUM_SOURCES, source);
+	if (alGetError() != AL_NO_ERROR) {
+		printf("- Error creating sources !!\n");
+		exit(2);
+	}
+	else {
+		printf("init - no errors after alGenSources\n");
+	}
+
+	source0Pos[0] = -20.0;
+	source0Pos[1] = 0.0;
+	source0Pos[2] = -10.0;
+	alSourcef(source[0], AL_PITCH, 1.0f);
+	alSourcef(source[0], AL_GAIN, 1.0f);
+	alSourcefv(source[0], AL_POSITION, source0Pos);
+	alSourcefv(source[0], AL_VELOCITY, source0Vel);
+	alSourcei(source[0], AL_BUFFER, buffer[0]);
+	alSourcei(source[0], AL_LOOPING, AL_TRUE);
+	alSourcef(source[0], AL_MAX_DISTANCE, 1200);
+
+	source1Pos[0] = -20.0;
+	source1Pos[1] = 0.0;
+	source1Pos[2] = -10.0;
+	alSourcef(source[1], AL_PITCH, 1.0f);
+	alSourcef(source[1], AL_GAIN, 1.0f);
+	alSourcefv(source[1], AL_POSITION, source1Pos);
+	alSourcefv(source[1], AL_VELOCITY, source1Vel);
+	alSourcei(source[1], AL_BUFFER, buffer[1]);
+	alSourcei(source[1], AL_LOOPING, AL_TRUE);
+	alSourcef(source[1], AL_MAX_DISTANCE, 1200);
+
 	sphereAnimacion.init();
 	sphereAnimacion.setShader(&shaderLighting);
 	sphereAnimacion.setColor(glm::vec3(0.3, 0.3, 1.0));
@@ -278,24 +361,23 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxParedSalon.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
-	//modelTree.loadModel("../../models/Tree/Tree.obj");
-	//modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	modelTree.loadModel("../../models/Tree/Tree.obj");
+	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
 	//computadora.loadModel("../../models/computadora/computadora.obj");
 	silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
-	/*busto.loadModel("../../models/busto/busto.obj");
+	busto.loadModel("../../models/busto/busto.obj");
 	radio.loadModel("../../models/radio/radio.obj");
 	asientos.loadModel("../../models/asientos/asientos.obj");
 	maquina.loadModel("../../models/maquina/maquina.obj");
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
-	*/
+	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
 	camera->setPosition(glm::vec3(0.0f, 1.0f, 0.4f));
-	
 
 	// Textura Piso exterior
 	int imageWidth, imageHeight;
@@ -792,10 +874,29 @@ bool processInput(bool continueApplication) {
 	}
 	TimeManager::Instance().CalculateFrameRate(false);
 	deltaTime = TimeManager::Instance().DeltaTime;
+	//control de musica
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		alSourcePlay(source[0]);
+		//alSourceRewind(source[0]);
+	}
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+		alSourcePause(source[0]);
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+		alSourcePlay(source[1]);
+	}
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+		alSourcePause(source[1]);
+	//control de camaras
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
 		camera->setPosition(glm::vec3(0.0f, 1.0f, 8.0f));
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camera->setPosition(glm::vec3(10.0f, 6.0f, -15.5f));
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		camera->setPosition(glm::vec3(0.0f, 15.0f, 20.0f));
+		camera->setFront(glm::vec3(0.0, -compy, -1.0));
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+		camera->setFront(glm::vec3(1.0, 1.0, -1.0));
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -827,6 +928,7 @@ void applicationLoop() {
 	int indexKeyFrameBrazoCurr = 0;
 	int indexKeyFrameBrazoNext = 1;
 	float interpolation = 0.0;
+	
 
 	while (psi) {
 		psi = processInput(true);
@@ -839,7 +941,9 @@ void applicationLoop() {
 			(float)screenWidth / screenWidth, 0.01f, 100.0f);
 		// matrix de vista
 		glm::mat4 view = camera->getViewMatrix();
-
+		//sonido
+		alListenerfv(AL_POSITION, glm::value_ptr(camera->getPosition()));
+		alListenerfv(AL_ORIENTATION, glm::value_ptr(camera->getFront()));
 		cylinderAnimacion.setProjectionMatrix(projection);
 		cylinderAnimacion.setViewMatrix(view);
 		sphereAnimacion.setProjectionMatrix(projection);
@@ -2052,7 +2156,8 @@ void applicationLoop() {
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
 		//Septimo Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
+		//boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
+		boxMuro.setPosition(glm::vec3(0.0, 0.27, 6.89));
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
 		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89));

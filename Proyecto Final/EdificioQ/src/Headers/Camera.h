@@ -25,6 +25,10 @@ public:
 		this->position = position;
 	}
 
+	void setFront(glm::vec3 front) {
+		this->front = front;
+	}
+
 	glm::vec3 getPosition() {
 		return this->position;
 	}
