@@ -278,25 +278,25 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxParedSalon.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
-	modelTree.loadModel("../../models/Tree/Tree.obj");
-	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	
-	busto.loadModel("../../models/busto/busto.obj");
+	//modelTree.loadModel("../../models/Tree/Tree.obj");
+	//modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	//computadora.loadModel("../../models/computadora/computadora.obj");
+	silla.loadModel("../../models/silla/silla.obj");
+	maestro.loadModel("../../models/maestro/persona.obj");
+	pizarron.loadModel("../../models/pizarron/pizarron.obj");
+	/*busto.loadModel("../../models/busto/busto.obj");
 	radio.loadModel("../../models/radio/radio.obj");
 	asientos.loadModel("../../models/asientos/asientos.obj");
 	maquina.loadModel("../../models/maquina/maquina.obj");
-	computadora.loadModel("../../models/computadora/computadora.obj");
-	silla.loadModel("../../models/silla/silla.obj");
-	pizarron.loadModel("../../models/pizarron/pizarron.obj");
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
-	maestro.loadModel("../../models/maestro/persona.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
-	
+	*/
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
 	camera->setPosition(glm::vec3(0.0f, 1.0f, 0.4f));
 	
+
 	// Textura Piso exterior
 	int imageWidth, imageHeight;
 	Texture texture("../../Textures/piso_exterior.jpg");
@@ -792,6 +792,10 @@ bool processInput(bool continueApplication) {
 	}
 	TimeManager::Instance().CalculateFrameRate(false);
 	deltaTime = TimeManager::Instance().DeltaTime;
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+		camera->setPosition(glm::vec3(0.0f, 1.0f, 8.0f));
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		camera->setPosition(glm::vec3(10.0f, 6.0f, -15.5f));
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -997,38 +1001,128 @@ void applicationLoop() {
 		computadora.setShader(&shaderLighting);
 		computadora.setProjectionMatrix(projection);
 		computadora.setViewMatrix(view);
-		computadora.setPosition(glm::vec3(0.0, 0.4, 4.0));
-		computadora.setScale(glm::vec3(0.08, 0.08, 0.08));
-		//computadora.render();
-		computadora.setPosition(glm::vec3(9.33, 4.8675, -14.33));
+		computadora.setScale(glm::vec3(0.12, 0.12, 0.12));
+		computadora.setPosition(glm::vec3(7.6, 4.8675, -17.0));	
 		computadora.render();
-
-		maestro.setShader(&shaderLighting);
-		maestro.setProjectionMatrix(projection);
-		maestro.setViewMatrix(view);
-		maestro.setPosition(glm::vec3(0.0, 0.4, 4.0));
-		maestro.setScale(glm::vec3(0.4, 0.4, 0.4));
-		//maestro.render();
-
-		
-		pizarron.setShader(&shaderLighting);
-		pizarron.setProjectionMatrix(projection);
-		pizarron.setViewMatrix(view);
-		pizarron.setScale(glm::vec3(0.4, 0.4, 0.4));
-		glm::mat4 pizz = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
-		pizz = glm::translate(pizz, glm::vec3(0.0, 1.5, 2.0));
-		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
-		//pizarron.render(pizz);
-
+		computadora.setPosition(glm::vec3(8.2, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(8.8, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(9.4, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(7.6, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(8.2, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(8.8, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(9.4, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(7.6, 4.8675, -19.5));
+		computadora.render();
+		computadora.setPosition(glm::vec3(8.2, 4.8675, -19.5));
+		computadora.render();
+		computadora.setPosition(glm::vec3(8.8, 4.8675, -19.5));
+		computadora.render();
+		computadora.setPosition(glm::vec3(9.4, 4.8675, -19.5));
+		computadora.render();
+		//lado derecho
+		computadora.setPosition(glm::vec3(11.0, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(11.6, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(12.2, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(12.8, 4.8675, -17.0));
+		computadora.render();
+		computadora.setPosition(glm::vec3(11.0, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(11.6, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(12.2, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(12.8, 4.8675, -18.3));
+		computadora.render();
+		computadora.setPosition(glm::vec3(11.0, 4.8675, -19.5));
+		computadora.render();
+		computadora.setPosition(glm::vec3(11.6, 4.8675, -19.5));
+		computadora.render();
+		computadora.setPosition(glm::vec3(12.2, 4.8675, -19.5));
+		computadora.render();
+		computadora.setPosition(glm::vec3(12.8, 4.8675, -19.5));
+		computadora.render();
 	
 		silla.setShader(&shaderLighting);
 		silla.setProjectionMatrix(projection);
 		silla.setViewMatrix(view);
-		silla.setScale(glm::vec3(0.2, 0.2, 0.2));
+		silla.setScale(glm::vec3(0.6, 0.6, 0.6));
 		glm::mat4 si = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
-		si = glm::translate(si, glm::vec3(9.33, 4.8675, -14.33));
-		si = glm::rotate(si, glm::radians(-90.0f), glm::vec3(0, 1, 0));
-		//silla.render(si);
+		si = glm::translate(si, glm::vec3(7.6, 4.8675, -16.5));
+		si = glm::rotate(si, glm::radians(-180.0f), glm::vec3(0, 1, 0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.0, 0.0, 1.3));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.0, 0.0, 1.3));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		//lado derecho
+		si = glm::translate(si, glm::vec3(-1.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.0, 0.0, -1.3));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(0.0, 0.0, -1.3));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		si = glm::translate(si, glm::vec3(-0.6, 0.0, 0.0));
+		silla.render(si);
+		
+		maestro.setShader(&shaderLighting);
+		maestro.setProjectionMatrix(projection);
+		maestro.setViewMatrix(view);
+		maestro.setPosition(glm::vec3(11.0, 4.8675, -20.5));
+		maestro.setScale(glm::vec3(0.6, 0.6, 0.6));
+		maestro.render();
+
+		pizarron.setShader(&shaderLighting);
+		pizarron.setProjectionMatrix(projection);
+		pizarron.setViewMatrix(view);
+		pizarron.setScale(glm::vec3(0.65, 0.65, 0.65));
+		glm::mat4 pizz = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
+		pizz = glm::translate(pizz, glm::vec3(10.0, 6.1, -21.1));
+		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
+		pizarron.render(pizz);
 
 		avioneta.setShader(&shaderLighting);
 		avioneta.setProjectionMatrix(projection);
@@ -1202,14 +1296,7 @@ void applicationLoop() {
 		//Piso principal (cesped)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureCespedID);
-		//cubo de prueba
-		box.setShader(&shaderLighting);
-		box.setProjectionMatrix(projection);
-		box.setViewMatrix(view);
-		box.setPosition(glm::vec3(0.0, 1.0, 0.0));
-		box.setScale(glm::vec3(1.0, 1.0, 1.0));
-		box.render();
-
+		
 		boxCesped.setShader(&shaderLighting);
 		boxCesped.setProjectionMatrix(projection);
 		boxCesped.setViewMatrix(view);
