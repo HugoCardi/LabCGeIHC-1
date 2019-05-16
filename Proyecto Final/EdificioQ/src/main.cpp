@@ -37,6 +37,7 @@ Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
 Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
+Box boxPlafonL, boxParedSalon;
 Box boxWater, box;
 
 Sphere sphereAnimacion(20, 20);
@@ -267,11 +268,14 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxVentanaBano.scaleUVS(glm::vec2(3.0, 1.0));
 	boxPlafon.init();
 	boxPlafon.scaleUVS(glm::vec2(10.0, 8.0));
+	boxPlafonL.init();
+	boxPlafonL.scaleUVS(glm::vec2(10.0, 40.0));
 	boxTecho.init();
 	boxTecho.scaleUVS(glm::vec2(20.0, 20.0));
 	boxLadrillos.init();
 	boxLadrillos.scaleUVS(glm::vec2(12.0, 4.0));
 	boxPuerta.init();
+	boxParedSalon.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
@@ -732,9 +736,11 @@ void destroy() {
 	boxParedEsc.destroy();
 	boxVentanaBano.destroy();
 	boxPlafon.destroy();
+	boxPlafonL.destroy();
 	boxTecho.destroy();
 	boxLadrillos.destroy();
 	boxPuerta.destroy();
+	boxParedSalon.destroy();
 	boxWater.destroy();
 }
 
@@ -1238,46 +1244,46 @@ void applicationLoop() {
 		boxMarmolCentral.setViewMatrix(view);
 		//Parte central planta baja
 		boxMarmolCentral.setPosition(glm::vec3(0.0, 0.201, -7.970875));
-		boxMarmolCentral.setScale(glm::vec3(10.0, 0.001, 7.94175));
+		boxMarmolCentral.setScale(glm::vec3(10.233, 0.001, 7.94175));
 		boxMarmolCentral.render();
 		//Primer piso
 		//Lado izq escaleras
-		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 2.5345, -8.087545));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 7.70845));
+		boxMarmolCentral.setPosition(glm::vec3(-3.39155, 2.5345, -8.087545));
+		boxMarmolCentral.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxMarmolCentral.render();
 		//Frente escaleras
 		boxMarmolCentral.setPosition(glm::vec3(0.0, 2.5345, -5.783367));
 		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxMarmolCentral.render();
 		//Lado der escaleras
-		boxMarmolCentral.setPosition(glm::vec3(3.3333, 2.5345, -8.087545));
-		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		boxMarmolCentral.setPosition(glm::vec3(3.39155, 2.5345, -8.087545));
+		boxMarmolCentral.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxMarmolCentral.render();
 		//Segundo piso
 		//Lado izq escaleras
-		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 4.8675, -8.087545));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 7.70845));
+		boxMarmolCentral.setPosition(glm::vec3(-3.39155, 4.8675, -8.087545));
+		boxMarmolCentral.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxMarmolCentral.render();
 		//Frente escaleras
 		boxMarmolCentral.setPosition(glm::vec3(0.0, 4.8675, -5.783367));
 		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxMarmolCentral.render();
 		//Lado der escaleras
-		boxMarmolCentral.setPosition(glm::vec3(3.3333, 4.8675, -8.087545));
-		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		boxMarmolCentral.setPosition(glm::vec3(3.39155, 4.8675, -8.087545));
+		boxMarmolCentral.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxMarmolCentral.render();
 		//Tercer piso
 		//Lado izq escaleras
-		boxMarmolCentral.setPosition(glm::vec3(-3.3333, 7.201, -8.087545));
-		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 7.70845));
+		boxMarmolCentral.setPosition(glm::vec3(-3.39155, 7.201, -8.087545));
+		boxMarmolCentral.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxMarmolCentral.render();
 		//Frente escaleras
 		boxMarmolCentral.setPosition(glm::vec3(0.0, 7.201, -5.783367));
 		boxMarmolCentral.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxMarmolCentral.render();
 		//Lado der escaleras
-		boxMarmolCentral.setPosition(glm::vec3(3.3333, 7.201, -8.087545));
-		boxMarmolCentral.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		boxMarmolCentral.setPosition(glm::vec3(3.39155, 7.201, -8.087545));
+		boxMarmolCentral.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxMarmolCentral.render();
 		//Pisos Laterales
 		//Piso laterales planta baja
@@ -1286,36 +1292,36 @@ void applicationLoop() {
 		boxMarmolLados.setViewMatrix(view);
 		//Piso der planta baja
 		boxMarmolLados.setPosition(glm::vec3(9.33, 0.201, -12.662));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 29.77));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 29.6535));
 		boxMarmolLados.render();
 		//Piso der primer piso
 		boxMarmolLados.setPosition(glm::vec3(9.33, 2.5345, -12.662));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 29.77));
+		boxMarmolLados.setScale(glm::vec3(7.971, 0.001, 29.6535));
 		boxMarmolLados.render();
 		//Piso der segundo piso
 		boxMarmolLados.setPosition(glm::vec3(9.33, 4.8675, -12.662));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 29.77));
+		boxMarmolLados.setScale(glm::vec3(7.971, 0.001, 29.6535));
 		boxMarmolLados.render();
 		//Piso der tercer piso
 		boxMarmolLados.setPosition(glm::vec3(9.33, 7.201, -12.662));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 29.77));
+		boxMarmolLados.setScale(glm::vec3(7.971, 0.001, 29.6535));
 		boxMarmolLados.render();
 		//Piso izq planta baja
 		//Emp
 		boxMarmolLados.setPosition(glm::vec3(-9.33, 0.201, -4.89));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 20.44));
+		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 20.3065));
 		boxMarmolLados.render();
 		//Piso izq primer piso
 		boxMarmolLados.setPosition(glm::vec3(-9.33, 2.5345, -4.89));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 20.44));
+		boxMarmolLados.setScale(glm::vec3(7.971, 0.001, 20.3065));
 		boxMarmolLados.render();
 		//Piso izq segundo piso
 		boxMarmolLados.setPosition(glm::vec3(-9.33, 4.8675, -4.89));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 20.44));
+		boxMarmolLados.setScale(glm::vec3(7.971, 0.001, 20.3065));
 		boxMarmolLados.render();
 		//Piso izq tercer piso
 		boxMarmolLados.setPosition(glm::vec3(-9.33, 7.201, -4.89));
-		boxMarmolLados.setScale(glm::vec3(8.67, 0.001, 20.44));
+		boxMarmolLados.setScale(glm::vec3(7.971, 0.001, 20.3065));
 		boxMarmolLados.render();
 
 
@@ -1327,47 +1333,85 @@ void applicationLoop() {
 		boxPlafon.setViewMatrix(view);
 		//Parte central planta baja
 		//Lado izq escaleras
-		boxPlafon.setPosition(glm::vec3(-3.3333, 2.0355, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 7.70845));
+		boxPlafon.setPosition(glm::vec3(-3.39155, 2.0355, -8.087545));
+		boxPlafon.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxPlafon.render();
 		//Frente escaleras
 		boxPlafon.setPosition(glm::vec3(0.0, 2.0355, -5.783367));
 		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxPlafon.render();
 		//Lado der escaleras
-		boxPlafon.setPosition(glm::vec3(3.3333, 2.0355, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		boxPlafon.setPosition(glm::vec3(3.39155, 2.0355, -8.087545));
+		boxPlafon.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxPlafon.render();
 		//Parte central primer piso
 		//Lado izq escaleras
-		boxPlafon.setPosition(glm::vec3(-3.3333, 4.3685, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 7.70845));
+		boxPlafon.setPosition(glm::vec3(-3.39155, 4.3685, -8.087545));
+		boxPlafon.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxPlafon.render();
 		//Frente escaleras
 		boxPlafon.setPosition(glm::vec3(0.0, 4.3685, -5.783367));
 		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxPlafon.render();
 		//Lado der escaleras
-		boxPlafon.setPosition(glm::vec3(3.3333, 4.3685, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		boxPlafon.setPosition(glm::vec3(3.39155, 4.3685, -8.087545));
+		boxPlafon.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxPlafon.render();
 		//Parte central segundo piso
 		//Lado izq escaleras
-		boxPlafon.setPosition(glm::vec3(-3.3333, 6.701, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 7.70845));
+		boxPlafon.setPosition(glm::vec3(-3.39155, 6.701, -8.087545));
+		boxPlafon.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxPlafon.render();
 		//Frente escaleras
 		boxPlafon.setPosition(glm::vec3(0.0, 6.701, -5.783367));
 		boxPlafon.setScale(glm::vec3(3.3333, 0.001, 3.099967));
 		boxPlafon.render();
 		//Lado der escaleras
-		boxPlafon.setPosition(glm::vec3(3.3333, 6.701, -8.087545));
-		boxPlafon.setScale(glm::vec3(3.333, 0.001, 7.70845));
+		boxPlafon.setPosition(glm::vec3(3.39155, 6.701, -8.087545));
+		boxPlafon.setScale(glm::vec3(3.48, 0.001, 7.70845));
 		boxPlafon.render();
 		//Tercer piso
 		boxPlafon.setPosition(glm::vec3(0.0, 9.321, -8.029125));
 		boxPlafon.setScale(glm::vec3(10.0, 0.001, 7.82525));
 		boxPlafon.render();
+		//Plafon de los edificios laterales
+		boxPlafonL.setShader(&shaderLighting);
+		boxPlafonL.setProjectionMatrix(projection);
+		boxPlafonL.setViewMatrix(view);
+		//Lado izquierdo
+		//Planta baja
+		boxPlafonL.setPosition(glm::vec3(-9.33, 2.0355, -4.89));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 20.3065));
+		boxPlafonL.render();
+		//Primer piso
+		boxPlafonL.setPosition(glm::vec3(-9.33, 4.3685, -4.89));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 20.3065));
+		boxPlafonL.render();
+		//Segundo piso
+		boxPlafonL.setPosition(glm::vec3(-9.33, 6.701, -4.89));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 20.3065));
+		boxPlafonL.render();
+		//Tercer piso
+		boxPlafonL.setPosition(glm::vec3(-9.33, 9.321, -4.89));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 20.3065));
+		boxPlafonL.render();
+		//Lado derecho
+		//Planta baja
+		boxPlafonL.setPosition(glm::vec3(9.33, 2.0355, -12.662));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 29.6535));
+		boxPlafonL.render();
+		//Primer piso
+		boxPlafonL.setPosition(glm::vec3(9.33, 4.3685, -12.662));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 29.6535));
+		boxPlafonL.render();
+		//Segundo piso
+		boxPlafonL.setPosition(glm::vec3(9.33, 6.701, -12.662));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 29.6535));
+		boxPlafonL.render();
+		//Tercer piso
+		boxPlafonL.setPosition(glm::vec3(9.33, 9.321, -12.662));
+		boxPlafonL.setScale(glm::vec3(7.971, 0.001, 29.6535));
+		boxPlafonL.render();
 
 
 		//Techo del edificio
@@ -1379,6 +1423,14 @@ void applicationLoop() {
 		//Parte central techo
 		boxTecho.setPosition(glm::vec3(0.0, 9.821, -7.970875));
 		boxTecho.setScale(glm::vec3(10.0, 0.001, 7.94175));
+		boxTecho.render();
+		//Techo lado derecho
+		boxTecho.setPosition(glm::vec3(9.33, 9.821, -12.662));
+		boxTecho.setScale(glm::vec3(7.971, 0.001, 29.6535));
+		boxTecho.render();
+		//Techo lado izquierdo
+		boxTecho.setPosition(glm::vec3(-9.33, 9.821, -4.89));
+		boxTecho.setScale(glm::vec3(7.971, 0.001, 20.3065));
 		boxTecho.render();
 
 
@@ -1421,8 +1473,8 @@ void applicationLoop() {
 		boxLadrillos.setScale(glm::vec3(3.4485, 2.12, 0.1));
 		boxLadrillos.render();
 		//Lado derecho
-		boxLadrillos.setPosition(glm::vec3(3.276, 8.261, -7.28361));
-		boxLadrillos.setScale(glm::vec3(3.4485, 2.12, 0.1));
+		boxLadrillos.setPosition(glm::vec3(2.47135, 8.261, -7.28361));
+		boxLadrillos.setScale(glm::vec3(5.0575, 2.12, 0.1));
 		boxLadrillos.render();
 		//Ladrillos laterales izquierdos
 		boxLadrillos.setPosition(glm::vec3(-4.945, 1.1182, -9.5503));
@@ -1450,6 +1502,126 @@ void applicationLoop() {
 		boxLadrillos.setPosition(glm::vec3(4.945, 8.261, -9.5503));
 		boxLadrillos.setScale(glm::vec3(0.1, 2.12, 4.43339));
 		boxLadrillos.render();
+		//Ladrillos edificio izquierdo
+		//Planta baja
+		boxLadrillos.setPosition(glm::vec3(-6.82835, 1.1182, -7.28361));
+		boxLadrillos.setScale(glm::vec3(2.6667, 1.8335, 0.1));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-8.2117, 1.1182, -2.587305));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 9.29261));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-9.33, 1.1182, 2.109));
+		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1)); 
+		boxLadrillos.render();
+		//Primer piso
+		boxLadrillos.setPosition(glm::vec3(-6.82835, 3.45175, -7.28361));
+		boxLadrillos.setScale(glm::vec3(2.6667, 1.8335, 0.1));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-8.2117, 3.45175, -2.587305));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 9.29261));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-9.33, 3.45175, 2.109));
+		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Segundo piso
+		boxLadrillos.setPosition(glm::vec3(-6.82835, 5.78425, -7.28361));
+		boxLadrillos.setScale(glm::vec3(2.6667, 1.8335, 0.1));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-8.2117, 5.78425, -2.587305));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 9.29261));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-9.33, 5.78425, 2.109));
+		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Tercer piso
+		boxLadrillos.setPosition(glm::vec3(-6.82835, 8.261, -7.28361));
+		boxLadrillos.setScale(glm::vec3(2.6667, 2.12, 0.1));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-8.2117, 8.261, -2.587305));
+		boxLadrillos.setScale(glm::vec3(0.1, 2.12, 9.29261));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(-9.33, 8.261, 2.109));
+		boxLadrillos.setScale(glm::vec3(7.971, 2.12, 0.1));
+		boxLadrillos.render();
+		//Ladrillos edificio derecho
+		//Planta baja
+		boxLadrillos.setPosition(glm::vec3(9.33, 1.1182, -18.106));
+		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(7.2117, 1.1182, -9.52645));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 17.059));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(5.045, 1.1182, -6.54211));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 1.25));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(9.33, 1.1182, -0.999));
+		boxLadrillos.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxLadrillos.render();
+		//Primer piso
+		boxLadrillos.setPosition(glm::vec3(5.045, 3.45175, -6.85461));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 0.625));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(5.045, 3.45175, -4.8125));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 0.625));
+		boxLadrillos.render();
+		//Segundo piso
+		boxLadrillos.setPosition(glm::vec3(5.045, 5.78425, -6.85461));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 0.625));
+		boxLadrillos.render();
+		boxLadrillos.setPosition(glm::vec3(5.045, 5.78425, -4.8125));
+		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 0.625));
+		boxLadrillos.render();
+		//Tercer piso
+		boxLadrillos.setPosition(glm::vec3(5.045, 8.261, -5.125));
+		boxLadrillos.setScale(glm::vec3(0.1, 2.12, 1.25));
+		boxLadrillos.render();
+
+		//Pared de los salones edificio derecho
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureID3);
+		boxParedSalon.setShader(&shaderLighting);
+		boxParedSalon.setProjectionMatrix(projection);
+		boxParedSalon.setViewMatrix(view);
+		//Primer piso
+		boxParedSalon.setPosition(glm::vec3(9.33, 3.45175, -4.107));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 3.45175, -21.214));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 3.45175, -12.6605));
+		boxParedSalon.setScale(glm::vec3(0.1, 1.8335, 17.007));
+		boxParedSalon.render();
+		//Segundo pios
+		boxParedSalon.setPosition(glm::vec3(9.33, 5.78425, -4.107));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 5.78425, -21.214));
+		boxParedSalon.setScale(glm::vec3(7.971, 1.8335, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 5.78425, -18.568));
+		boxParedSalon.setScale(glm::vec3(0.1, 1.8335, 5.196));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 5.78425, -9.5875));
+		boxParedSalon.setScale(glm::vec3(0.1, 1.8335, 10.761));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 6.5755, -15.468));
+		boxParedSalon.setScale(glm::vec3(0.1, 0.25, 1.0));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(10.2886, 5.78425, -15.018));
+		boxParedSalon.setScale(glm::vec3(5.1799, 1.8335, 0.1));
+		boxParedSalon.render();
+		//Tercer piso
+		boxParedSalon.setPosition(glm::vec3(9.33, 8.261, -4.107));
+		boxParedSalon.setScale(glm::vec3(7.971, 2.12, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(9.33, 8.261, -21.214));
+		boxParedSalon.setScale(glm::vec3(7.971, 2.12, 0.1));
+		boxParedSalon.render();
+		boxParedSalon.setPosition(glm::vec3(7.2117, 8.261, -12.6605));
+		boxParedSalon.setScale(glm::vec3(0.1, 2.12, 17.007));
+		boxParedSalon.render();
+
 
 
 		//Puerta de los salones
@@ -1492,7 +1664,63 @@ void applicationLoop() {
 		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
 		boxPuerta.render();
 		//Tercer piso
+		boxPuerta.setPosition(glm::vec3(0.833375, 7.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
 		boxPuerta.setPosition(glm::vec3(3.99495, 7.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Puertas del edificio izquierdo
+		//Planta baja
+		boxPuerta.setPosition(glm::vec3(-7.0, 0.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 0.9515, -6.90025));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 0.9515, -2.501));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-7.0, 0.9515, 2.0585));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Primer piso
+		boxPuerta.setPosition(glm::vec3(-7.0, 3.285, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 3.285, -6.90025));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 3.285, -2.501));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-7.0, 3.285, 2.0585));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Segundo piso
+		boxPuerta.setPosition(glm::vec3(-7.0, 5.618, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 5.618, -6.90025));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 5.618, -2.501));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-7.0, 5.618, 2.0585));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		//Tercer piso
+		boxPuerta.setPosition(glm::vec3(-7.0, 7.9515, -7.23311));
+		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 7.9515, -6.90025));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-8.1612, 7.9515, -2.501));
+		boxPuerta.setScale(glm::vec3(0.001, 1.5, 0.6667));
+		boxPuerta.render();
+		boxPuerta.setPosition(glm::vec3(-7.0, 7.9515, 2.0585));
 		boxPuerta.setScale(glm::vec3(0.6667, 1.5, 0.001));
 		boxPuerta.render();
 
@@ -1699,6 +1927,221 @@ void applicationLoop() {
 		boxMuro.render();
 
 
+		// HUGO CRUZ 08 / 05 / 2019
+			//COLUMNAS LADO DERECHO//2.109 mit -15.2205 long 34.659
+		//Segundo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 5));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 5));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Tercer Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 4));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 4));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Cuarto Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Quinto Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Sexto Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 1));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 1));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Septimo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Noveno Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55 + 3.108 * 8));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55 + 3.108 * 8));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Decimo Par ALINEADO CENTRAL
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Onceavo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Doceavo Par
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+
+		
+		//Separación entre pisos
+		//Techo Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 9.6832, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 1.29655, 29.5));
+		boxMuro.render();
+		//Techo DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 9.6832, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 1.29655, 29.5));
+		boxMuro.render();
+
+		//Tercero Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 6.9515, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
+		boxMuro.render();
+		//Tercero DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 6.9515, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
+		boxMuro.render();
+
+		//Segundo Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 4.618, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
+		boxMuro.render();
+		//Segundo DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 4.618, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
+		boxMuro.render();
+
+
+		//Primerop Derecho 
+		boxMuro.setPosition(glm::vec3(5.245, 2.285, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
+		boxMuro.render();
+		//Primero DDerecho
+		boxMuro.setPosition(glm::vec3(13.405, 2.285, -12.620));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
+		boxMuro.render();
+
+
+
+		//COLUMNA LADO IZQUIERDO
+		//Primer Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Segundo Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Tercer Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108 * 2));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Cuarto Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108 * 3));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Quinto Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -11.89));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Sexto Par
+		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -11.89 - 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -11.89 - 3.108));
+		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
+		boxMuro.render();
+		//Separacion entre pisos
+		//Techo Izquierdo 
+		boxMuro.setPosition(glm::vec3(-5.245, 9.6832, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 1.29655, 20.0));
+		boxMuro.render();
+		//Techo Izquierdo
+		boxMuro.setPosition(glm::vec3(-13.405, 9.6832, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 1.29655, 20.0));
+		boxMuro.render();
+
+		//Tercero Izquierdo 
+		boxMuro.setPosition(glm::vec3(-5.245, 6.9515, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
+		boxMuro.render();
+		//Tercero Izquierdo
+		boxMuro.setPosition(glm::vec3(-13.405, 6.9515, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
+		boxMuro.render();
+
+		//Segundo Derecho 
+		boxMuro.setPosition(glm::vec3(-5.245, 4.618, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
+		boxMuro.render();
+		//Segundo DDerecho
+		boxMuro.setPosition(glm::vec3(-13.405, 4.618, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
+		boxMuro.render();
+
+
+		//Primerop Derecho 
+		boxMuro.setPosition(glm::vec3(-5.245, 2.285, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
+		boxMuro.render();
+		//Primero DDerecho
+		boxMuro.setPosition(glm::vec3(-13.405, 2.285, -4.89));
+		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
+		boxMuro.render();
+
+		//Paredes frontales de los edificios laterales
+		//Izquierda
+		boxMuro.setPosition(glm::vec3(-9.33, 5.27, 5.205));
+		boxMuro.setScale(glm::vec3(8.67, 10.13, 0.1165));
+		boxMuro.render();
+		//Derecha
+		boxMuro.setPosition(glm::vec3(9.33, 5.27, 2.1085));
+		boxMuro.setScale(glm::vec3(8.67, 10.13, 0.1165));
+		boxMuro.render();
+		//Paredes traseras de los edificios laterales
+		//Izquierda
+		boxMuro.setPosition(glm::vec3(-9.33, 5.27, -14.985));
+		boxMuro.setScale(glm::vec3(8.67, 10.13, 0.1165));
+		boxMuro.render();
+		//Derecha
+		boxMuro.setPosition(glm::vec3(9.33, 5.27, -27.4325));
+		boxMuro.setScale(glm::vec3(8.67, 10.13, 0.1165));
+		boxMuro.render();
+
+		
 		//Textura con el nombre del edificio
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureMurEdifID);
@@ -1790,228 +2233,6 @@ void applicationLoop() {
 		boxVentanal.setPosition(glm::vec3(0.0, 6.9515, -11.8835));
 		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
 		boxVentanal.render();
-
-				//HUGO CRUZ 08/05/2019
-		//COLUMNAS LADO DERECHO//2.109 mit -15.2205 long 34.659
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureTierraID);
-		boxMuro.setShader(&shaderLighting);
-		boxMuro.setProjectionMatrix(projection);
-		boxMuro.setViewMatrix(view);
-		/*
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		*/
-		//Segundo Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 5));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 5));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Tercer Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 4));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 4));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Cuarto Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 3));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 3));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Quinto Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 2));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 2));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Sexto Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89 - 3.108 * 1));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89 - 3.108 * 1));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Septimo Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Octavo Par
-		/*
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55 + 3.108 * 7));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55 + 3.108 * 7));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		*/
-		//Noveno Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -32.55 + 3.108 * 8));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -32.55 + 3.108 * 8));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Decimo Par ALINEADO CENTRAL
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Onceavo Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107 + 3.108 ));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107 + 3.108));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Doceavo Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -4.107 + 3.108 * 2));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -4.107 + 3.108 * 2));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-
-		//Separación entre pisos
-		//Techo Derecho 
-		boxMuro.setPosition(glm::vec3(5.245, 9.68, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-		//Techo DDerecho
-		boxMuro.setPosition(glm::vec3(13.405, 9.68, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-
-		//Tercero Derecho 
-		boxMuro.setPosition(glm::vec3(5.245, 6.9515, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-		//Tercero DDerecho
-		boxMuro.setPosition(glm::vec3(13.405, 6.9515, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-
-		//Segundo Derecho 
-		boxMuro.setPosition(glm::vec3(5.245, 4.618, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-		//Segundo DDerecho
-		boxMuro.setPosition(glm::vec3(13.405, 4.618, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-
-
-		//Primerop Derecho 
-		boxMuro.setPosition(glm::vec3(5.245, 2.285, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-		//Primero DDerecho
-		boxMuro.setPosition(glm::vec3(13.405, 2.285, -12.620));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 29.5));
-		boxMuro.render();
-
-		
-			
-
-
-
-		
-
-		//COLUMNA LADO IZQUIERDO
-		//Primer Par
-		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Segundo Par
-		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Tercer Par
-		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108 * 2));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108 * 2));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Cuarto Par
-		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -4.107 + 3.108 * 3));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -4.107 + 3.108 * 3));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Quinto Par
-		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -11.89));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -11.89));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Sexto Par
-		boxMuro.setPosition(glm::vec3(-5.245, 5.27, -11.89 - 3.108));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(-13.405, 5.27, -11.89 - 3.108));
-		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
-		boxMuro.render();
-		//Separacion entre pisos
-		//Techo Izquierdo 
-		boxMuro.setPosition(glm::vec3(-5.245, 9.68, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-		//Techo Izquierdo
-		boxMuro.setPosition(glm::vec3(-13.405, 9.68, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-
-		//Tercero Izquierdo 
-		boxMuro.setPosition(glm::vec3(-5.245, 6.9515, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-		//Tercero Izquierdo
-		boxMuro.setPosition(glm::vec3(-13.405, 6.9515, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-
-		//Segundo Derecho 
-		boxMuro.setPosition(glm::vec3(-5.245, 4.618, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-		//Segundo DDerecho
-		boxMuro.setPosition(glm::vec3(-13.405, 4.618, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-
-
-		//Primerop Derecho 
-		boxMuro.setPosition(glm::vec3(-5.245, 2.285, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-		//Primero DDerecho
-		boxMuro.setPosition(glm::vec3(-13.405, 2.285, -4.89));
-		boxMuro.setScale(glm::vec3(0.233, 0.50, 20.0));
-		boxMuro.render();
-		
 
 		
 		//Pared Lateral Escaleras
