@@ -276,7 +276,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	/*
+	
 	busto.loadModel("../../models/busto/busto.obj");
 	radio.loadModel("../../models/radio/radio.obj");
 	asientos.loadModel("../../models/asientos/asientos.obj");
@@ -287,7 +287,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
-	*/
+	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
