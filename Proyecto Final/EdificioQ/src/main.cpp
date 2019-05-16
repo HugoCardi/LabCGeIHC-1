@@ -278,19 +278,19 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxParedSalon.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
-	//modelTree.loadModel("../../models/Tree/Tree.obj");
-	//modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	modelTree.loadModel("../../models/Tree/Tree.obj");
+	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
 	//computadora.loadModel("../../models/computadora/computadora.obj");
 	silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
-	/*busto.loadModel("../../models/busto/busto.obj");
+	busto.loadModel("../../models/busto/busto.obj");
 	radio.loadModel("../../models/radio/radio.obj");
 	asientos.loadModel("../../models/asientos/asientos.obj");
 	maquina.loadModel("../../models/maquina/maquina.obj");
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
-	*/
+	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -1696,7 +1696,7 @@ void applicationLoop() {
 		boxParedSalon.setScale(glm::vec3(0.1, 0.25, 1.0));
 		boxParedSalon.render();
 		boxParedSalon.setPosition(glm::vec3(10.2886, 5.78425, -15.018));
-		boxParedSalon.setScale(glm::vec3(5.1799, 1.8335, 0.1));
+		boxParedSalon.setScale(glm::vec3(6.0538, 1.8335, 0.1));
 		boxParedSalon.render();
 		//Tercer piso
 		boxParedSalon.setPosition(glm::vec3(9.33, 8.261, -4.107));
@@ -2052,10 +2052,10 @@ void applicationLoop() {
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
 		//Septimo Par
-		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.4));
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
-		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89));
+		boxMuro.setPosition(glm::vec3(13.405, 5.27, 0.0));
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
 		//Noveno Par
