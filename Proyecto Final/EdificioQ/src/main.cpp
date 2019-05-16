@@ -157,7 +157,10 @@ bool exitApp = false;
 int lastMousePosX, offsetX;
 int lastMousePosY, offsetY;
 double deltaTime;
-float compy = glm::cos(glm::radians(-45.0f));
+float compy = glm::cos(glm::radians(-40.0f));
+float yaw2 = -90.0f;
+float pitch2 = 0.0f;
+float pitch1 = -40.0f;
 
 //SONIDO
 #define NUM_BUFFERS 3
@@ -361,6 +364,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxParedSalon.init();
 	boxWater.init();
 	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
+	
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
 	//computadora.loadModel("../../models/computadora/computadora.obj");
@@ -877,7 +881,6 @@ bool processInput(bool continueApplication) {
 	//control de musica
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
 		alSourcePlay(source[0]);
-		//alSourceRewind(source[0]);
 	}
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
 		alSourcePause(source[0]);
@@ -887,16 +890,30 @@ bool processInput(bool continueApplication) {
 	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
 		alSourcePause(source[1]);
 	//control de camaras
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+		camera->setPitch(pitch2);
+		camera->setYaw(yaw2);
 		camera->setPosition(glm::vec3(0.0f, 1.0f, 8.0f));
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		camera->setPosition(glm::vec3(10.0f, 6.0f, -15.5f));
-	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
-		camera->setPosition(glm::vec3(0.0f, 15.0f, 20.0f));
-		camera->setFront(glm::vec3(0.0, -compy, -1.0));
+		camera->setFront(glm::vec3(0.0, 0.0, -1.0));
+		camera->setUp(glm::vec3(0.0, 1.0, 0.0));
+		camera->update();
 	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		camera->setFront(glm::vec3(1.0, 1.0, -1.0));
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+		camera->setPitch(pitch2);
+		camera->setYaw(yaw2);
+		camera->setPosition(glm::vec3(10.0f, 6.0f, -15.5f));
+		camera->setFront(glm::vec3(0.0, 0.0, -1.0));
+		camera->setUp(glm::vec3(0.0, 1.0, 0.0));
+		camera->update();
+	}
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		camera->setPitch(pitch1);
+		camera->setYaw(yaw2);
+		camera->setPosition(glm::vec3(0.0f, 30.0f, 30.0f));
+		camera->setUp(glm::vec3(0.0, 1.0, 0.0));
+		camera->setFront(glm::vec3(0.0, -compy, -1.0));
+		camera->update();
+	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -1231,9 +1248,9 @@ void applicationLoop() {
 		avioneta.setShader(&shaderLighting);
 		avioneta.setProjectionMatrix(projection);
 		avioneta.setViewMatrix(view);
-		avioneta.setPosition(glm::vec3(0.0, 25.0, 2.0));
+		avioneta.setPosition(glm::vec3(0.0, 20.0, 2.0));
 		avioneta.setScale(glm::vec3(0.2, 0.2, 0.2));
-		//avioneta.render();
+		avioneta.render();
 
 
 		/*modelAirCraft.setShader(&shaderLighting);
@@ -2156,8 +2173,8 @@ void applicationLoop() {
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
 		//Septimo Par
-		//boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
-		boxMuro.setPosition(glm::vec3(0.0, 0.27, 6.89));
+		boxMuro.setPosition(glm::vec3(5.245, 5.27, -11.89));
+		//boxMuro.setPosition(glm::vec3(0.0, 0.27, 6.89));
 		boxMuro.setScale(glm::vec3(0.5, 10.13, 0.23));
 		boxMuro.render();
 		boxMuro.setPosition(glm::vec3(13.405, 5.27, -11.89));
@@ -2605,7 +2622,7 @@ void applicationLoop() {
 			angle = 0.0;
 		else
 			angle += 0.001;
-
+		/*
 		sphere.setShader(&shaderColor);
 		sphere.setColor(glm::vec3(0.4f, 0.3f, 0.6f));
 		sphere.setProjectionMatrix(projection);
@@ -2613,7 +2630,7 @@ void applicationLoop() {
 		sphere.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 		sphere.enableWireMode();
 		sphere.render(lightModelmatrix);
-
+		*/
 
 		// Se Dibuja el Skybox
 		shaderCubeTexture.turnOn();

@@ -39,6 +39,15 @@ void FirstPersonCamera::updateCamera() {
 	this->up = glm::normalize(glm::cross(this->right, this->front));
 }
 
+void FirstPersonCamera::update() {
+	this->front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	this->front.y = sin(glm::radians(pitch));
+	this->front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	this->front = glm::normalize(this->front);
+	this->right = glm::normalize(glm::cross(this->front, this->worldUp));
+	this->up = glm::normalize(glm::cross(this->right, this->front));
+}
+
 void FirstPersonCamera::moveFrontCamera(bool dir, float dt) {
 	if (dir)
 		this->position += (float)dt * speed * this->front;
