@@ -41,7 +41,7 @@ Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
 Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
-Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento;
+Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento, boxSupPuerta, boxLadPuerta;
 Box boxWater, box;
 
 Sphere sphereAnimacion(20, 20);
@@ -368,19 +368,22 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxVentanalOscuro.scaleUVS(glm::vec2(7.0, 1.0));
 	boxVentanalCemento.init();
 	boxVentanalCemento.scaleUVS(glm::vec2(5.0, 1.0));
+	boxSupPuerta.init();
+	boxSupPuerta.scaleUVS(glm::vec2(4.0, 1.0));
+	boxLadPuerta.init();
 
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	//computadora.loadModel("../../models/computadora/computadora.obj");
-	//silla.loadModel("../../models/silla/silla.obj");
-	//maestro.loadModel("../../models/maestro/persona.obj");
-	//pizarron.loadModel("../../models/pizarron/pizarron.obj");
-	//busto.loadModel("../../models/busto/busto.obj");
-	//radio.loadModel("../../models/radio/radio.obj");
-	//asientos.loadModel("../../models/asientos/asientos.obj");
-	//maquina.loadModel("../../models/maquina/maquina.obj");
-	//avioneta.loadModel("../../models/avioneta/avioneta.obj");
-	//mesa.loadModel("../../models/mesa/mesa.obj");
+	computadora.loadModel("../../models/computadora/computadora.obj");
+	silla.loadModel("../../models/silla/silla.obj");
+	maestro.loadModel("../../models/maestro/persona.obj");
+	pizarron.loadModel("../../models/pizarron/pizarron.obj");
+	busto.loadModel("../../models/busto/busto.obj");
+	radio.loadModel("../../models/radio/radio.obj");
+	asientos.loadModel("../../models/asientos/asientos.obj");
+	maquina.loadModel("../../models/maquina/maquina.obj");
+	avioneta.loadModel("../../models/avioneta/avioneta.obj");
+	mesa.loadModel("../../models/mesa/mesa.obj");
 
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
@@ -873,6 +876,8 @@ void destroy() {
 	boxParedSalon.destroy();
 	boxWater.destroy();
 	boxVentanalOscuro.destroy();
+	boxSupPuerta.destroy();
+	boxLadPuerta.destroy();
 }
 
 void reshapeCallback(GLFWwindow* Window, int widthRes, int heightRes) {
@@ -2687,10 +2692,6 @@ void applicationLoop() {
 		boxVentanal.setPosition(glm::vec3(-3.275, 1.11825, -4.1167));
 		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
 		boxVentanal.render();
-		//Central
-		boxVentanal.setPosition(glm::vec3(0.0, 1.11825, -4.1167));
-		boxVentanal.setScale(glm::vec3(3.1, 1.8335, 0.001));
-		//boxVentanal.render();
 		//Lado der
 		boxVentanal.setPosition(glm::vec3(3.275, 1.11825, -4.1167));
 		boxVentanal.setScale(glm::vec3(2.983, 1.8335, 0.001));
@@ -2918,6 +2919,33 @@ void applicationLoop() {
 		boxVentanaBano.setPosition(glm::vec3(7.2117, 6.5755, -15.468));
 		boxVentanaBano.setScale(glm::vec3(0.1, 0.25, 1.0));
 		boxVentanaBano.render();
+
+		//Puerta central
+		//Parte superior
+		boxSupPuerta.setShader(&shaderLighting);
+		boxSupPuerta.setProjectionMatrix(projection);
+		boxSupPuerta.setViewMatrix(view);
+		boxSupPuerta.setPosition(glm::vec3(0.0, 1.86825, -4.1167));
+		boxSupPuerta.setScale(glm::vec3(3.1, 0.3335, 0.001));
+		boxSupPuerta.render();
+		//Partes laterales
+		boxLadPuerta.setShader(&shaderLighting);
+		boxLadPuerta.setProjectionMatrix(projection);
+		boxLadPuerta.setViewMatrix(view);
+		boxLadPuerta.setPosition(glm::vec3(-1.1625, 0.9515, -4.1167));
+		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		boxLadPuerta.render();
+		boxLadPuerta.setPosition(glm::vec3(1.1625, 0.9515, -4.1167));
+		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		boxLadPuerta.render();
+		//Aquí va lo de la textura de las puertas
+		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
+		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		boxLadPuerta.render();
+		boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
+		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		boxLadPuerta.render();
+
 
 		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureWaterID);
