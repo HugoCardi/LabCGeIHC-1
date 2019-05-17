@@ -27,6 +27,7 @@
 #include "Headers/Sphere.h"
 #include "Headers/Cylinder.h"
 #include "Headers/Box.h"
+#include "Headers/Pantalla.h"
 #include "Headers/FirstPersonCamera.h"
 //Texture includes
 #include "Headers/Texture.h"
@@ -42,7 +43,7 @@ Cylinder cylinder(20, 20, 0.5, 0.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
 Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
 Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento, boxSupPuerta, boxLadPuerta;
-Box boxWater, box;
+Pantalla boxProyector, box;
 
 Sphere sphereAnimacion(20, 20);
 Cylinder cylinderAnimacion(20, 20, 0.5, 0.5);
@@ -73,11 +74,12 @@ Model maestro;
 Model mesa;
 Model avioncito;
 
+bool anim1 = false;
 
-GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
+GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureProyectorID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
 GLuint textureParedEscID, textureVentanaBanoID, textureTechoID, texturePlafonID, textureLadrillosID, texturePuertaID;
-GLuint cubeTextureID, textureVentanalOscuro , textureVentanalCemento;
+GLuint cubeTextureID, textureVentanalOscuro , textureVentanalCemento, texturePuertaIzq, texturePuertaDer, textureQ;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
 	std::vector<std::vector<glm::mat4>> keyFrames;
@@ -363,8 +365,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxLadrillos.scaleUVS(glm::vec2(12.0, 4.0));
 	boxPuerta.init();
 	boxParedSalon.init();
-	boxWater.init();
-	boxWater.scaleUVS(glm::vec2(1.0, 1.0));
+	boxProyector.init();
 	boxVentanalOscuro.init();
 	boxVentanalOscuro.scaleUVS(glm::vec2(7.0, 1.0));
 	boxVentanalCemento.init();
@@ -372,21 +373,22 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxSupPuerta.init();
 	boxSupPuerta.scaleUVS(glm::vec2(4.0, 1.0));
 	boxLadPuerta.init();
-	/* Comentarios para mejorar performance
+
+	// Comentarios para mejorar performance
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	avioncito.loadModel("../../models/avioncito/avioncito.obj");
-	computadora.loadModel("../../models/compu/compu.obj");
-	silla.loadModel("../../models/silla/silla.obj");
+	//avioncito.loadModel("../../models/avioncito/avioncito.obj");
+	//computadora.loadModel("../../models/compu/compu.obj");
+	//silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
-	busto.loadModel("../../models/busto/busto.obj");
-	radio.loadModel("../../models/radio/radio.obj");
-	asientos.loadModel("../../models/asientos/asientos.obj");
-	maquina.loadModel("../../models/maquina/maquina.obj");
+	//busto.loadModel("../../models/busto/busto.obj");
+	//radio.loadModel("../../models/radio/radio.obj");
+	//asientos.loadModel("../../models/asientos/asientos.obj");
+	//maquina.loadModel("../../models/maquina/maquina.obj");
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
-	*/
+	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -473,11 +475,11 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
-	texture = Texture("../../Textures/water2.jpg");
+	texture = Texture("../../Textures/prueba.png");
 	bitmap = texture.loadImage(false);
 	data = texture.convertToData(bitmap, imageWidth, imageHeight);
-	glGenTextures(1, &textureWaterID);
-	glBindTexture(GL_TEXTURE_2D, textureWaterID);
+	glGenTextures(1, &textureProyectorID);
+	glBindTexture(GL_TEXTURE_2D, textureProyectorID);
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -812,6 +814,66 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
+	//Textura Puerta principal izq
+	texture = Texture("../../Textures/puerta_izquierda.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &texturePuertaIzq);
+	glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Puerta principal der
+	texture = Texture("../../Textures/puerta_derecha.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &texturePuertaDer);
+	glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Puerta Edificio Q
+	texture = Texture("../../Textures/Q.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureQ);
+	glBindTexture(GL_TEXTURE_2D, textureQ);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
 	glGenTextures(1, &cubeTextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -876,7 +938,7 @@ void destroy() {
 	boxLadrillos.destroy();
 	boxPuerta.destroy();
 	boxParedSalon.destroy();
-	boxWater.destroy();
+	boxProyector.destroy();
 	boxVentanalOscuro.destroy();
 	boxSupPuerta.destroy();
 	boxLadPuerta.destroy();
@@ -966,6 +1028,12 @@ bool processInput(bool continueApplication) {
 		camera->setFront(glm::vec3(0.0, -compy, -1.0));
 		camera->update();
 	}
+	//Control animacion proyector
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		anim1 = true;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+		anim1 = false;
+	//Control del movimiento de la cámara
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -1114,7 +1182,7 @@ void applicationLoop() {
 		modelTree.setProjectionMatrix(projection);
 		modelTree.setViewMatrix(view);
 		modelTree.setPosition(glm::vec3(0.0, 0.4, 4.0));
-		modelTree.setScale(glm::vec3(1.0, 1.0, 1.0));
+		modelTree.setScale(glm::vec3(2.0, 2.0, 2.0));
 		modelTree.render();
 
 		modelPalma.setShader(&shaderLighting);
@@ -1302,7 +1370,7 @@ void applicationLoop() {
 		pizarron.setViewMatrix(view);
 		pizarron.setScale(glm::vec3(0.65, 0.65, 0.65));
 		glm::mat4 pizz = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
-		pizz = glm::translate(pizz, glm::vec3(10.0, 6.1, -21.1));
+		pizz = glm::translate(pizz, glm::vec3(10.0, 6.1, -21.1)); 
 		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
 		pizarron.render(pizz);
 		
@@ -2030,14 +2098,6 @@ void applicationLoop() {
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 1.1182, -2.57));
 		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
 		boxVentanalCemento.render();
-		/*
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 1.1182, -5.90));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
-		boxVentanalCemento.render();
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 1.1182, -9.799));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
-		boxVentanalCemento.render();
-		*/
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 1.1182, -13.47));
 		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
 		boxVentanalCemento.render();
@@ -2062,14 +2122,6 @@ void applicationLoop() {
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 3.45175, -2.57));
 		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
 		boxVentanalCemento.render();
-		/*
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 3.45175, -5.90));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
-		boxVentanalCemento.render();
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 3.45175, -9.799));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
-		boxVentanalCemento.render();
-		*/
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 3.45175, -13.47));
 		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
 		boxVentanalCemento.render();
@@ -2093,14 +2145,6 @@ void applicationLoop() {
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 5.78425, -2.57));
 		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
 		boxVentanalCemento.render();
-		/*
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 5.78425, -5.90));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
-		boxVentanalCemento.render();
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 5.78425, -9.799));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
-		boxVentanalCemento.render();
-		*/
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 5.78425, -13.47));
 		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
 		boxVentanalCemento.render();
@@ -2829,11 +2873,15 @@ void applicationLoop() {
 		//Textura con la division a la que pertenece
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureMurDivID);
-		boxMuroLe.setShader(&shaderLighting);
-		boxMuroLe.setProjectionMatrix(projection);
-		boxMuroLe.setViewMatrix(view);
 		boxMuroLe.setPosition(glm::vec3(-3.275, 2.285, -4.0));
 		boxMuroLe.setScale(glm::vec3(2.983, 0.5, 0.0001));
+		boxMuroLe.render();
+
+		//Textura con el edificio que es
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureQ);
+		boxMuroLe.setPosition(glm::vec3(5.82835, 2.285, 2.16725));
+		boxMuroLe.setScale(glm::vec3(0.6667, 0.6667, 0.001));
 		boxMuroLe.render();
 
 		//Textura con los ventanales
@@ -3093,24 +3141,29 @@ void applicationLoop() {
 		boxLadPuerta.setPosition(glm::vec3(1.1625, 0.9515, -4.1167));
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
-		//Aquí va lo de la textura de las puertas
+		//Textura de las puertas principales
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
 		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
 		boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
 
-
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureWaterID);
-		boxWater.setShader(&shaderLighting);
-		boxWater.setProjectionMatrix(projection);
-		boxWater.setViewMatrix(view);
-		boxWater.setPosition(glm::vec3(3.0, 2.0, -5.0));
-		boxWater.setScale(glm::vec3(10.0, 0.001, 10.0));
-		boxWater.offsetUVS(glm::vec2(0.0001, 0.0001));
-		boxWater.render();*/
+		//Proyector
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureProyectorID);
+		boxProyector.setShader(&shaderLighting);
+		boxProyector.setProjectionMatrix(projection);
+		boxProyector.setViewMatrix(view);
+		boxProyector.setPosition(glm::vec3(10.0, 6.1, -21.0));
+		boxProyector.setScale(glm::vec3(1.3, 0.7, 0.001));
+		if (anim1 == true)
+			boxProyector.offsetUVS(glm::vec2(0.007, 0.0));
+		boxProyector.render();
 
 		if (angle > 2 * M_PI)
 			angle = 0.0;
@@ -3181,7 +3234,7 @@ void applicationLoop() {
 		if (finalRotacion) {
 
 			if (direccionModelo && direccion2Modelo) {
-				avance -= 0.02;
+				avance -= 0.2;
 				//avance2 = 0.0;
 				if (avance < -8.0) {
 					direccionModelo = false;
@@ -3191,7 +3244,7 @@ void applicationLoop() {
 			}
 			if (!direccionModelo && direccion2Modelo) {
 				//avance = -6.0;
-				avance2 -= 0.02;
+				avance2 -= 0.2;
 				if (avance2 < -8.0) {
 					direccion2Modelo = false;
 					finalRotacion = false;
@@ -3199,7 +3252,7 @@ void applicationLoop() {
 				}
 			}
 			if (!direccionModelo && !direccion2Modelo) {
-				avance += 0.02;
+				avance += 0.2;
 				//avance2 = -6.0;
 				if (avance > 8.0) {
 					direccionModelo = true;
@@ -3209,7 +3262,7 @@ void applicationLoop() {
 			}
 			if (direccionModelo && !direccion2Modelo) {
 				//avance = 6.0;
-				avance2 += 0.02;
+				avance2 += 0.2;
 				if (avance2 > 8.0) {
 					direccion2Modelo = true;
 					finalRotacion = false;
