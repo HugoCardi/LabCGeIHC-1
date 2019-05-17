@@ -368,7 +368,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxVentanalOscuro.scaleUVS(glm::vec2(7.0, 1.0));
 	boxVentanalCemento.init();
 	boxVentanalCemento.scaleUVS(glm::vec2(5.0, 1.0));
-
+	
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
 	computadora.loadModel("../../models/compu/compu.obj");
@@ -382,7 +382,6 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
 	
-
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -952,12 +951,7 @@ bool processInput(bool continueApplication) {
 		camera->setUp(glm::vec3(0.0, 1.0, 0.0));
 		camera->update();
 	}
-	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
-		camera->setPosition(glm::vec3(0.0f, 15.0f, 20.0f));
-		camera->setFront(glm::vec3(0.0, -compy, -1.0));
-	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS){
-		camera->setFront(glm::vec3(1.0, 1.0, -1.0));
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS){
 		camera->setPitch(pitch1);
 		camera->setYaw(yaw2);
 		camera->setPosition(glm::vec3(0.0f, 30.0f, 30.0f));
@@ -1312,7 +1306,7 @@ void applicationLoop() {
 		glm::mat4 matrixModelo = glm::translate(glm::mat4(1.0f), glm::vec3(avance2, 0.0, avance));
 		matrixModelo = glm::translate(matrixModelo, glm::vec3(0.0, 20.0, 2.0));
 		matrixModelo = glm::rotate(matrixModelo, rotacionModelo, glm::vec3(0, 1, 0));
-		//matrixModelo = glm::rotate(matrixModelo, glm::radians(180.0f), glm::vec3(0, 1, 0));
+		matrixModelo = glm::rotate(matrixModelo, glm::radians(180.0f), glm::vec3(0, 1, 0));
 		avioneta.render(matrixModelo);
 
 		/*modelAirCraft.setShader(&shaderLighting);
