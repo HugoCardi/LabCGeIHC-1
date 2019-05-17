@@ -374,7 +374,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	computadora.loadModel("../../models/computadora/computadora.obj");
+	computadora.loadModel("../../models/compu/compu.obj");
 	silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
