@@ -371,7 +371,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxSupPuerta.init();
 	boxSupPuerta.scaleUVS(glm::vec2(4.0, 1.0));
 	boxLadPuerta.init();
-
+	/* Comentarios para mejorar performance
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
 	computadora.loadModel("../../models/compu/compu.obj");
@@ -384,7 +384,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	maquina.loadModel("../../models/maquina/maquina.obj");
 	avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	mesa.loadModel("../../models/mesa/mesa.obj");
-
+	*/
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
@@ -1888,7 +1888,7 @@ void applicationLoop() {
 		boxVentanalOscuro.setScale(glm::vec3(0.1, 2.12, 17.007));
 		boxVentanalOscuro.render();
 
-		//Pared exterior salones LADO DERECHO
+		//Pared exterior  LADO DERECHO  salones
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureVentanalCemento);
 		boxVentanalCemento.setShader(&shaderLighting);
@@ -1985,34 +1985,34 @@ void applicationLoop() {
 
 		//Tercero
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, 0.57));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -2.57));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -5.90));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.35));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -9.799));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.95));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -13.47));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 2.95));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -16.5));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -19.67));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -22.85));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(13.48, 8.261, -25.85));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.11));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.11));
 		boxVentanalCemento.render();
 
-		//Pared exterior salones LADO IZQUIERDO
+		//Pared exterior LADO IZQUIERDO salones edificio derecho
 
 				//Planta Baja
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 1.1182, 0.57));
@@ -2110,33 +2110,173 @@ void applicationLoop() {
 
 		//Tercero
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, 0.57));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -2.57));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
-		/*
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -5.90));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
-		boxVentanalCemento.render();
-		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -9.799));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
-		boxVentanalCemento.render();
-		*/
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -13.47));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 2.95));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -16.5));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -19.67));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -22.85));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
 		boxVentanalCemento.render();
 		boxVentanalCemento.setPosition(glm::vec3(5.05, 8.261, -25.85));
-		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.11));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.11));
+		boxVentanalCemento.render();
+
+
+
+		//PAREDES IZQUIERDAS EXTERIORES SALONES EDIFICIO IZQUIERDO
+		//Planta Baja
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 1.1182, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 1.1182, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 1.1182, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 1.1182, -5.90));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 1.1182, -9.799));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 1.1182, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+
+
+		//Primer Piso
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 3.45175, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 3.45175, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 3.45175, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 3.45175, -5.90));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 3.45175, -9.799));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 3.45175, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+
+
+		//Segundpo
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 5.78425, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 5.78425, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 5.78425, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 5.78425, -5.90));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.35));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 5.78425, -9.799));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 5.78425, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		
+
+		//Tercero
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 8.261, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 8.261, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 8.261, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 8.261, -5.90));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.35));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 8.261, -9.799));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-13.48, 8.261, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 2.95));
+		boxVentanalCemento.render();
+
+
+		//´Paredes derechas Edificio Izquierdo
+		//Planta Baja
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 1.1182, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 1.1182, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 1.1182, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 1.1182, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+
+
+		//Primer Piso
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 3.45175, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 3.45175, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 3.45175, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 3.45175, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+
+
+		//Segundpo
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 5.78425, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 5.78425, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 5.78425, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 5.78425, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 1.8335, 2.95));
+		boxVentanalCemento.render();
+
+
+		//Tercero
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 8.261, 3.63));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 2.95));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 8.261, 0.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 8.261, -2.57));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 3.0));
+		boxVentanalCemento.render();
+		boxVentanalCemento.setPosition(glm::vec3(-5.405, 8.261, -13.47));
+		boxVentanalCemento.setScale(glm::vec3(0.1, 2.12, 2.95));
 		boxVentanalCemento.render();
 
 
