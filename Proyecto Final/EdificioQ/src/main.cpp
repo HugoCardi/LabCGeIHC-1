@@ -367,7 +367,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	//computadora.loadModel("../../models/computadora/computadora.obj");
+	computadora.loadModel("../../models/compu/compu.obj");
 	silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
@@ -937,6 +937,15 @@ void applicationLoop() {
 	bool direcionAirCraft = true;
 	float rotationAirCraft = 0.0;
 	bool finishRotation = true;
+	
+	//rotacion de avioneta
+	float avance = 0.0;
+	float avance2 = 0.0;
+	bool direccionModelo = true;
+	bool direccion2Modelo = true;
+	float rotacionModelo = 0.0;
+	bool finalRotacion = true;
+	
 	//se obtienen los frames de brazo
 	std::vector<std::vector<glm::mat4>> keyFramesBrazo = getKeyFrames("../../animaciones/animationManoProyecto.txt");
 	int numPasosAnimBrazo = 100;
@@ -1248,10 +1257,12 @@ void applicationLoop() {
 		avioneta.setShader(&shaderLighting);
 		avioneta.setProjectionMatrix(projection);
 		avioneta.setViewMatrix(view);
-		avioneta.setPosition(glm::vec3(0.0, 20.0, 2.0));
 		avioneta.setScale(glm::vec3(0.2, 0.2, 0.2));
-		avioneta.render();
-
+		glm::mat4 matrixModelo = glm::translate(glm::mat4(1.0f), glm::vec3(avance2, 0.0, avance));
+		matrixModelo = glm::translate(matrixModelo, glm::vec3(0.0, 20.0, 2.0));
+		matrixModelo = glm::rotate(matrixModelo, rotacionModelo, glm::vec3(0, 1, 0));
+		//matrixModelo = glm::rotate(matrixModelo, glm::radians(180.0f), glm::vec3(0, 1, 0));
+		avioneta.render(matrixModelo);
 
 		/*modelAirCraft.setShader(&shaderLighting);
 		modelAirCraft.setProjectionMatrix(projection);
@@ -2652,7 +2663,7 @@ void applicationLoop() {
 		glDepthFunc(oldDepthFuncMode);
 		shaderCubeTexture.turnOff();
 
-		if (finishRotation) {
+		/*if (finishRotation) {
 			if (direcionAirCraft)
 				aircraftZ -= 0.01;
 			else
@@ -2681,8 +2692,75 @@ void applicationLoop() {
 					rotationAirCraft = glm::radians(0.0f);
 				}
 			}
-		}
+		}*/
 
+		//animacion avioneta
+		if (finalRotacion) {
+
+			if (direccionModelo && direccion2Modelo) {
+				avance -= 0.02;
+				//avance2 = 0.0;
+				if (avance < -8.0) {
+					direccionModelo = false;
+					finalRotacion = false;
+					avance = -8.0;
+				}
+			}
+			if (!direccionModelo && direccion2Modelo) {
+				//avance = -6.0;
+				avance2 -= 0.02;
+				if (avance2 < -8.0) {
+					direccion2Modelo = false;
+					finalRotacion = false;
+					avance2 = -8.0;
+				}
+			}
+			if (!direccionModelo && !direccion2Modelo) {
+				avance += 0.02;
+				//avance2 = -6.0;
+				if (avance > 8.0) {
+					direccionModelo = true;
+					finalRotacion = false;
+					avance = 8.0;
+				}
+			}
+			if (direccionModelo && !direccion2Modelo) {
+				//avance = 6.0;
+				avance2 += 0.02;
+				if (avance2 > 8.0) {
+					direccion2Modelo = true;
+					finalRotacion = false;
+					avance2 = 8.0;
+				}
+			}
+		}
+		else {
+			rotacionModelo += 0.08;
+			if (!direccionModelo && direccion2Modelo) {
+				if (rotacionModelo > glm::radians(90.0f)) {
+					finalRotacion = true;
+					rotacionModelo = glm::radians(90.0f);
+				}
+			}
+			if (!direccionModelo && !direccion2Modelo) {
+				if (rotacionModelo > glm::radians(180.0f)) {
+					finalRotacion = true;
+					rotacionModelo = glm::radians(180.0f);
+				}
+			}
+			if (direccionModelo && !direccion2Modelo) {
+				if (rotacionModelo > glm::radians(270.0f)) {
+					finalRotacion = true;
+					rotacionModelo = glm::radians(270.0f);
+				}
+			}
+			if (direccionModelo && direccion2Modelo) {
+				if (rotacionModelo > glm::radians(360.0f)) {
+					finalRotacion = true;
+					rotacionModelo = glm::radians(0.0f);
+				}
+			}
+		}
 		glfwSwapBuffers(window);
 	}
 }
