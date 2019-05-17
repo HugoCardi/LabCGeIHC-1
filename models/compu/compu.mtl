@@ -1,0 +1,45 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Color_A01
+Ka 0.000000 0.000000 0.000000
+Kd 0.996078 0.000000 0.000000
+Ks 0.330000 0.330000 0.330000
+map_Kd compu/Color_A01.jpg
+
+newmtl Color_004
+Ka 0.000000 0.000000 0.000000
+Kd 0.447059 0.447059 0.447059
+Ks 0.330000 0.330000 0.330000
+map_Kd compu/Color_004.jpg
+
+newmtl Wood_Floor_Parquet
+Ka 0.000000 0.000000 0.000000
+Kd 0.568627 0.349020 0.152941
+Ks 0.330000 0.330000 0.330000
+map_Kd compu/Wood_Floor_Parquet.jpg
+
+newmtl Color_008
+Ka 0.000000 0.000000 0.000000
+Kd 0.117647 0.117647 0.117647
+Ks 0.330000 0.330000 0.330000
+map_Kd compu/Color_008.jpg
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl Color_I06
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.800000
+Ks 0.330000 0.330000 0.330000
+map_Kd compu/Color_I06.jpg
+
+newmtl _1
+Ka 0.000000 0.000000 0.000000
+Kd 0.176471 0.266667 0.376471
+Ks 0.330000 0.330000 0.330000
+map_Kd compu/_1.jpg
+
