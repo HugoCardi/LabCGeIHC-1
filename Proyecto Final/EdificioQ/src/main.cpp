@@ -1475,15 +1475,6 @@ void applicationLoop() {
 		}
 
 
-		/*arturito.setShader(&shaderLighting);
-		arturito.setProjectionMatrix(projection);
-		arturito.setViewMatrix(view);
-		arturito.setScale(glm::vec3(1.0, 1.0, 1.0));
-		glm::mat4 matrixArturito = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, aircraftZ));
-		matrixArturito = glm::translate(matrixArturito, glm::vec3(-10.0, 2.0, 15.0));
-		matrixArturito = glm::rotate(matrixArturito, rotationAirCraft, glm::vec3(0, 1, 0));
-		arturito.render(matrixArturito);*/
-
 		//Piso principal (cesped)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureCespedID);
