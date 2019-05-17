@@ -1,0 +1,10 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl _2
+Ka 0.000000 0.000000 0.000000
+Kd 0.952941 0.945098 0.956863
+Ks 0.330000 0.330000 0.330000
+map_Kd avioncito/_2.bmp
+

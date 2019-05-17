@@ -71,6 +71,7 @@ Model pizarron;
 Model avioneta;
 Model maestro;
 Model mesa;
+Model avioncito;
 
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMarmolID;
@@ -371,6 +372,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
+	avioncito.loadModel("../../models/avioncito/avioncito.obj");
 	computadora.loadModel("../../models/compu/compu.obj");
 	silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
@@ -1298,6 +1300,13 @@ void applicationLoop() {
 		pizz = glm::translate(pizz, glm::vec3(10.0, 6.1, -21.1));
 		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
 		pizarron.render(pizz);
+		
+		avioncito.setShader(&shaderLighting);
+		avioncito.setProjectionMatrix(projection);
+		avioncito.setViewMatrix(view);
+		avioncito.setPosition(glm::vec3(10.0f, 6.0f, -17.5f));
+		avioncito.setScale(glm::vec3(1.0, 1.0, 1.0));
+		avioncito.render();
 
 		avioneta.setShader(&shaderLighting);
 		avioneta.setProjectionMatrix(projection);
