@@ -377,7 +377,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	// Comentarios para mejorar performance
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
-	//avioncito.loadModel("../../models/avioncito/avioncito.obj");
+	avioncito.loadModel("../../models/avioncito/avioncito.obj");
 	//computadora.loadModel("../../models/compu/compu.obj");
 	//silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
@@ -386,8 +386,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	//radio.loadModel("../../models/radio/radio.obj");
 	//asientos.loadModel("../../models/asientos/asientos.obj");
 	//maquina.loadModel("../../models/maquina/maquina.obj");
-	avioneta.loadModel("../../models/avioneta/avioneta.obj");
-	mesa.loadModel("../../models/mesa/mesa.obj");
+	//avioneta.loadModel("../../models/avioneta/avioneta.obj");
+	//mesa.loadModel("../../models/mesa/mesa.obj");
 	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
@@ -1058,6 +1058,11 @@ void applicationLoop() {
 	float rotationAirCraft = 0.0;
 	bool finishRotation = true;
 	
+	//animacion avioncito
+	float angulo = 0.0;
+	float orbitax, orbitaz;
+	float r = 20.0;
+
 	//rotacion de avioneta
 	float avance = 0.0;
 	float avance2 = 0.0;
@@ -1374,12 +1379,23 @@ void applicationLoop() {
 		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
 		pizarron.render(pizz);
 		
+
+		r = 2.0;
+		orbitax = r * glm::cos(glm::radians(angulo));
+		orbitaz = r * glm::sin(glm::radians(angulo));
 		avioncito.setShader(&shaderLighting);
 		avioncito.setProjectionMatrix(projection);
 		avioncito.setViewMatrix(view);
-		avioncito.setPosition(glm::vec3(10.0f, 6.0f, -17.5f));
-		avioncito.setScale(glm::vec3(1.0, 1.0, 1.0));
-		avioncito.render();
+		//avioncito.setPosition(glm::vec3(10.0f, 6.0f, -17.5f));
+		avioncito.setScale(glm::vec3(2.0, 2.0, 2.0));
+		/*avioncito.setPosition(glm::vec3(0.0+orbitax, 1.0f, 10.0+orbitaz));
+		avioncito.setOrientation(glm::vec3(0.0 , 1.0f, 10.0));
+		avioncito.render();*/
+		glm::mat4 Modelmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(orbitax, 0.0f, orbitaz));
+		Modelmatrix = glm::translate(Modelmatrix, glm::vec3(10.0f, 6.0f, -17.5f));
+		Modelmatrix = glm::rotate(Modelmatrix, angulo/1000, glm::vec3(0.0f, 1.0f, 0.0f));
+		Modelmatrix = glm::rotate(Modelmatrix, glm::radians(80.0f), glm::vec3(0, 1, 0));
+		avioncito.render(Modelmatrix);
 
 		avioneta.setShader(&shaderLighting);
 		avioneta.setProjectionMatrix(projection);
@@ -3288,6 +3304,12 @@ void applicationLoop() {
 				}
 			}
 		}
+		if (angulo > 360.0)
+			angulo = 0.0;
+		else
+			angulo += 1.0;
+
+
 		glfwSwapBuffers(window);
 	}
 }
