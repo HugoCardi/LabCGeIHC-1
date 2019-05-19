@@ -79,6 +79,7 @@ float rotaL = 0;
 float rotaD = 0;
 bool anim1 = false;
 bool anim2 = false;
+bool anim3 = false;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureProyectorID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
@@ -1082,9 +1083,22 @@ bool processInput(bool continueApplication) {
 		camera->setFront(glm::vec3(0.0, -compy, -1.0));
 		camera->update();
 	}
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+		camera->setPitch(pitch2);
+		camera->setYaw(yaw2);
+		camera->setPosition(glm::vec3(6.0f, 5.78f, -12.0f));
+		camera->setFront(glm::vec3(0.0, 0.0, -1.0));
+		camera->setUp(glm::vec3(0.0, 1.0, 0.0));
+		camera->update();
+	}
 	//Control animacion puerta
 	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 		anim2 = true;
+	//Control animacion puerta laboratorio
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+		anim3 = true;
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+		anim3 = false;
 	//Control animacion proyector
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		anim1 = true;
@@ -1118,10 +1132,8 @@ void applicationLoop() {
 	float cantGiro = 90.0f;
 	bool dirGiro = true;
 
-	float aircraftZ = 0.0;
-	bool direcionAirCraft = true;
-	float rotationAirCraft = 0.0;
-	bool finishRotation = true;
+	//Variables animacion puerta lab
+	float posPuertaLab = -15.469f;
 	
 	//animacion avioncito
 	float angulo = 0.0;
@@ -1974,7 +1986,7 @@ void applicationLoop() {
 		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 0.625));
 		boxLadrillos.render();
 		//Segundo piso
-		boxLadrillos.setPosition(glm::vec3(5.045, 5.78425, -6.85461));
+		boxLadrillos.setPosition(glm::vec3(5.045, 5.78425, -6.85461)); 
 		boxLadrillos.setScale(glm::vec3(0.1, 1.8335, 0.625));
 		boxLadrillos.render();
 		boxLadrillos.setPosition(glm::vec3(5.045, 5.78425, -4.8125));
@@ -2008,7 +2020,7 @@ void applicationLoop() {
 		boxVentanalOscuro.setPosition(glm::vec3(9.33, 5.78425, -21.214));
 		boxVentanalOscuro.setScale(glm::vec3(7.971, 1.8335, 0.1));
 		boxVentanalOscuro.render();
-		boxVentanalOscuro.setPosition(glm::vec3(7.2117, 5.78425, -18.568));
+		boxVentanalOscuro.setPosition(glm::vec3(7.2117, 5.78425, -18.568)); 
 		boxVentanalOscuro.setScale(glm::vec3(0.1, 1.8335, 5.196));
 		boxVentanalOscuro.render();
 		boxVentanalOscuro.setPosition(glm::vec3(7.2117, 5.78425, -9.5875));
@@ -3205,18 +3217,6 @@ void applicationLoop() {
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
 
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
-		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
-		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		boxLadPuerta.render();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
-		boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
-		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		boxLadPuerta.render();*/
-
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureMetal);
 		visagra.setShader(&shaderLighting);
@@ -3249,18 +3249,31 @@ void applicationLoop() {
 		//Textura de las puertas principales
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
-		//boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
-		//boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		//boxLadPuerta.render(matrixsLeftDoor);
 		matrixsLeftDoor = glm::scale(matrixsLeftDoor, glm::vec3(0.775f, 1.5f, 0.001f));
 		PuertaIzqPrinc.render(matrixsLeftDoor);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
-		//boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
-		//boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		//boxLadPuerta.render(matrixVisD);
 		matrixsRightDoor = glm::scale(matrixsRightDoor, glm::vec3(0.775f, 1.5f, 0.001f));
 		PuertaDerPrinc.render(matrixsRightDoor);
+
+		//Puerta del laboratorio
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaLab);
+		boxPuertaLab.setShader(&shaderLighting);
+		boxPuertaLab.setProjectionMatrix(projection);
+		boxPuertaLab.setViewMatrix(view);
+		glm::mat4 matrixLab = glm::mat4(1.0f);
+		matrixLab = glm::translate(matrixLab, glm::vec3(7.3117, 5.78425, posPuertaLab));
+		matrixLab = glm::scale(matrixLab, glm::vec3(0.1f, 1.8335f, 1.002f));
+		boxPuertaLab.render(matrixLab);
+		if (anim3) {
+			if (posPuertaLab >= -16.5f)
+				posPuertaLab -= 0.1f;
+		}
+		else {
+			if (posPuertaLab < -15.469f)
+				posPuertaLab += 0.1f;
+		}
 
 		//Proyector
 		glActiveTexture(GL_TEXTURE0);
@@ -3278,15 +3291,6 @@ void applicationLoop() {
 			angle = 0.0;
 		else
 			angle += 0.001;
-		/*
-		sphere.setShader(&shaderColor);
-		sphere.setColor(glm::vec3(0.4f, 0.3f, 0.6f));
-		sphere.setProjectionMatrix(projection);
-		sphere.setViewMatrix(view);
-		sphere.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-		sphere.enableWireMode();
-		sphere.render(lightModelmatrix);
-		*/
 
 		// Se Dibuja el Skybox
 		shaderCubeTexture.turnOn();
