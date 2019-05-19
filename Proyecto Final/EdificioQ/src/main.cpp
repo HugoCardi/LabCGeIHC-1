@@ -40,10 +40,11 @@ std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
-Cylinder visagra(20,20, 0.001, 0.001, 1.5);
+Cylinder visagra(20, 20 , 0.001, 0.001, 1.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
 Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
 Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento, boxSupPuerta, boxLadPuerta, boxPuertaLab;
+Box PuertaDerPrinc, PuertaIzqPrinc;
 Pantalla boxProyector, box;
 
 Sphere sphereAnimacion(20, 20);
@@ -77,11 +78,13 @@ Model avioncito;
 float rotaL = 0;
 float rotaD = 0;
 bool anim1 = false;
+bool anim2 = false;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureProyectorID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
 GLuint textureParedEscID, textureVentanaBanoID, textureTechoID, texturePlafonID, textureLadrillosID, texturePuertaID;
 GLuint cubeTextureID, textureVentanalOscuro , textureVentanalCemento, texturePuertaIzq, texturePuertaDer, textureQ, texturePuertaLab;
+GLuint textureMetal;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
 	std::vector<std::vector<glm::mat4>> keyFrames;
@@ -331,6 +334,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	sphere.init();
 	cylinder.init();
+	PuertaDerPrinc.init();
+	PuertaIzqPrinc.init();
 	boxPiso.init();
 	boxVentanal.init();
 	boxPiso.scaleUVS(glm::vec2(35.0, 35.0));
@@ -898,6 +903,26 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
+	//Textura bisagra
+	texture = Texture("../../Textures/metal.jpg");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureMetal);
+	glBindTexture(GL_TEXTURE_2D, textureMetal);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
 
 	glGenTextures(1, &cubeTextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
@@ -942,6 +967,9 @@ void destroy() {
 	sphereAnimacion.destroy();
 	cylinderAnimacion.destroy();
 	cylinderAnimacion2.destroy();
+
+	PuertaDerPrinc.destroy();
+	PuertaIzqPrinc.destroy();
 
 	boxCesped.destroy();
 	boxCimientos.destroy();
@@ -1054,13 +1082,16 @@ bool processInput(bool continueApplication) {
 		camera->setFront(glm::vec3(0.0, -compy, -1.0));
 		camera->update();
 	}
+	//Control animacion puerta
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+		anim2 = true;
 	//Control animacion proyector
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		anim1 = true;
-	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		anim1 = false;
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		rotaD += 0.1;
+		anim2 = false;
+	}
 	//Control del movimiento de la cámara
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
@@ -1080,6 +1111,12 @@ void applicationLoop() {
 
 	float angle = 0.0;
 	float ratio = 20.0;
+
+	//Variables rotación puerta
+	float varL = -0.09f;
+	float varD = 0.06f;
+	float cantGiro = 90.0f;
+	bool dirGiro = true;
 
 	float aircraftZ = 0.0;
 	bool direcionAirCraft = true;
@@ -1434,15 +1471,6 @@ void applicationLoop() {
 		matrixModelo = glm::rotate(matrixModelo, rotacionModelo, glm::vec3(0, 1, 0));
 		matrixModelo = glm::rotate(matrixModelo, glm::radians(180.0f), glm::vec3(0, 1, 0));
 		avioneta.render(matrixModelo);
-
-		/*modelAirCraft.setShader(&shaderLighting);
-		modelAirCraft.setProjectionMatrix(projection);
-		modelAirCraft.setViewMatrix(view);
-		modelAirCraft.setScale(glm::vec3(1.0, 1.0, 1.0));
-		glm::mat4 matrixAirCraft = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, aircraftZ));
-		matrixAirCraft = glm::translate(matrixAirCraft, glm::vec3(10.0, 2.0, 15.0));
-		matrixAirCraft = glm::rotate(matrixAirCraft, rotationAirCraft, glm::vec3(0, 1, 0));
-		modelAirCraft.render(matrixAirCraft);*/
 
 		glm::quat firstQuat;
 		glm::quat secondQuat;
@@ -3177,7 +3205,7 @@ void applicationLoop() {
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
 
-		glActiveTexture(GL_TEXTURE0);
+		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
 		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
@@ -3186,45 +3214,54 @@ void applicationLoop() {
 		glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
 		boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		boxLadPuerta.render();
+		boxLadPuerta.render();*/
 
 
-
-		/*
-		//Visagra puerta lab
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texturePuertaLab);
-		
+		glBindTexture(GL_TEXTURE_2D, textureMetal);
 		visagra.setShader(&shaderLighting);
 		visagra.setProjectionMatrix(projection);
 		visagra.setViewMatrix(view);
-
-		//Matriz visagra
+		//Matriz visagras
 		glm::mat4 matrixVis = glm::mat4(1.0f);
 		glm::mat4 matrixVisD = glm::mat4(1.0f);
-		matrixVis = glm::translate(matrixVis, glm::vec3(-0.875f, 0.9515f, -4.1167f));
-		matrixVisD = glm::translate(matrixVisD, glm::vec3(0.875 *2 , 0.9515 * 2 , -4.1167 * 2));
+		//Traslacion hacia su lugar
+		matrixVis = glm::translate(matrixVis, glm::vec3(-0.775f, 0.9515f, -4.1167f));
+		matrixVisD = glm::translate(matrixVisD, glm::vec3(0.775 , 0.9515f, -4.1167f));
+		//rotación de las visagras
+		matrixVis = glm::rotate(matrixVis, rotaL, glm::vec3(0.0f, 1.0f, 0.0f));
+		matrixVisD = glm::rotate(matrixVisD, rotaD, glm::vec3(0.0f, 1.0f, 0.0f));
+		//Las mostramos
+		visagra.render(matrixVis);
+		visagra.render(matrixVisD);
 		//Matriz de la puerta izquierda
-		glm::mat4 matrixsLeftDoor = glm::translate(matrixVis, glm::vec3(+0.375f, 0.0f, 0.0f));
+		glm::mat4 matrixsLeftDoor = glm::translate(matrixVis, glm::vec3(0.375f, 0.0f, 0.0f));
 		//Matriz de la puerta Derecha
 		glm::mat4 matrixsRightDoor = glm::translate(matrixVisD, glm::vec3(-0.375f, 0.0f, 0.0f));
 
-		matrixVis = glm::rotate(matrixVis, rotaL, glm::vec3(0.0f, 1.0f, 0.0f));
-		matrixVisD = glm::rotate(matrixVisD, rotaD, glm::vec3(0.0f, 1.0f, 0.0f));
-
-
+		//Inicializamos las puertas
+		PuertaDerPrinc.setShader(&shaderLighting);
+		PuertaDerPrinc.setProjectionMatrix(projection);
+		PuertaDerPrinc.setViewMatrix(view);
+		PuertaIzqPrinc.setShader(&shaderLighting);
+		PuertaIzqPrinc.setProjectionMatrix(projection);
+		PuertaIzqPrinc.setViewMatrix(view);
 		//Textura de las puertas principales
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
-		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
-		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		boxLadPuerta.render(matrixVis);
+		//boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
+		//boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		//boxLadPuerta.render(matrixsLeftDoor);
+		matrixsLeftDoor = glm::scale(matrixsLeftDoor, glm::vec3(0.775f, 1.5f, 0.001f));
+		PuertaIzqPrinc.render(matrixsLeftDoor);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
-		boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
-		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
-		boxLadPuerta.render(matrixVisD);
-		*/
+		//boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
+		//boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		//boxLadPuerta.render(matrixVisD);
+		matrixsRightDoor = glm::scale(matrixsRightDoor, glm::vec3(0.775f, 1.5f, 0.001f));
+		PuertaDerPrinc.render(matrixsRightDoor);
+
 		//Proyector
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureProyectorID);
@@ -3270,37 +3307,6 @@ void applicationLoop() {
 		glCullFace(oldCullFaceMode);
 		glDepthFunc(oldDepthFuncMode);
 		shaderCubeTexture.turnOff();
-
-		/*if (finishRotation) {
-			if (direcionAirCraft)
-				aircraftZ -= 0.01;
-			else
-				aircraftZ += 0.01;
-			if (direcionAirCraft && aircraftZ < -6.0) {
-				direcionAirCraft = false;
-				finishRotation = false;
-				aircraftZ = -6.0;
-			}if (!direcionAirCraft && aircraftZ > 6.0) {
-				direcionAirCraft = true;
-				finishRotation = false;
-				aircraftZ = 6.0;
-			}
-		}
-		else {
-			rotationAirCraft += 0.01;
-			if (!direcionAirCraft) {
-				if (rotationAirCraft > glm::radians(180.0f)) {
-					finishRotation = true;
-					rotationAirCraft = glm::radians(180.0f);
-				}
-			}
-			else {
-				if (rotationAirCraft > glm::radians(360.0f)) {
-					finishRotation = true;
-					rotationAirCraft = glm::radians(0.0f);
-				}
-			}
-		}*/
 
 		//animacion avioneta
 		if (finalRotacion) {
@@ -3373,6 +3379,29 @@ void applicationLoop() {
 			angulo = 0.0;
 		else
 			angulo += 1.0;
+
+		//Animacion puertas principales
+		if (anim2 == true) {
+			if (dirGiro) {
+				rotaL += varL;
+				rotaD += varD;
+				if (rotaL <= glm::radians(-cantGiro) || rotaD >= glm::radians(cantGiro))
+					dirGiro = false;
+			}
+			else {
+				rotaL -= varL;
+				rotaD -= varD;
+				if (rotaL >= glm::radians(cantGiro) || rotaD <= glm::radians(-cantGiro)) {
+					dirGiro = true;
+					cantGiro /= 2;
+				}
+			}
+
+			if (cantGiro <= 0.17f) {
+				anim2 = false;
+				cantGiro = 90.0f;
+			}
+		}
 
 
 		glfwSwapBuffers(window);
