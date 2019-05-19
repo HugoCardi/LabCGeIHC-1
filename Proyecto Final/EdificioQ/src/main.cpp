@@ -40,9 +40,10 @@ std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
+Cylinder visagra(20,20, 0.001, 0.001, 1.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
 Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
-Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento, boxSupPuerta, boxLadPuerta;
+Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento, boxSupPuerta, boxLadPuerta, boxPuertaLab;
 Pantalla boxProyector, box;
 
 Sphere sphereAnimacion(20, 20);
@@ -73,13 +74,14 @@ Model avioneta;
 Model maestro;
 Model mesa;
 Model avioncito;
-
+float rotaL = 0;
+float rotaD = 0;
 bool anim1 = false;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureProyectorID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
 GLuint textureParedEscID, textureVentanaBanoID, textureTechoID, texturePlafonID, textureLadrillosID, texturePuertaID;
-GLuint cubeTextureID, textureVentanalOscuro , textureVentanalCemento, texturePuertaIzq, texturePuertaDer, textureQ;
+GLuint cubeTextureID, textureVentanalOscuro , textureVentanalCemento, texturePuertaIzq, texturePuertaDer, textureQ, texturePuertaLab;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
 	std::vector<std::vector<glm::mat4>> keyFrames;
@@ -373,6 +375,8 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	boxSupPuerta.init();
 	boxSupPuerta.scaleUVS(glm::vec2(4.0, 1.0));
 	boxLadPuerta.init();
+	boxPuertaLab.init();
+	visagra.init();
 
 	// Comentarios para mejorar performance
 	modelTree.loadModel("../../models/Tree/Tree.obj");
@@ -874,6 +878,27 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
+	//Textura Puerta Laboratorio CGeIHC
+	texture = Texture("../../Textures/Ventanal_Cristal_Osuro.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &texturePuertaLab);
+	glBindTexture(GL_TEXTURE_2D, texturePuertaLab);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+
 	glGenTextures(1, &cubeTextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -942,6 +967,7 @@ void destroy() {
 	boxVentanalOscuro.destroy();
 	boxSupPuerta.destroy();
 	boxLadPuerta.destroy();
+	boxPuertaLab.destroy();
 }
 
 void reshapeCallback(GLFWwindow* Window, int widthRes, int heightRes) {
@@ -1033,6 +1059,8 @@ bool processInput(bool continueApplication) {
 		anim1 = true;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
 		anim1 = false;
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		rotaD += 0.1;
 	//Control del movimiento de la cámara
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveFrontCamera(true, deltaTime);
@@ -3148,7 +3176,7 @@ void applicationLoop() {
 		boxLadPuerta.setPosition(glm::vec3(1.1625, 0.9515, -4.1167));
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
-		//Textura de las puertas principales
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
 		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
@@ -3160,6 +3188,43 @@ void applicationLoop() {
 		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
 		boxLadPuerta.render();
 
+
+
+		/*
+		//Visagra puerta lab
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaLab);
+		
+		visagra.setShader(&shaderLighting);
+		visagra.setProjectionMatrix(projection);
+		visagra.setViewMatrix(view);
+
+		//Matriz visagra
+		glm::mat4 matrixVis = glm::mat4(1.0f);
+		glm::mat4 matrixVisD = glm::mat4(1.0f);
+		matrixVis = glm::translate(matrixVis, glm::vec3(-0.875f, 0.9515f, -4.1167f));
+		matrixVisD = glm::translate(matrixVisD, glm::vec3(0.875 *2 , 0.9515 * 2 , -4.1167 * 2));
+		//Matriz de la puerta izquierda
+		glm::mat4 matrixsLeftDoor = glm::translate(matrixVis, glm::vec3(+0.375f, 0.0f, 0.0f));
+		//Matriz de la puerta Derecha
+		glm::mat4 matrixsRightDoor = glm::translate(matrixVisD, glm::vec3(-0.375f, 0.0f, 0.0f));
+
+		matrixVis = glm::rotate(matrixVis, rotaL, glm::vec3(0.0f, 1.0f, 0.0f));
+		matrixVisD = glm::rotate(matrixVisD, rotaD, glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+		//Textura de las puertas principales
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaIzq);
+		boxLadPuerta.setPosition(glm::vec3(-0.3875, 0.9515, -4.1167));
+		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		boxLadPuerta.render(matrixVis);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturePuertaDer);
+		boxLadPuerta.setPosition(glm::vec3(0.3875, 0.9515, -4.1167));
+		boxLadPuerta.setScale(glm::vec3(0.775, 1.5, 0.001));
+		boxLadPuerta.render(matrixVisD);
+		*/
 		//Proyector
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureProyectorID);
