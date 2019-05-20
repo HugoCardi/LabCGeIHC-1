@@ -39,14 +39,13 @@
 std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
-Sphere cuerpo(20, 20);
 //Sphere spherePelota(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
 Cylinder visagra(20, 20 , 0.001, 0.001, 1.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
 Box boxPiedras, boxPiedras2, boxTierra, boxMuro, boxMuroLe, boxVentanal, boxParedEsc, boxTecho, boxPlafon, boxPuerta;
 Box boxPlafonL, boxParedSalon, boxVentanalOscuro, boxVentanalCemento, boxSupPuerta, boxLadPuerta, boxPuertaLab;
-Box PuertaDerPrinc, PuertaIzqPrinc;
+Box PuertaDerPrinc, PuertaIzqPrinc, cuerpo;
 Pantalla boxProyector, box;
 
 Sphere sphereAnimacion(20, 20);
@@ -82,13 +81,12 @@ float rotaD = 0;
 bool anim1 = false;
 bool anim2 = false;
 bool anim3 = false;
-bool anim4 = false;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureProyectorID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
 GLuint textureParedEscID, textureVentanaBanoID, textureTechoID, texturePlafonID, textureLadrillosID, texturePuertaID;
 GLuint cubeTextureID, textureVentanalOscuro , textureVentanalCemento, texturePuertaIzq, texturePuertaDer, textureQ, texturePuertaLab;
-GLuint textureMetal;
+GLuint textureMetal, textureCat, texturePata, textureCodo;
 
 std::vector<std::vector<glm::mat4>> getKeyFrames(std::string fileName) {
 	std::vector<std::vector<glm::mat4>> keyFrames;
@@ -928,6 +926,66 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		std::cout << "Failed to load texture" << std::endl;
 	texture.freeImage(bitmap);
 
+	//Textura Gato
+	texture = Texture("../../Textures/Cat.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureCat);
+	glBindTexture(GL_TEXTURE_2D, textureCat);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Brazo del gato
+	texture = Texture("../../Textures/Pata.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &texturePata);
+	glBindTexture(GL_TEXTURE_2D, texturePata);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
+	//Textura Codo del gato
+	texture = Texture("../../Textures/Codo.png");
+	bitmap = texture.loadImage(false);
+	data = texture.convertToData(bitmap, imageWidth, imageHeight);
+	glGenTextures(1, &textureCodo);
+	glBindTexture(GL_TEXTURE_2D, textureCodo);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		std::cout << "Failed to load texture" << std::endl;
+	texture.freeImage(bitmap);
+
 
 	glGenTextures(1, &cubeTextureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTextureID);
@@ -1104,15 +1162,12 @@ bool processInput(bool continueApplication) {
 		anim3 = true;
 	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
 		anim3 = false;
-	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
-		anim4 = true;
 	//Control animacion proyector
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		anim1 = true;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		anim1 = false;
 		anim2 = false;
-		anim4 = false;
 	}
 	//Control del movimiento de la cámara
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -1464,22 +1519,21 @@ void applicationLoop() {
 		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
 		pizarron.render(pizz);
 		
-		if (anim4) {
-			if (angulo > 360.0)
-				angulo = 0.0;
-			else
-				angulo += 1.0;
-		}
+
 		r = 2.0;
 		orbitax = r * glm::cos(glm::radians(angulo));
 		orbitaz = r * glm::sin(glm::radians(angulo));
 		avioncito.setShader(&shaderLighting);
 		avioncito.setProjectionMatrix(projection);
 		avioncito.setViewMatrix(view);
+		//avioncito.setPosition(glm::vec3(10.0f, 6.0f, -17.5f));
 		avioncito.setScale(glm::vec3(2.0, 2.0, 2.0));
+		/*avioncito.setPosition(glm::vec3(0.0+orbitax, 1.0f, 10.0+orbitaz));
+		avioncito.setOrientation(glm::vec3(0.0 , 1.0f, 10.0));
+		avioncito.render();*/
 		glm::mat4 Modelmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(orbitax, 0.0f, orbitaz));
 		Modelmatrix = glm::translate(Modelmatrix, glm::vec3(10.0f, 6.0f, -17.5f));
-		Modelmatrix = glm::rotate(Modelmatrix, angulo/1000, glm::vec3(0.0f, -1.0f, 0.0f));	
+		Modelmatrix = glm::rotate(Modelmatrix, angulo/1000, glm::vec3(0.0f, 1.0f, 0.0f));
 		Modelmatrix = glm::rotate(Modelmatrix, glm::radians(80.0f), glm::vec3(0, 1, 0));
 		avioncito.render(Modelmatrix);
 
@@ -1501,14 +1555,6 @@ void applicationLoop() {
 		glm::vec4 transformComp2;
 		glm::vec4 finalTrans;
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureID3);
-		cuerpo.setShader(&shaderLighting);
-		cuerpo.setProjectionMatrix(projection);
-		cuerpo.setViewMatrix(view);
-		cuerpo.setPosition(glm::vec3(-1.7, 1.65, -7.2));
-		cuerpo.setScale(glm::vec3(0.3, 0.4, 0.2));
-		cuerpo.render();
 		if (keyFramesBrazo[indexKeyFrameBrazoCurr].size() == 7 && keyFramesBrazo[indexKeyFrameBrazoNext].size() == 7) {
 			//matriz de rotacion actual
 			firstQuat = glm::quat_cast(keyFramesBrazo[indexKeyFrameBrazoCurr][0]);
@@ -1527,12 +1573,14 @@ void applicationLoop() {
 			interpoltaedMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(finalTrans)) * interpoltaedMatrix;
 
 			// Animacion KeyFrames
-			glm::mat4 matrixGlobalAnimation = glm::translate(glm::mat4(1.0f), glm::vec3(-1.55, 1.65, -7.15));
+			glm::mat4 matrixGlobalAnimation = glm::translate(glm::mat4(1.0f), glm::vec3(-1.61, 1.65, -7.15));
 			// Se modela siempre con los ejes de giro en el eje z
 			// Articulacion 1
 			glm::mat4 keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
 			glm::mat4 cylinderMatrixJ0 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixJ0 = glm::scale(cylinderMatrixJ0, glm::vec3(0.08f, 0.08f, 0.08f));
+			cylinderMatrixJ0 = glm::scale(cylinderMatrixJ0, glm::vec3(0.05f, 0.05f, 0.05f));
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textureCodo);
 			sphereAnimacion.render(cylinderMatrixJ0);
 
 			// Articulacion 2
@@ -1548,7 +1596,7 @@ void applicationLoop() {
 
 			keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
 			glm::mat4 cylinderMatrixJ1 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixJ1 = glm::scale(cylinderMatrixJ1, glm::vec3(0.1f, 0.1f, 0.1f));
+			cylinderMatrixJ1 = glm::scale(cylinderMatrixJ1, glm::vec3(0.05f, 0.05f, 0.05f));
 			sphereAnimacion.render(cylinderMatrixJ1);
 
 			// Articulacion 3
@@ -1563,13 +1611,13 @@ void applicationLoop() {
 
 			keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
 			glm::mat4 cylinderMatrixJ2 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixJ2 = glm::scale(cylinderMatrixJ2, glm::vec3(0.11f, 0.11f, 0.11f));
+			cylinderMatrixJ2 = glm::scale(cylinderMatrixJ2, glm::vec3(0.05f, 0.05f, 0.05f));
 			sphereAnimacion.render(cylinderMatrixJ2);
 
 			// Hueso 1
-			glm::mat4 cylinderMatrixL1 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.05f));
+			glm::mat4 cylinderMatrixL1 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.025f));
 			cylinderMatrixL1 = glm::rotate(cylinderMatrixL1, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.1f, 0.1f, 0.1f));
+			cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.05f, 0.05f, 0.05f));
 			cylinderAnimacion.render(cylinderMatrixL1);
 
 			// Articulacion 4
@@ -1584,7 +1632,9 @@ void applicationLoop() {
 
 			keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
 			glm::mat4 cylinderMatrixJ3 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixJ3 = glm::scale(cylinderMatrixJ3, glm::vec3(0.11f, 0.11f, 0.11f));
+			cylinderMatrixJ3 = glm::scale(cylinderMatrixJ3, glm::vec3(0.05f, 0.05f, 0.05f));
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texturePata);
 			sphereAnimacion.render(cylinderMatrixJ3);
 
 			// Articulacion 5
@@ -1599,13 +1649,13 @@ void applicationLoop() {
 
 			keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
 			glm::mat4 cylinderMatrixJ4 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixJ4 = glm::scale(cylinderMatrixJ4, glm::vec3(0.11f, 0.11f, 0.11f));
+			cylinderMatrixJ4 = glm::scale(cylinderMatrixJ4, glm::vec3(0.05f, 0.05f, 0.05f));
 			sphereAnimacion.render(cylinderMatrixJ4);
 
 			// Hueso 2
-			glm::mat4 cylinderMatrixL2 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.075f));
+			glm::mat4 cylinderMatrixL2 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.025f));
 			cylinderMatrixL2 = glm::rotate(cylinderMatrixL2, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.1f, 0.15f, 0.1f));
+			cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.05f, 0.05f, 0.05f));
 			cylinderAnimacion.render(cylinderMatrixL2);
 
 			// Articulacion 6
@@ -1620,7 +1670,7 @@ void applicationLoop() {
 
 			keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
 			glm::mat4 cylinderMatrixJ5 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixJ5 = glm::scale(cylinderMatrixJ5, glm::vec3(0.11f, 0.11f, 0.11f));
+			cylinderMatrixJ5 = glm::scale(cylinderMatrixJ5, glm::vec3(0.05f, 0.05f, 0.05f));
 			sphereAnimacion.render(cylinderMatrixJ5);
 
 			/*//Pelota
@@ -1639,6 +1689,15 @@ void applicationLoop() {
 			spherePelota.render(cylinderMatrixJ6);*/
 
 		}
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureCat);
+		cuerpo.setShader(&shaderLighting);
+		cuerpo.setProjectionMatrix(projection);
+		cuerpo.setViewMatrix(view);
+		cuerpo.setPosition(glm::vec3(-1.7, 1.65, -7.2));
+		cuerpo.setScale(glm::vec3(0.4, 0.4, 0.001));
+		cuerpo.render();
 
 		numPasosAnimBrazoCurr++;
 		interpolation = numPasosAnimBrazoCurr / (float)numPasosAnimBrazo;
@@ -3409,7 +3468,10 @@ void applicationLoop() {
 				}
 			}
 		}
-		
+		if (angulo > 360.0)
+			angulo = 0.0;
+		else
+			angulo += 1.0;
 
 		//Animacion puertas principales
 		if (anim2 == true) {

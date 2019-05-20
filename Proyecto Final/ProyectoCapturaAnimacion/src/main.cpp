@@ -194,7 +194,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelRail.loadModel("../../models/railroad/railroad_track.obj");
 	modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
-	camera->setPosition(glm::vec3(-1.5, 1.65, -5.2));
+	camera->setPosition(glm::vec3(0.0, 0.0, -1.2));
 	
 	// Textura Ladrillos
 	int imageWidth, imageHeight;
@@ -523,11 +523,11 @@ void applicationLoop() {
 		// Se modela siempre con los ejes de giro en el eje z
 		//Convencion denavit- Hartenberg para calcular la cinematica directa de un cuerpo rigido
 		// Articulacion 1
-		matrixL0 = glm::rotate(matrixL0, rot1, glm::vec3(-1.5, 1.65, -7.25));
+		matrixL0 = glm::rotate(matrixL0, rot1, glm::vec3(-2.0, 1.65, -7.25));
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ0 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixJ0 = glm::scale(cylinderMatrixJ0, glm::vec3(0.08f, 0.08f, 0.08f));
+		cylinderMatrixJ0 = glm::scale(cylinderMatrixJ0, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereAnimacion.render(cylinderMatrixJ0);
 		
 		// Articulacion 2
@@ -536,7 +536,7 @@ void applicationLoop() {
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ1 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixJ1 = glm::scale(cylinderMatrixJ1, glm::vec3(0.08f, 0.08f, 0.08f));
+		cylinderMatrixJ1 = glm::scale(cylinderMatrixJ1, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereAnimacion.render(cylinderMatrixJ1);
 		
 		// Articulacion 3
@@ -545,22 +545,22 @@ void applicationLoop() {
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ2 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixJ2 = glm::scale(cylinderMatrixJ2, glm::vec3(0.08f, 0.08f, 0.08f));
+		cylinderMatrixJ2 = glm::scale(cylinderMatrixJ2, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereAnimacion.render(cylinderMatrixJ2);
 
 		// Hueso 1
-		glm::mat4 cylinderMatrixL1 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.05f));
+		glm::mat4 cylinderMatrixL1 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.025f));
 		cylinderMatrixL1 = glm::rotate(cylinderMatrixL1, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.1f, 0.1f, 0.1f));
+		cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.05f, 0.05f, 0.05f));
 		cylinderAnimacion.render(cylinderMatrixL1);
 
 		// Articulacion 4
-		matrixL0 = glm::translate(matrixL0,glm::vec3(0.0f, 0.0f, 0.1f));
+		matrixL0 = glm::translate(matrixL0,glm::vec3(0.0f, 0.0f, 0.05f));
 		matrixL0 = glm::rotate(matrixL0, rot4, glm::vec3(0.0f, 0.0f, 1.0f));
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ3 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixJ3 = glm::scale(cylinderMatrixJ3, glm::vec3(0.08f, 0.08f, 0.08f));
+		cylinderMatrixJ3 = glm::scale(cylinderMatrixJ3, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereAnimacion.render(cylinderMatrixJ3);
 
 		// Articulacion 5
@@ -569,21 +569,21 @@ void applicationLoop() {
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ4 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixJ4 = glm::scale(cylinderMatrixJ4, glm::vec3(0.08f, 0.08f, 0.08f));
+		cylinderMatrixJ4 = glm::scale(cylinderMatrixJ4, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereAnimacion.render(cylinderMatrixJ4);
 
 		// Hueso 2
-		glm::mat4 cylinderMatrixL2 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.075f));
+		glm::mat4 cylinderMatrixL2 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.025f));
 		cylinderMatrixL2 = glm::rotate(cylinderMatrixL2, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.1f, 0.15f, 0.1f));
+		cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.05f, 0.05f, 0.05f));
 		cylinderAnimacion.render(cylinderMatrixL2);
 
 		// Articulacion 5
-		matrixL0 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.15f));
+		matrixL0 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.05f));
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ5 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixJ5 = glm::scale(cylinderMatrixJ5, glm::vec3(0.08f, 0.08f, 0.08f));
+		cylinderMatrixJ5 = glm::scale(cylinderMatrixJ5, glm::vec3(0.05f, 0.05f, 0.05f));
 		sphereAnimacion.render(cylinderMatrixJ5);
 
 		/*//Pelota
