@@ -34,6 +34,7 @@
 std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphereAnimacion(20, 20);
+Sphere spherePelota(20, 20);
 Cylinder cylinderAnimacion(20, 20, 0.5, 0.5);
 Cylinder cylinderAnimacion2(20, 20, 0.5, 0.5);
 Box box;
@@ -52,6 +53,9 @@ Model modelRail;
 Model modelAirCraft;
 Model arturito;
 Model modelTrain;
+
+bool anim4 = false;
+float contador = 0.0f;
 
 GLuint textureID1, textureID2, textureID3, textureCespedID, textureWaterID, textureCubeTexture, textureMetalID;
 GLuint cubeTextureID;
@@ -174,6 +178,10 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	sphereAnimacion.setShader(&shaderLighting);
 	sphereAnimacion.setColor(glm::vec3(0.3, 0.3, 1.0));
 
+	spherePelota.init();
+	spherePelota.setShader(&shaderLighting);
+	spherePelota.setColor(glm::vec3(0.3, 0.3, 1.0));
+
 	cylinderAnimacion.init();
 	cylinderAnimacion.setShader(&shaderLighting);
 	cylinderAnimacion.setColor(glm::vec3(0.8, 0.3, 1.0));
@@ -186,7 +194,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelRail.loadModel("../../models/railroad/railroad_track.obj");
 	modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
 
-	camera->setPosition(glm::vec3(0.0f, 0.0f, 0.4f));
+	camera->setPosition(glm::vec3(-1.5, 1.65, -5.2));
 	
 	// Textura Ladrillos
 	int imageWidth, imageHeight;
@@ -344,6 +352,7 @@ void destroy() {
 	shaderPointLight.destroy();
 	shaderSpotLight.destroy();
 	sphereAnimacion.destroy();
+	spherePelota.destroy();
 	cylinderAnimacion.destroy();
 	cylinderAnimacion2.destroy();
 	box.destroy();
@@ -405,6 +414,12 @@ bool processInput(bool continueApplication) {
 		camera->moveRightCamera(false, 3.0*deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera->moveRightCamera(true, 3.0*deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+		anim4 = true;
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+		contador += 0.005f;
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		contador -= 0.005f;
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 			rot1 -= 0.02f;
@@ -497,6 +512,8 @@ void applicationLoop() {
 		cylinderAnimacion.setViewMatrix(view);
 		sphereAnimacion.setProjectionMatrix(projection);
 		sphereAnimacion.setViewMatrix(view);
+		spherePelota.setProjectionMatrix(projection);
+		spherePelota.setViewMatrix(view);
 
 		// Se utiliza la textura de piel
 		glBindTexture(GL_TEXTURE_2D, textureMetalID);
@@ -506,7 +523,7 @@ void applicationLoop() {
 		// Se modela siempre con los ejes de giro en el eje z
 		//Convencion denavit- Hartenberg para calcular la cinematica directa de un cuerpo rigido
 		// Articulacion 1
-		matrixL0 = glm::rotate(matrixL0, rot1, glm::vec3(0.0f, 0.0f, 1.0f));
+		matrixL0 = glm::rotate(matrixL0, rot1, glm::vec3(-1.5, 1.65, -7.25));
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ0 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
@@ -532,13 +549,13 @@ void applicationLoop() {
 		sphereAnimacion.render(cylinderMatrixJ2);
 
 		// Hueso 1
-		glm::mat4 cylinderMatrixL1 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.125f));
+		glm::mat4 cylinderMatrixL1 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.05f));
 		cylinderMatrixL1 = glm::rotate(cylinderMatrixL1, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.1f, 0.25f, 0.1f));
+		cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.1f, 0.1f, 0.1f));
 		cylinderAnimacion.render(cylinderMatrixL1);
 
 		// Articulacion 4
-		matrixL0 = glm::translate(matrixL0,glm::vec3(0.0f, 0.0f, 0.25f));
+		matrixL0 = glm::translate(matrixL0,glm::vec3(0.0f, 0.0f, 0.1f));
 		matrixL0 = glm::rotate(matrixL0, rot4, glm::vec3(0.0f, 0.0f, 1.0f));
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
@@ -556,18 +573,35 @@ void applicationLoop() {
 		sphereAnimacion.render(cylinderMatrixJ4);
 
 		// Hueso 2
-		glm::mat4 cylinderMatrixL2 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.125f));
+		glm::mat4 cylinderMatrixL2 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.075f));
 		cylinderMatrixL2 = glm::rotate(cylinderMatrixL2, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-		cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.1f, 0.25f, 0.1f));
+		cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.1f, 0.15f, 0.1f));
 		cylinderAnimacion.render(cylinderMatrixL2);
 
 		// Articulacion 5
-		matrixL0 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.25f));
+		matrixL0 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.15f));
 		if (saveFrame)
 			ss << matToString(matrixL0) << "|";
 		glm::mat4 cylinderMatrixJ5 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
 		cylinderMatrixJ5 = glm::scale(cylinderMatrixJ5, glm::vec3(0.08f, 0.08f, 0.08f));
 		sphereAnimacion.render(cylinderMatrixJ5);
+
+		/*//Pelota
+		matrixL0 = glm::translate(matrixL0, glm::vec3(0.0f, 0.0f, 0.09f));
+		if (saveFrame)
+			ss << matToString(matrixL0) << "|";
+		glm::mat4 cylinderMatrixJ6 = glm::rotate(matrixL0, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
+		cylinderMatrixJ6 = glm::scale(cylinderMatrixJ6, glm::vec3(0.1f, 0.1f, 0.1f));
+		spherePelota.render(cylinderMatrixJ6);
+
+		if (anim4) {
+			matrixL0 = glm::translate(matrixL0, glm::vec3(-contador, 0.0f, 0.0f));
+			if (saveFrame)
+				ss << matToString(matrixL0) << "|";
+			cylinderMatrixJ6 = glm::scale(matrixL0, glm::vec3(0.1f, 0.1f, 0.1f));
+			spherePelota.render(cylinderMatrixJ6);
+		
+		}*/
 
 		if (saveFrame) {
 			myfile << ss.str() << "|" << std::endl; 

@@ -39,6 +39,8 @@
 std::shared_ptr<FirstPersonCamera> camera(new FirstPersonCamera());
 
 Sphere sphere(20, 20);
+Sphere cuerpo(20, 20);
+//Sphere spherePelota(20, 20);
 Cylinder cylinder(20, 20, 0.5, 0.5);
 Cylinder visagra(20, 20 , 0.001, 0.001, 1.5);
 Box boxCesped, boxCimientos, boxPiso, boxMarmolCentral, boxMarmolLados, boxEscaleras, boxVentanaBano, boxLadrillos;
@@ -334,6 +336,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	cylinderAnimacion2.setColor(glm::vec3(0.2, 0.7, 0.3));
 
 	sphere.init();
+	cuerpo.init();
 	cylinder.init();
 	PuertaDerPrinc.init();
 	PuertaIzqPrinc.init();
@@ -395,7 +398,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	//busto.loadModel("../../models/busto/busto.obj");
 	//radio.loadModel("../../models/radio/radio.obj");
 	//asientos.loadModel("../../models/asientos/asientos.obj");
-	//maquina.loadModel("../../models/maquina/maquina.obj");
+	maquina.loadModel("../../models/maquina/maquina.obj");
 	//avioneta.loadModel("../../models/avioneta/avioneta.obj");
 	//mesa.loadModel("../../models/mesa/mesa.obj");
 	
@@ -963,6 +966,7 @@ void destroy() {
 	shaderPointLight.destroy();
 	shaderSpotLight.destroy();
 	sphere.destroy();
+	cuerpo.destroy();
 	cylinder.destroy();
 
 	sphereAnimacion.destroy();
@@ -1150,7 +1154,7 @@ void applicationLoop() {
 	
 	//se obtienen los frames de brazo
 	std::vector<std::vector<glm::mat4>> keyFramesBrazo = getKeyFrames("../../animaciones/animationManoProyecto.txt");
-	int numPasosAnimBrazo = 100;
+	int numPasosAnimBrazo = 10;
 	int numPasosAnimBrazoCurr = 0;
 	//indices del arreglo Kyeframes brazo, el actual y el siguiente
 	int indexKeyFrameBrazoCurr = 0;
@@ -1494,6 +1498,12 @@ void applicationLoop() {
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureID3);
+		cuerpo.setShader(&shaderLighting);
+		cuerpo.setProjectionMatrix(projection);
+		cuerpo.setViewMatrix(view);
+		cuerpo.setPosition(glm::vec3(-1.7, 1.65, -7.2));
+		cuerpo.setScale(glm::vec3(0.3, 0.4, 0.2));
+		cuerpo.render();
 		if (keyFramesBrazo[indexKeyFrameBrazoCurr].size() == 7 && keyFramesBrazo[indexKeyFrameBrazoNext].size() == 7) {
 			//matriz de rotacion actual
 			firstQuat = glm::quat_cast(keyFramesBrazo[indexKeyFrameBrazoCurr][0]);
@@ -1512,7 +1522,7 @@ void applicationLoop() {
 			interpoltaedMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(finalTrans)) * interpoltaedMatrix;
 
 			// Animacion KeyFrames
-			glm::mat4 matrixGlobalAnimation = glm::translate(glm::mat4(1.0f), glm::vec3(4.0f, 2.0f, 0.0f));
+			glm::mat4 matrixGlobalAnimation = glm::translate(glm::mat4(1.0f), glm::vec3(-1.55, 1.65, -7.15));
 			// Se modela siempre con los ejes de giro en el eje z
 			// Articulacion 1
 			glm::mat4 keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
@@ -1552,9 +1562,9 @@ void applicationLoop() {
 			sphereAnimacion.render(cylinderMatrixJ2);
 
 			// Hueso 1
-			glm::mat4 cylinderMatrixL1 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.125f));
+			glm::mat4 cylinderMatrixL1 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.05f));
 			cylinderMatrixL1 = glm::rotate(cylinderMatrixL1, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.1f, 0.25f, 0.1f));
+			cylinderMatrixL1 = glm::scale(cylinderMatrixL1, glm::vec3(0.1f, 0.1f, 0.1f));
 			cylinderAnimacion.render(cylinderMatrixL1);
 
 			// Articulacion 4
@@ -1588,9 +1598,9 @@ void applicationLoop() {
 			sphereAnimacion.render(cylinderMatrixJ4);
 
 			// Hueso 2
-			glm::mat4 cylinderMatrixL2 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.125f));
+			glm::mat4 cylinderMatrixL2 = glm::translate(keyFrameJoint, glm::vec3(0.0f, 0.0f, 0.075f));
 			cylinderMatrixL2 = glm::rotate(cylinderMatrixL2, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
-			cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.1f, 0.25f, 0.1f));
+			cylinderMatrixL2 = glm::scale(cylinderMatrixL2, glm::vec3(0.1f, 0.15f, 0.1f));
 			cylinderAnimacion.render(cylinderMatrixL2);
 
 			// Articulacion 6
@@ -1607,6 +1617,21 @@ void applicationLoop() {
 			glm::mat4 cylinderMatrixJ5 = glm::rotate(keyFrameJoint, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
 			cylinderMatrixJ5 = glm::scale(cylinderMatrixJ5, glm::vec3(0.11f, 0.11f, 0.11f));
 			sphereAnimacion.render(cylinderMatrixJ5);
+
+			/*//Pelota
+			firstQuat = glm::quat_cast(keyFramesBrazo[indexKeyFrameBrazoCurr][6]);
+			secondQuat = glm::quat_cast(keyFramesBrazo[indexKeyFrameBrazoNext][6]);
+			finalQuat = glm::slerp(firstQuat, secondQuat, interpolation);
+			interpoltaedMatrix = glm::mat4_cast(finalQuat);
+			transformComp1 = keyFramesBrazo[indexKeyFrameBrazoCurr][6] * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+			transformComp2 = keyFramesBrazo[indexKeyFrameBrazoNext][6] * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+			finalTrans = (float)(1.0 - interpolation) * transformComp1 + transformComp2 * interpolation;
+			interpoltaedMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(finalTrans)) * interpoltaedMatrix;
+
+			keyFrameJoint = matrixGlobalAnimation * interpoltaedMatrix;
+			glm::mat4 cylinderMatrixJ6 = glm::rotate(cylinderMatrixJ6, 1.5708f, glm::vec3(1.0, 0.0f, 0.0));
+			cylinderMatrixJ6 = glm::scale(cylinderMatrixJ6, glm::vec3(0.1f, 0.1f, 0.1f));
+			spherePelota.render(cylinderMatrixJ6);*/
 
 		}
 
