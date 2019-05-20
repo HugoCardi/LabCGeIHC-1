@@ -390,16 +390,16 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 	modelTree.loadModel("../../models/Tree/Tree.obj");
 	modelPalma.loadModel("../../models/Palm_01/Palm_01.obj");
 	avioncito.loadModel("../../models/avioncito/avioncito.obj");
-	//computadora.loadModel("../../models/compu/compu.obj");
-	//silla.loadModel("../../models/silla/silla.obj");
+	computadora.loadModel("../../models/compu/compu.obj");
+	silla.loadModel("../../models/silla/silla.obj");
 	maestro.loadModel("../../models/maestro/persona.obj");
 	pizarron.loadModel("../../models/pizarron/pizarron.obj");
-	//busto.loadModel("../../models/busto/busto.obj");
-	//radio.loadModel("../../models/radio/radio.obj");
-	//asientos.loadModel("../../models/asientos/asientos.obj");
+	busto.loadModel("../../models/busto/busto.obj");
+	radio.loadModel("../../models/radio/radio.obj");
+	asientos.loadModel("../../models/asientos/asientos.obj");
 	maquina.loadModel("../../models/maquina/maquina.obj");
-	//avioneta.loadModel("../../models/avioneta/avioneta.obj");
-	//mesa.loadModel("../../models/mesa/mesa.obj");
+	avioneta.loadModel("../../models/avioneta/avioneta.obj");
+	mesa.loadModel("../../models/mesa/mesa.obj");
 	
 	//modelMaceta.loadModel("../../models/eb_house_plant_01/eb_house_plant_01.obj");
 	//modelAirCraft.loadModel("../../models/Aircraft_obj/E 45 Aircraft_obj.obj");
