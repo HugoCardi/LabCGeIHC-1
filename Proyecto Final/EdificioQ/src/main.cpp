@@ -82,6 +82,7 @@ float rotaD = 0;
 bool anim1 = false;
 bool anim2 = false;
 bool anim3 = false;
+bool anim4 = false;
 
 GLuint texturePisoExtID, textureCimientosID, textureID3, textureCespedID, textureProyectorID, textureCubeTexture, textureMarmolID;
 GLuint texturePiedrasID, textureTierraID, textureMuroID, textureMurEdifID, textureMurDivID, textureVentanalID, textureEscalerasID;
@@ -1103,12 +1104,15 @@ bool processInput(bool continueApplication) {
 		anim3 = true;
 	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
 		anim3 = false;
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+		anim4 = true;
 	//Control animacion proyector
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		anim1 = true;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		anim1 = false;
 		anim2 = false;
+		anim4 = false;
 	}
 	//Control del movimiento de la cámara
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -1460,21 +1464,22 @@ void applicationLoop() {
 		pizz = glm::rotate(pizz, glm::radians(-90.0f), glm::vec3(0, 1, 0));
 		pizarron.render(pizz);
 		
-
+		if (anim4) {
+			if (angulo > 360.0)
+				angulo = 0.0;
+			else
+				angulo += 1.0;
+		}
 		r = 2.0;
 		orbitax = r * glm::cos(glm::radians(angulo));
 		orbitaz = r * glm::sin(glm::radians(angulo));
 		avioncito.setShader(&shaderLighting);
 		avioncito.setProjectionMatrix(projection);
 		avioncito.setViewMatrix(view);
-		//avioncito.setPosition(glm::vec3(10.0f, 6.0f, -17.5f));
 		avioncito.setScale(glm::vec3(2.0, 2.0, 2.0));
-		/*avioncito.setPosition(glm::vec3(0.0+orbitax, 1.0f, 10.0+orbitaz));
-		avioncito.setOrientation(glm::vec3(0.0 , 1.0f, 10.0));
-		avioncito.render();*/
 		glm::mat4 Modelmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(orbitax, 0.0f, orbitaz));
 		Modelmatrix = glm::translate(Modelmatrix, glm::vec3(10.0f, 6.0f, -17.5f));
-		Modelmatrix = glm::rotate(Modelmatrix, angulo/1000, glm::vec3(0.0f, 1.0f, 0.0f));
+		Modelmatrix = glm::rotate(Modelmatrix, angulo/1000, glm::vec3(0.0f, -1.0f, 0.0f));	
 		Modelmatrix = glm::rotate(Modelmatrix, glm::radians(80.0f), glm::vec3(0, 1, 0));
 		avioncito.render(Modelmatrix);
 
@@ -3404,10 +3409,7 @@ void applicationLoop() {
 				}
 			}
 		}
-		if (angulo > 360.0)
-			angulo = 0.0;
-		else
-			angulo += 1.0;
+		
 
 		//Animacion puertas principales
 		if (anim2 == true) {
